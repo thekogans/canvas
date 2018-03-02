@@ -1,0 +1,87 @@
+<thekogans_make organization = "thekogans"
+                project = "canvas"
+                project_type = "library"
+                major_version = "0"
+                minor_version = "1"
+                patch_version = "0"
+                naming_convention = "Hierarchical"
+                guid = "cd34a996535a3c82a8a1c4e376ddfc01"
+                schema_version = "2">
+  <dependencies>
+    <project organization = "thekogans"
+             name = "util"/>
+    <project organization = "thekogans"
+             name = "stream"/>
+    <toolchain organization = "thekogans"
+               name = "freetype"/>
+    <toolchain organization = "thekogans"
+               name = "png"/>
+    <toolchain organization = "thekogans"
+               name = "bzip2"/>
+    <toolchain organization = "thekogans"
+               name = "zlib"/>
+    <toolchain organization = "thekogans"
+               name = "yuv"/>
+    <toolchain organization = "thekogans"
+               name = "turbojpeg"/>
+    <choose>
+      <when condition = "$(TOOLCHAIN_OS) == 'Linux'">
+        <library>pthread</library>
+        <library>rt</library>
+        <if condition = "$(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
+          <library>X11</library>
+          <library>Xinerama</library>
+          <library>Xxf86vm</library>
+        </if>
+      </when>
+      <when condition = "$(TOOLCHAIN_OS) == 'OSX'">
+        <library>pthread</library>
+        <framework>CoreFoundation</framework>
+        <framework>CoreServices</framework>
+        <framework>CoreGraphics</framework>
+      </when>
+    </choose>
+  </dependencies>
+  <cpp_preprocessor_definitions>
+    <if condition = "$(TOOLCHAIN_OS) == 'Windows'">
+      <cpp_preprocessor_definition>_CRT_SECURE_NO_WARNINGS</cpp_preprocessor_definition>
+    </if>
+  </cpp_preprocessor_definitions>
+  <cpp_headers prefix = "include"
+               install = "yes">
+    <cpp_header>$(organization)/$(project_directory)/Bitmap.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Canvas.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Color.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Config.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Point.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/RGBImage.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Rectangle.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/TJUtils.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Version.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Window.h</cpp_header>
+    <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
+      <cpp_header>$(organization)/$(project_directory)/Xlib.h</cpp_header>
+    </if>
+    <cpp_header>$(organization)/$(project_directory)/YUVImage.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/lodepng.h</cpp_header>
+  </cpp_headers>
+  <cpp_sources prefix = "src">
+    <cpp_source>Bitmap.cpp</cpp_source>
+    <cpp_source>Canvas.cpp</cpp_source>
+    <cpp_source>DrawUtils.cpp</cpp_source>
+    <cpp_source>Font.cpp</cpp_source>
+    <cpp_source>Point.cpp</cpp_source>
+    <cpp_source>RGBImage.cpp</cpp_source>
+    <cpp_source>Rectangle.cpp</cpp_source>
+    <cpp_source>TJUtils.cpp</cpp_source>
+    <cpp_source>Version.cpp</cpp_source>
+    <cpp_source>Window.cpp</cpp_source>
+    <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
+      <cpp_source>Xlib.cpp</cpp_source>
+    </if>
+    <cpp_source>YUVImage.cpp</cpp_source>
+    <cpp_source>lodepng.cpp</cpp_source>
+  </cpp_sources>
+</thekogans_make>
