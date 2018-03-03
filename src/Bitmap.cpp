@@ -126,10 +126,17 @@ namespace thekogans {
             data = (util::ui8 *)malloc (
                 extents.height * rowStride);
             if (data != 0) {
-                image = XCreateImage (window.display, CopyFromParent,
-                    GetWindowPixelDepth (window), ZPixmap, 0,
-                    (char *)data, extents.width, extents.height,
-                    pixelStride << 3, rowStride);
+                image = XCreateImage (
+                    window.display,
+                    CopyFromParent,
+                    GetWindowPixelDepth (window),
+                    ZPixmap,
+                    0,
+                    (char *)data,
+                    extents.width,
+                    extents.height,
+                    pixelStride << 3,
+                    rowStride);
                 if (image == 0) {
                     free (data);
                     data = 0;
@@ -204,15 +211,27 @@ namespace thekogans {
                 Rectangle (origin, srcRectangle.extents).Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate () && !dstRectangle.IsDegenerate ()) {
             #if defined (TOOLCHAIN_OS_Windows)
-                BitBlt (memoryDC.dc, dstRectangle.origin.x, dstRectangle.origin.y,
-                    dstRectangle.extents.width, dstRectangle.extents.height,
-                    window.dc, srcRectangle.origin.x, srcRectangle.origin.y, SRCCOPY);
+                BitBlt (
+                    memoryDC.dc,
+                    dstRectangle.origin.x,
+                    dstRectangle.origin.y,
+                    dstRectangle.extents.width,
+                    dstRectangle.extents.height,
+                    window.dc,
+                    srcRectangle.origin.x,
+                    srcRectangle.origin.y,
+                    SRCCOPY);
             #elif defined (TOOLCHAIN_OS_Linux)
             #if defined (THEKOGANS_CANVAS_USE_XLIB)
-                XImage *tmpImage = XGetImage (window.display, window.window,
-                    srcRectangle.origin.x, srcRectangle.origin.y,
-                    srcRectangle.extents.width, srcRectangle.extents.height,
-                    AllPlanes, ZPixmap);
+                XImage *tmpImage = XGetImage (
+                    window.display,
+                    window.window,
+                    srcRectangle.origin.x,
+                    srcRectangle.origin.y,
+                    srcRectangle.extents.width,
+                    srcRectangle.extents.height,
+                    AllPlanes,
+                    ZPixmap);
                 if (tmpImage != 0) {
                     if (dstRectangle == GetRectangle ()) {
                         Destroy ();
@@ -267,7 +286,8 @@ namespace thekogans {
                             RGBImage (
                                 data,
                                 Rectangle::Extents (
-                                    CGImageGetWidth (imageRef.image), CGImageGetHeight (imageRef.image)),
+                                    CGImageGetWidth (imageRef.image),
+                                    CGImageGetHeight (imageRef.image)),
                                 window.GetComponentIndices (),
                                 CGImageGetBitsPerPixel (imageRef.image) / 8,
                                 CGImageGetBytesPerRow (imageRef.image),
