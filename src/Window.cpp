@@ -762,13 +762,31 @@ namespace thekogans {
         }
 
         namespace {
+            struct CGDisplayModeRefDeleter {
+                void operator () (CGDisplayModeRef displayMode) {
+                    if (displayMode != 0) {
+                        CGDisplayModeRelease (displayMode);
+                    }
+                }
+            };
+            typedef std::unique_ptr<CGDisplayMode, CGDisplayModeRefDeleter> CGDisplayModeRefPtr;
+
+            struct CFStringRefDeleter {
+                void operator () (CFStringRef stringRef) {
+                    if (stringRef != 0) {
+                        CFRelease (stringRef);
+                    }
+                }
+            };
+            typedef std::unique_ptr<const __CFString, CFStringRefDeleter> CFStringRefPtr;
+
             size_t CGDisplayBitsPerPixel (CGDirectDisplayID display) {
-                CGDisplayModeRef originalMode = CGDisplayCopyDisplayMode (display);
-                CFStringRef pixelEncoding = CGDisplayModeCopyPixelEncoding (originalMode);
-                if (CFStringCompare (pixelEncoding, CFSTR (IO32BitDirectPixels), 0) == 0) {
+                CGDisplayModeRefPtr originalMode (CGDisplayCopyDisplayMode (display));
+                CFStringRefPtr pixelEncoding (CGDisplayModeCopyPixelEncoding (originalMode.get ()));
+                if (CFStringCompare (pixelEncoding.get (), CFSTR (IO32BitDirectPixels), 0) == 0) {
                     return 32;
                 }
-                else if (CFStringCompare (pixelEncoding, CFSTR (IO16BitDirectPixels), 0) == 0) {
+                else if (CFStringCompare (pixelEncoding.get (), CFSTR (IO16BitDirectPixels), 0) == 0) {
                     return 16;
                 }
                 return 8;

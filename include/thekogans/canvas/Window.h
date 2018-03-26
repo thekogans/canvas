@@ -60,7 +60,7 @@ namespace thekogans {
             ::Window window;
             GC gc;
         #else // defined (THEKOGANS_CANVAS_USE_XLIB)
-            util::Rectangle rectangle;
+            Rectangle rectangle;
             const Window *parent;
             util::OwnerList<Window> children;
             bool visible;
