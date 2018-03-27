@@ -64,7 +64,7 @@ namespace thekogans {
             const Window *parent;
             util::OwnerList<Window> children;
             bool visible;
-            util::RGBImage image;
+            RGBImage image;
         #endif // defined (THEKOGANS_CANVAS_USE_XLIB)
         #elif defined (TOOLCHAIN_OS_OSX)
             CGWindowID windowID;

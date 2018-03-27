@@ -644,11 +644,10 @@ namespace thekogans {
         void Window::EnumerateMonitors () {
             monitors.deleteAndClear ();
             for (util::ui32 index = 0;
-                 util::Path (
-                     util::FormatString ("/dev/fb%u", index)).Exists ();
-                 ++index) {
+                    util::Path (
+                        util::FormatString ("/dev/fb%u", index)).Exists (); ++index) {
                 THEKOGANS_UTIL_TRY {
-                    std::auto_ptr<Monitor> monitor (new Monitor (index));
+                    std::unique_ptr<Monitor> monitor (new Monitor (index));
                     monitors.push_back (monitor.get ());
                     monitor.release ();
                 }

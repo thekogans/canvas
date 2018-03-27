@@ -31,7 +31,7 @@ namespace thekogans {
             RGBImage &image,
             const Rectangle &rectangle,
             const Color &color,
-            thekogans::util::ui32 width = 1);
+            util::ui32 width = 1);
 
     } // namespace canvas
 } // namespace thekogans
