@@ -65,7 +65,7 @@ namespace thekogans {
             }
         }
 
-        _LIB_THEKOGANS_UTIL_DECL void _LIB_THEKOGANS_UTIL_API DrawRectangle (
+        _LIB_THEKOGANS_CANVAS_DECL void _LIB_THEKOGANS_CANVAS_API DrawRectangle (
                 RGBImage &image,
                 const Rectangle &rectangle,
                 const Color &color,
