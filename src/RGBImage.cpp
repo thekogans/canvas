@@ -224,8 +224,12 @@ namespace thekogans {
                 util::i16 bfReserved2;
                 util::i32 bfOffBits;
 
-                FileHeader () : bfType (0), bfSize (0),
-                    bfReserved1 (0), bfReserved2 (0), bfOffBits (0) {}
+                FileHeader () :
+                    bfType (0),
+                    bfSize (0),
+                    bfReserved1 (0),
+                    bfReserved2 (0),
+                    bfOffBits (0) {}
             };
 
             struct InfoHeader {

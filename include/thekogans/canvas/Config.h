@@ -24,15 +24,15 @@
 
 #if defined (TOOLCHAIN_OS_Windows)
     #define _LIB_THEKOGANS_CANVAS_API __stdcall
-    #if defined (TOOLCHAIN_TYPE_Shared)
+    #if defined (THEKOGANS_CANVAS_TYPE_Shared)
         #if defined (_LIB_THEKOGANS_CANVAS_BUILD)
             #define _LIB_THEKOGANS_CANVAS_DECL __declspec (dllexport)
         #else // defined (_LIB_THEKOGANS_CANVAS_BUILD)
             #define _LIB_THEKOGANS_CANVAS_DECL __declspec (dllimport)
         #endif // defined (_LIB_THEKOGANS_CANVAS_BUILD)
-    #else // defined (TOOLCHAIN_TYPE_Shared)
+    #else // defined (THEKOGANS_CANVAS_TYPE_Shared)
         #define _LIB_THEKOGANS_CANVAS_DECL
-    #endif // defined (TOOLCHAIN_TYPE_Shared)
+    #endif // defined (THEKOGANS_CANVAS_TYPE_Shared)
     #pragma warning (disable: 4251) // using non-exported as public in exported
     #pragma warning (disable: 4786)
     #pragma warning (disable: 4355)
