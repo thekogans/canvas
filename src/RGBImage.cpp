@@ -576,19 +576,19 @@ namespace thekogans {
                         // image, then don't interpolate -- just
                         // assign the pixel d1, d2, d3, d4 are
                         // positive -- no need for abs ()
-                        if (d1 < util::EPSILON) {
+                        if (d1 < EPSILON) {
                             memcpy (dstRow, data + y1 * rowStride + x1 * pixelStride, pixelStride);
                             dstRow += pixelStride;
                         }
-                        else if (d2 < util::EPSILON) {
+                        else if (d2 < EPSILON) {
                             memcpy (dstRow, data + y1 * rowStride + x2 * pixelStride, pixelStride);
                             dstRow += pixelStride;
                         }
-                        else if (d3 < util::EPSILON) {
+                        else if (d3 < EPSILON) {
                             memcpy (dstRow, data + y2 * rowStride + x2 * pixelStride, pixelStride);
                             dstRow += pixelStride;
                         }
-                        else if (d4 < util::EPSILON) {
+                        else if (d4 < EPSILON) {
                             memcpy (dstRow, data + y2 * rowStride + x1 * pixelStride, pixelStride);
                             dstRow += pixelStride;
                         }
