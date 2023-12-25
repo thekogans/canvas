@@ -53,7 +53,7 @@ namespace thekogans {
         namespace {
             struct Monitor : public Window {
                 util::ui32 index;
-                Rectangle rectangle;
+                util::Rectangle rectangle;
                 Monitor (util::ui32 index_, HMONITOR monitor) :
                         index (index_) {
                     MONITORINFOEX monitorInfo;
@@ -88,7 +88,7 @@ namespace thekogans {
                     assert (wnd == 0);
                 }
 
-                virtual Rectangle GetRectangle () const {
+                virtual util::Rectangle GetRectangle () const {
                     return rectangle;
                 }
 
@@ -217,7 +217,7 @@ namespace thekogans {
         }
 
         void Window::Create (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Window &parent) {
             Destroy ();
             if (atom != 0) {
@@ -269,24 +269,24 @@ namespace thekogans {
             }
         }
 
-        Rectangle Window::GetRectangle () const {
+        util::Rectangle Window::GetRectangle () const {
             if (wnd != 0) {
                 RECT rect;
                 GetWindowRect (wnd, &rect);
-                return Rectangle (
+                return util::Rectangle (
                     rect.left, rect.top,
                     rect.right - rect.left, rect.bottom - rect.top);
             }
-            return Rectangle ();
+            return util::Rectangle ();
         }
 
         void Window::DrawBitmap (
                 const Bitmap &bitmap,
-                const Rectangle &rectangle,
-                const Point &origin) {
+                const util::Rectangle &rectangle,
+                const util::Point &origin) {
             // No checking for wnd == 0 here. Monitor will have a
             // valid dc, but no wnd.
-            Rectangle::Extents extents =
+            util::Rectangle::Extents extents =
                 rectangle.IsDegenerate () ?
                 bitmap.GetExtents () : rectangle.extents;
             BitBlt (dc, origin.x, origin.y, extents.width, extents.height,
@@ -297,7 +297,7 @@ namespace thekogans {
         namespace {
             struct Monitor : public Window {
                 util::ui32 index;
-                Rectangle rectangle;
+                util::Rectangle rectangle;
                 Monitor (Display *display_,
                         util::ui32 index_,
                         util::i32 x,
@@ -343,7 +343,7 @@ namespace thekogans {
                     Window::Destroy ();
                 }
 
-                virtual Rectangle GetRectangle () const {
+                virtual util::Rectangle GetRectangle () const {
                     return rectangle;
                 }
 
@@ -418,7 +418,7 @@ namespace thekogans {
         }
 
         void Window::Create (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Window &parent) {
             Destroy ();
             display = parent.display;
@@ -536,23 +536,23 @@ namespace thekogans {
             }
         }
 
-        Rectangle Window::GetRectangle () const {
+        util::Rectangle Window::GetRectangle () const {
             if (window != 0) {
                 XWindowAttributes attributes;
                 XGetWindowAttributes (display, window, &attributes);
-                return Rectangle (
+                return util::Rectangle (
                     attributes.x, attributes.y,
                     attributes.width, attributes.height);
             }
-            return Rectangle ();
+            return util::Rectangle ();
         }
 
         void Window::DrawBitmap (
                 const Bitmap &bitmap,
-                const Rectangle &rectangle,
-                const Point &origin) {
+                const util::Rectangle &rectangle,
+                const util::Point &origin) {
             if (window != 0) {
-                Rectangle::Extents extents = rectangle.IsDegenerate () ?
+                util::Rectangle::Extents extents = rectangle.IsDegenerate () ?
                     bitmap.GetExtents () : rectangle.extents;
                 XPutImage (display, window, gc, bitmap.image,
                     rectangle.origin.x, rectangle.origin.y, origin.x, origin.y,
@@ -624,7 +624,7 @@ namespace thekogans {
                     RGBImage (
                         (util::ui8 *)mmap (0, fixInfo.smem_len,
                             PROT_READ | PROT_WRITE, MAP_SHARED, handle, 0),
-                        Rectangle::Extents (varInfo.xres, varInfo.yres),
+                        util::Rectangle::Extents (varInfo.xres, varInfo.yres),
                         RGBImage::R2G1B0A3,
                         varInfo.bits_per_pixel / 8,
                         fixInfo.line_length, false).Swap (image);
@@ -671,7 +671,7 @@ namespace thekogans {
         }
 
         void Window::Create (
-                const Rectangle &rectangle_,
+                const util::Rectangle &rectangle_,
                 const Window &parent_) {
             Destroy ();
             rectangle = rectangle_;
@@ -698,14 +698,14 @@ namespace thekogans {
             visible = false;
         }
 
-        Rectangle Window::GetRectangle () const {
+        util::Rectangle Window::GetRectangle () const {
             return rectangle;
         }
 
         void Window::DrawBitmap (
                 const Bitmap &bitmap,
-                const Rectangle &rectangle,
-                const Point &origin) {
+                const util::Rectangle &rectangle,
+                const util::Point &origin) {
             bitmap.Copy (rectangle, origin, image);
         }
     #endif // defined (THEKOGANS_CANVAS_USE_XLIB)
@@ -714,7 +714,7 @@ namespace thekogans {
             struct Monitor : public Window {
                 util::ui32 index;
                 CGDirectDisplayID displayID;
-                Rectangle rectangle;
+                util::Rectangle rectangle;
                 Monitor (
                         util::ui32 index_,
                         CGDirectDisplayID displayID_) :
@@ -740,7 +740,7 @@ namespace thekogans {
                 virtual void Destroy () {
                 }
 
-                virtual Rectangle GetRectangle () const {
+                virtual util::Rectangle GetRectangle () const {
                     return rectangle;
                 }
 
@@ -798,17 +798,16 @@ namespace thekogans {
             CGGetActiveDisplayList (0, 0, &displayCount);
             if (displayCount != 0) {
                 std::vector<CGDirectDisplayID> activeDisplays (displayCount);
-                CGGetActiveDisplayList (displayCount,
-                    &activeDisplays[0], &displayCount);
+                CGGetActiveDisplayList (displayCount, &activeDisplays[0], &displayCount);
                 for (CGDisplayCount i = 0; i < displayCount; ++i) {
-                    size_t depth = CGDisplayBitsPerPixel (activeDisplays[i]);
+                    std::size_t depth = CGDisplayBitsPerPixel (activeDisplays[i]);
                     if (depth == 24 || depth == 32) {
                         monitors.push_back (new Monitor (i, activeDisplays[i]));
                     }
                     else {
                         THEKOGANS_UTIL_LOG_WARNING (
                             "Only 24 or 32 bpp displays are supported.\n"
-                            "Skipping display %d (%d)\n", i, depth);
+                            "Skipping display %d (%lu)\n", i, depth);
                     }
                 }
             }
@@ -832,7 +831,7 @@ namespace thekogans {
         }
 
         void Window::Create (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Window &parent) {
             // FIXME: implement with cocoa
         }
@@ -849,8 +848,8 @@ namespace thekogans {
             // FIXME: implement with cocoa
         }
 
-        Rectangle Window::GetRectangle () const {
-            return Rectangle ();
+        util::Rectangle Window::GetRectangle () const {
+            return util::Rectangle ();
         }
 
         CGImageRef Window::GetImage () const {
@@ -867,9 +866,9 @@ namespace thekogans {
 
         void Window::DrawBitmap (
                 const Bitmap &bitmap,
-                const Rectangle &rectangle,
-                const Point &origin) {
-            Rectangle bitmapRectangle = rectangle.Intersection (bitmap.GetRectangle ());
+                const util::Rectangle &rectangle,
+                const util::Point &origin) {
+            util::Rectangle bitmapRectangle = rectangle.Intersection (bitmap.GetRectangle ());
             if (!bitmapRectangle.IsDegenerate ()) {
                 struct ColorSpace {
                     CGColorSpaceRef colorSpace;
@@ -890,7 +889,7 @@ namespace thekogans {
                     CGContextRef context;
                     BitmapContext (
                         const Bitmap &bitmap,
-                        const Rectangle &rectangle,
+                        const util::Rectangle &rectangle,
                         const ColorSpace &colorSpace) :
                         context (CGBitmapContextCreate (
                                 bitmap.GetData () +
@@ -928,7 +927,7 @@ namespace thekogans {
                     }
                     void Draw (
                             CGContextRef context,
-                            const Point &origin) {
+                            const util::Point &origin) {
                         CGContextDrawImage (
                             context,
                             CGRectMake (

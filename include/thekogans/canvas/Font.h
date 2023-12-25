@@ -24,6 +24,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Point.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/util/OwnerVector.h"
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/SpinLock.h"
@@ -32,9 +34,7 @@
 #include "thekogans/util/LoggerMgr.h"
 #include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Point.h"
-#include "thekogans/canvas/Rectangle.h"
-#include "thekogans/canvas/RGBImage.h"
+//#include "thekogans/canvas/RGBImage.h"
 
 namespace thekogans {
     namespace canvas {
@@ -43,6 +43,7 @@ namespace thekogans {
 
         struct _LIB_THEKOGANS_CANVAS_DECL Font {
             static util::SpinLock freetypeLock;
+
 
             struct LibraryPtr {
                 FT_Library library;
@@ -117,25 +118,49 @@ namespace thekogans {
                         return (FT_BitmapGlyph)glyph;
                     }
                 } glyph;
+                util::Rectangle::Extents size;
+                util::Point bearing;
+                util::Point advance;
 
                 Glyph (
                         FT_Face face,
-                        char ch) :
+                        char ch,
+                        bool flipRows) :
                         index (FT_Get_Char_Index (face, ch)),
                         glyph (face, index) {
-                    util::LockGuard<util::SpinLock> guard (Font::freetypeLock);
-                    FT_Error error = FT_Glyph_To_Bitmap (&glyph.glyph, FT_RENDER_MODE_NORMAL, 0, 1);
-                    if (error != 0) {
-                        THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
-                            "FT_Glyph_To_Bitmap: %s", GetErrorMessage (error));
+                    {
+                        util::LockGuard<util::SpinLock> guard (Font::freetypeLock);
+                        FT_Error error = FT_Glyph_To_Bitmap (&glyph.glyph, FT_RENDER_MODE_NORMAL, 0, 1);
+                        if (error != 0) {
+                            THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
+                                "FT_Glyph_To_Bitmap: %s", GetErrorMessage (error));
+                        }
+                    }
+                    size.width = glyph->bitmap.width;
+                    size.height = glyph->bitmap.rows;
+                    bearing.x = glyph->left;
+                    bearing.y = glyph->top;
+                    // advance.x = glyph->advance.x;
+                    // advance.y = glyph->advance.y;
+                    if (flipRows) {
+                        util::ui8 *topRow = glyph->bitmap.buffer;
+                        util::ui8 *bottomRow = topRow + (glyph->bitmap.rows - 1) * glyph->bitmap.pitch;
+                        std::vector<util::ui8> temp (glyph->bitmap.width);
+                        for (std::size_t count = glyph->bitmap.rows / 2; count-- != 0;) {
+                            memcpy (&temp[0], topRow, glyph->bitmap.width);
+                            memcpy (topRow, bottomRow, glyph->bitmap.width);
+                            memcpy (bottomRow, &temp[0], glyph->bitmap.width);
+                            topRow += glyph->bitmap.pitch;
+                            bottomRow -= glyph->bitmap.pitch;
+                        }
                     }
                 }
 
                 inline const util::ui8 *GetData () const {
                     return glyph->bitmap.buffer;
                 }
-                inline Rectangle::Extents GetExtents () const {
-                    return Rectangle::Extents (glyph->bitmap.width, glyph->bitmap.rows);
+                inline util::Rectangle::Extents GetExtents () const {
+                    return util::Rectangle::Extents (glyph->bitmap.width, glyph->bitmap.rows);
                 }
                 inline util::i32 GetPixelStride () const {
                     return 1;
@@ -153,8 +178,8 @@ namespace thekogans {
                 THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Glyph)
             };
             util::OwnerVector<Glyph> glyphCache;
+            bool flipGliphRows;
 
-        public:
             // NOTE: width and height are in points.
             // horizontalResolution and verticalResolution are in dpi.
             Font (
@@ -162,7 +187,8 @@ namespace thekogans {
                 util::ui32 width,
                 util::ui32 height,
                 util::ui32 horizontalResolution = 96,
-                util::ui32 verticalResolution = 96);
+                util::ui32 verticalResolution = 96,
+                bool flipGliphRows_ = false);
 
             inline util::ui32 GetHeight () const {
                 return (util::ui32)(face.face->size->metrics.height >> 6);
@@ -186,25 +212,26 @@ namespace thekogans {
             static std::string AlignmentTostring (Alignment alignment);
             static Alignment stringToAlignment (const std::string &alignment);
 
-            Point AlignText (
+            util::Point AlignText (
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 Alignment alignment);
-            Rectangle::Extents GetTextExtents (
+            util::Rectangle::Extents GetTextExtents (
                 const std::string &text);
+#if 0
             void DrawText (
                 RGBImage &image,
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &textColor = Color (255, 255, 255),
                 const Color &backgroundColor = Color (0, 0, 0, 255));
             void DrawText (
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &textColor = Color (255, 255, 255),
                 const Color &backgroundColor = Color (0, 0, 0, 255));
+#endif
 
-        private:
             void GetGlyphs (
                 const std::string &text,
                 std::vector<Glyph *> &glyphs,

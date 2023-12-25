@@ -54,13 +54,16 @@ namespace thekogans {
                 componentIndices == "R3G2B1A0" ? R3G2B1A0 : 0;
         }
 
-        RGBImage::RGBImage (const Rectangle::Extents &extents_,
+        RGBImage::RGBImage (const util::Rectangle::Extents &extents_,
                 util::ui32 componentIndices_,
                 util::ui32 pixelStride_,
                 util::ui32 rowStride_,
                 bool clear) :
-                extents (extents_), componentIndices (componentIndices_),
-                pixelStride (pixelStride_), rowStride (rowStride_), owner (true) {
+                extents (extents_),
+                componentIndices (componentIndices_),
+                pixelStride (pixelStride_),
+                rowStride (rowStride_),
+                owner (true) {
             assert (pixelStride >= 3);
             if (rowStride == 0) {
                 rowStride = extents.width * pixelStride;
@@ -76,16 +79,18 @@ namespace thekogans {
                 const util::ui8 *buffer,
                 util::ui32 size,
                 util::ui32 componentIndices) {
-            UniquePtr image;
             std::vector<util::ui8> data;
             util::ui32 width = 0;
             util::ui32 height = 0;
+            util::ui32 pixelStride = 4;
             util::ui32 error = lodepng::decode (data, width, height, buffer, size);
             if (error == 0) {
-                image.reset (
+                UniquePtr image (
                     new RGBImage (
-                        Rectangle::Extents (width, height),
-                        componentIndices, 4, 0));
+                        util::Rectangle::Extents (width, height),
+                        componentIndices,
+                        pixelStride,
+                        width * pixelStride));
                 util::ui8 *dstData = image->GetData ();
                 const util::ui8 *srcData = &data[0];
                 util::ui32 rIndex =
@@ -102,32 +107,33 @@ namespace thekogans {
                         dstData[gIndex] = srcData[1];
                         dstData[bIndex] = srcData[2];
                         dstData[aIndex] = srcData[3];
-                        dstData += 4;
-                        srcData += 4;
+                        dstData += pixelStride;
+                        srcData += pixelStride;
                     }
                 }
+                return image;
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
                     "Unable to load a PNG image from buffer (%s)",
                     lodepng_error_text (error));
             }
-            return image;
         }
 
         RGBImage::UniquePtr RGBImage::FromPNGFile (
                 const std::string &path,
                 util::ui32 componentIndices) {
-            UniquePtr image;
             std::vector<util::ui8> data;
             util::ui32 width = 0;
             util::ui32 height = 0;
+            util::ui32 pixelStride = 4;
             util::ui32 error = lodepng::decode (data, width, height, path.c_str ());
             if (error == 0) {
-                image.reset (
+                UniquePtr image (
                     new RGBImage (
-                        Rectangle::Extents (width, height),
-                        componentIndices, 4, 0));
+                        util::Rectangle::Extents (width, height),
+                        componentIndices,
+                        pixelStride, width * pixelStride));
                 util::ui8 *dstData = image->GetData ();
                 const util::ui8 *srcData = &data[0];
                 util::ui32 rIndex =
@@ -144,74 +150,66 @@ namespace thekogans {
                         dstData[gIndex] = srcData[1];
                         dstData[bIndex] = srcData[2];
                         dstData[aIndex] = srcData[3];
-                        dstData += 4;
-                        srcData += 4;
+                        dstData += pixelStride;
+                        srcData += pixelStride;
                     }
                 }
+                return image;
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
                     "Unable to load a PNG image from %s (%s)",
                     path.c_str (), lodepng_error_text (error));
             }
-            return image;
         }
 
         RGBImage::UniquePtr RGBImage::FromJPGBuffer (
                 const util::ui8 *buffer,
                 util::ui32 size,
                 util::ui32 componentIndices) {
-            UniquePtr image;
-            {
-                TJDecompressHandle handle;
-                int width;
-                int height;
-                int jpegSubsamp;
-                if (tjDecompressHeader2 (handle.handle, (util::ui8 *)buffer,
-                        size, &width, &height, &jpegSubsamp) == 0) {
-                    util::ui32 pixelStride = 4;
-                    util::ui32 rowStride = width * pixelStride;
-                    util::ui8 *data = new util::ui8[height * rowStride];
-                    if (tjDecompress2 (handle.handle, (util::ui8 *)buffer,
-                            size, data, width, rowStride, height,
-                            ComponentIndicesToTJPixelFormat (
-                                componentIndices, pixelStride), 0) == 0) {
-                        image.reset (
-                            new RGBImage (data, Rectangle::Extents (width, height),
-                                componentIndices, pixelStride, rowStride, true));
-                    }
-                    else {
-                        delete [] data;
-                        THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
-                            "%s", tjGetErrorStr ());
-                    }
+            TJDecompressHandle handle;
+            int width;
+            int height;
+            int jpegSubsamp;
+            if (tjDecompressHeader2 (handle.handle, (util::ui8 *)buffer,
+                    size, &width, &height, &jpegSubsamp) == 0) {
+                util::ui32 pixelStride = 4;
+                util::ui32 rowStride = width * pixelStride;
+                util::ui8 *data = new util::ui8[height * rowStride];
+                if (tjDecompress2 (handle.handle, (util::ui8 *)buffer,
+                        size, data, width, rowStride, height,
+                        ComponentIndicesToTJPixelFormat (
+                            componentIndices, pixelStride), 0) == 0) {
+                    return UniquePtr (
+                        new RGBImage (data, util::Rectangle::Extents (width, height),
+                            componentIndices, pixelStride, rowStride, true));
                 }
                 else {
+                    delete [] data;
                     THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
                         "%s", tjGetErrorStr ());
                 }
             }
-            return image;
+            else {
+                THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
+                    "%s", tjGetErrorStr ());
+            }
         }
 
         RGBImage::UniquePtr RGBImage::FromJPGFile (
                 const std::string &path,
                 util::ui32 componentIndices) {
-            UniquePtr image;
-            {
-                util::ReadOnlyFile file (util::HostEndian, path);
-                util::ui32 size = (util::ui32)file.GetSize ();
-                if (size > 0) {
-                    std::vector<util::ui8> buffer (size);
-                    file.Read (&buffer[0], size);
-                    image = FromJPGBuffer (&buffer[0], size, componentIndices);
-                }
-                else {
-                    THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
-                        "Empty jpg file: %s", path.c_str ());
-                }
+            util::ReadOnlyFile file (util::HostEndian, path);
+            util::ui32 size = (util::ui32)file.GetSize ();
+            if (size > 0) {
+                std::vector<util::ui8> buffer (size);
+                file.Read (&buffer[0], size);
+                return FromJPGBuffer (&buffer[0], size, componentIndices);
             }
-            return image;
+            else {
+                THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
+                    "Empty jpg file: %s", path.c_str ());
+            }
         }
 
         namespace {
@@ -335,7 +333,7 @@ namespace thekogans {
                 }
                 image.reset (
                     new RGBImage (data,
-                        Rectangle::Extents (infoHeader.biWidth, infoHeader.biHeight),
+                        util::Rectangle::Extents (infoHeader.biWidth, infoHeader.biHeight),
                         componentIndices, pixelStride, rowStride, true));
             }
             else {
@@ -350,27 +348,23 @@ namespace thekogans {
         RGBImage::UniquePtr RGBImage::FromBMPFile (
                 const std::string &path,
                 util::ui32 componentIndices) {
-            UniquePtr image;
-            {
-                util::ReadOnlyFile file (util::HostEndian, path);
-                util::ui32 size = (util::ui32)file.GetSize ();
-                if (size > 0) {
-                    std::vector<util::ui8> buffer (size);
-                    file.Read (&buffer[0], size);
-                    image = FromBMPBuffer (&buffer[0], size, componentIndices);
-                }
-                else {
-                    THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
-                        "Empty bmp file: %s", path.c_str ());
-                }
+            util::ReadOnlyFile file (util::HostEndian, path);
+            util::ui32 size = (util::ui32)file.GetSize ();
+            if (size > 0) {
+                std::vector<util::ui8> buffer (size);
+                file.Read (&buffer[0], size);
+                return FromBMPBuffer (&buffer[0], size, componentIndices);
             }
-            return image;
+            else {
+                THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
+                    "Empty bmp file: %s", path.c_str ());
+            }
         }
 
         void RGBImage::Clear (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &color) {
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
                 util::ui8 *srcData = data +
                     srcRectangle.origin.y * rowStride +
@@ -408,7 +402,7 @@ namespace thekogans {
         }
 
         RGBImage::UniquePtr RGBImage::Scale (
-                const Rectangle::Extents &dstExtents,
+                const util::Rectangle::Extents &dstExtents,
                 Filter filter) const {
             UniquePtr dst (new RGBImage (dstExtents, componentIndices, pixelStride));
             Scale (*dst, filter);
@@ -440,7 +434,7 @@ namespace thekogans {
         }
 
         RGBImage::UniquePtr RGBImage::Rotate (Angle angle) const {
-            canvas::Rectangle::Extents dstExtents;
+            util::Rectangle::Extents dstExtents;
             switch (angle) {
                 case Angle90:
                 case Angle270:
@@ -493,7 +487,7 @@ namespace thekogans {
         // a bit to suit my needs. Thanks goes to the wxWindows team.
         RGBImage::UniquePtr RGBImage::Rotate (
                 util::f32 angle,
-                const Point &centerOfRotation,
+                const util::Point &centerOfRotation,
                 const Color &fillColor) const {
             const util::ui32 srcHeight = extents.height;
             const util::ui32 srcWidth = extents.width;
@@ -518,7 +512,7 @@ namespace thekogans {
                     std::max (std::max (p1.y, p2.y), std::max (p3.y, p4.y)));
             UniquePtr dst (
                 new RGBImage (
-                    Rectangle::Extents (x2a - x1a + 1, y2a - y1a + 1),
+                    util::Rectangle::Extents (x2a - x1a + 1, y2a - y1a + 1),
                     componentIndices, pixelStride));
             util::ui8 *dstData = dst->GetData ();
             const util::ui32 dstHeight = dst->GetExtents ().height;
@@ -643,10 +637,10 @@ namespace thekogans {
             return UniquePtr ();
         }
 
-        RGBImage::UniquePtr RGBImage::Copy (const Rectangle &rectangle) const {
+        RGBImage::UniquePtr RGBImage::Copy (const util::Rectangle &rectangle) const {
             assert (IsValid ());
             UniquePtr dst;
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
                 dst.reset (
                     new RGBImage (srcRectangle.extents, componentIndices, pixelStride));
@@ -669,16 +663,16 @@ namespace thekogans {
         }
 
         void RGBImage::Copy (
-                const Rectangle &rectangle,
-                const Point &origin,
+                const util::Rectangle &rectangle,
+                const util::Point &origin,
                 RGBImage &dst,
                 bool hasAlpha) const {
             assert (IsValid ());
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
-                Point offset = srcRectangle.origin - rectangle.origin;
-                Rectangle dstRectangle =
-                    Rectangle (origin + offset, rectangle.extents - offset).Intersection (
+                util::Point offset = srcRectangle.origin - rectangle.origin;
+                util::Rectangle dstRectangle =
+                    util::Rectangle (origin + offset, rectangle.extents - offset).Intersection (
                         dst.GetRectangle ());
                 if (!dstRectangle.IsDegenerate ()) {
                     const util::ui8 *srcData = data +
@@ -886,7 +880,7 @@ namespace thekogans {
                     }
                     srcData += rowStride;
                 }
-                // UV pass, 4 x 4 downsampling.
+                // UV pass, 2 x 2 downsampling.
                 for (util::ui32 y = 0, i = 0; y < height; y += 2) {
                     for (util::ui32 x = 0; x < width; x += 2, ++i) {
                         util::ui32 pixelIndex0 = y * width + x;

@@ -38,10 +38,10 @@
     #include <CoreGraphics/CoreGraphics.h>
 #endif // defined (TOOLCHAIN_OS_Windows)
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Point.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/util/OwnerVector.h"
 #include "thekogans/util/OwnerList.h"
-#include "thekogans/canvas/Point.h"
-#include "thekogans/canvas/Rectangle.h"
 #include "thekogans/canvas/RGBImage.h"
 #include "thekogans/canvas/Config.h"
 
@@ -60,7 +60,7 @@ namespace thekogans {
             ::Window window;
             GC gc;
         #else // defined (THEKOGANS_CANVAS_USE_XLIB)
-            Rectangle rectangle;
+            util::Rectangle rectangle;
             const Window *parent;
             util::OwnerList<Window> children;
             bool visible;
@@ -75,7 +75,7 @@ namespace thekogans {
             Window () :
                 wnd (0),
                 dc (0) {}
-            Window (const Rectangle &rectangle,
+            Window (const util::Rectangle &rectangle,
                     const Window &parent) :
                     wnd (0),
                     dc (0) {
@@ -87,7 +87,7 @@ namespace thekogans {
                 display (0),
                 window (0),
                 gc (0) {}
-            Window (const Rectangle &rectangle,
+            Window (const util::Rectangle &rectangle,
                     const Window &parent) :
                     display (parent.display),
                     window (0),
@@ -98,7 +98,7 @@ namespace thekogans {
             Window () :
                 parent (0),
                 visible (false) {}
-            Window (const Rectangle &rectangle,
+            Window (const util::Rectangle &rectangle,
                     const Window &parent) :
                     parent (0),
                     visible (false) {
@@ -109,7 +109,7 @@ namespace thekogans {
             Window () :
                 windowID (0),
                 context (0) {}
-            Window (const Rectangle &rectangle,
+            Window (const util::Rectangle &rectangle,
                     const Window &parent) :
                     windowID (0),
                     context (0) {
@@ -127,7 +127,7 @@ namespace thekogans {
             static void StopPumpingMessages ();
 
             virtual void Create (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Window &parent);
             virtual void Destroy ();
 
@@ -137,7 +137,7 @@ namespace thekogans {
             virtual void Show ();
             virtual void Hide ();
 
-            virtual Rectangle GetRectangle () const;
+            virtual util::Rectangle GetRectangle () const;
 
             inline util::ui32 GetComponentIndices () const {
                 // FIXME: need to find out dynamically.
@@ -171,8 +171,8 @@ namespace thekogans {
 
             void DrawBitmap (
                 const Bitmap &bitmap,
-                const Rectangle &rectangle = Rectangle (),
-                const Point &origin = Point ());
+                const util::Rectangle &rectangle = util::Rectangle (),
+                const util::Point &origin = util::Point ());
 
             THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Window)
         };

@@ -10,8 +10,6 @@
   <dependencies>
     <dependency organization = "thekogans"
                 name = "util"/>
-    <dependency organization = "thekogans"
-                name = "stream"/>
     <toolchain organization = "thekogans"
                name = "freetype"/>
     <toolchain organization = "thekogans"
@@ -36,6 +34,7 @@
       </when>
       <when condition = "$(TOOLCHAIN_OS) == 'OSX'">
         <library>pthread</library>
+        <framework>Cocoa</framework>
         <framework>CoreFoundation</framework>
         <framework>CoreServices</framework>
         <framework>CoreGraphics</framework>
@@ -49,39 +48,49 @@
   </cpp_preprocessor_definitions>
   <cpp_headers prefix = "include"
                install = "yes">
-    <cpp_header>$(organization)/$(project_directory)/Bitmap.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/Canvas.h</cpp_header>
+    <!-- <cpp_header>$(organization)/$(project_directory)/Bitmap.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Canvas.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Color.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Config.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header>
+    <!-- <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/Point.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/RGBImage.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/Rectangle.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/TJUtils.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Frame.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Framebuffer.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/Pixel.h</cpp_header>
+    <!-- <cpp_header>$(organization)/$(project_directory)/RGBImage.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/TJUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Version.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/Window.h</cpp_header>
+    <!-- <cpp_header>$(organization)/$(project_directory)/Window.h</cpp_header>
     <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
       <cpp_header>$(organization)/$(project_directory)/Xlib.h</cpp_header>
     </if>
     <cpp_header>$(organization)/$(project_directory)/YUVImage.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/lodepng.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/lodepng.h</cpp_header> -->
   </cpp_headers>
   <cpp_sources prefix = "src">
-    <cpp_source>Bitmap.cpp</cpp_source>
+    <!-- <cpp_source>Bitmap.cpp</cpp_source>
     <cpp_source>Canvas.cpp</cpp_source>
-    <cpp_source>DrawUtils.cpp</cpp_source>
+    <cpp_source>DrawUtils.cpp</cpp_source> -->
     <cpp_source>Font.cpp</cpp_source>
-    <cpp_source>Point.cpp</cpp_source>
-    <cpp_source>RGBImage.cpp</cpp_source>
-    <cpp_source>Rectangle.cpp</cpp_source>
-    <cpp_source>TJUtils.cpp</cpp_source>
+    <cpp_source>Frame.cpp</cpp_source>
+    <cpp_source>Framebuffer.cpp</cpp_source>
+    <!-- <cpp_source>RGBImage.cpp</cpp_source>
+    <cpp_source>TJUtils.cpp</cpp_source> -->
     <cpp_source>Version.cpp</cpp_source>
-    <cpp_source>Window.cpp</cpp_source>
+    <!-- <cpp_source>Window.cpp</cpp_source>
     <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
       <cpp_source>Xlib.cpp</cpp_source>
     </if>
     <cpp_source>YUVImage.cpp</cpp_source>
-    <cpp_source>lodepng.cpp</cpp_source>
+    <cpp_source>lodepng.cpp</cpp_source> -->
   </cpp_sources>
+  <if condition = "$(TOOLCHAIN_OS) == 'OSX'">
+    <objective_cpp_headers prefix = "include"
+                           install = "yes">
+      <objective_cpp_header>$(organization)/$(project_directory)/os/osx/OSXUtils.h</objective_cpp_header>
+    </objective_cpp_headers>
+    <objective_cpp_sources prefix = "src">
+      <objective_cpp_source>os/osx/OSXUtils.mm</objective_cpp_source>
+    </objective_cpp_sources>
+  </if>
 </thekogans_make>

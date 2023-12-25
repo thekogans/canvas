@@ -24,7 +24,7 @@ namespace thekogans {
             // FIXME: clip rectangle to image bounds.
             void DrawRectangleHelper (
                     RGBImage &image,
-                    const Rectangle &rectangle,
+                    const util::Rectangle &rectangle,
                     const std::vector<util::ui8> &pixel) {
                 if (!rectangle.IsDegenerate ()) {
                     util::ui8 *data = image.GetData ();
@@ -67,7 +67,7 @@ namespace thekogans {
 
         _LIB_THEKOGANS_CANVAS_DECL void _LIB_THEKOGANS_CANVAS_API DrawRectangle (
                 RGBImage &image,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &color,
                 util::ui32 width) {
             assert (width > 0);
@@ -76,8 +76,8 @@ namespace thekogans {
                 image.ColorToPixel (color, pixel);
                 DrawRectangleHelper (image, rectangle, pixel);
                 bool grow = true;
-                Rectangle outer = rectangle;
-                Rectangle inner = rectangle;
+                util::Rectangle outer = rectangle;
+                util::Rectangle inner = rectangle;
                 while (--width != 0) {
                     if (grow) {
                         --outer.origin.x;

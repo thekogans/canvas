@@ -40,8 +40,8 @@ namespace thekogans {
             }
         }
 
-        RGBImage Canvas::GetSubImage (const Rectangle &rectangle) {
-            Rectangle rectangle_ =
+        RGBImage Canvas::GetSubImage (const util::Rectangle &rectangle) {
+            util::Rectangle rectangle_ =
                 bitmap.GetRectangle ().Intersection (rectangle);
             return RGBImage (
                 bitmap.GetData () +
@@ -53,19 +53,19 @@ namespace thekogans {
                 bitmap.GetRowStride (), false);
         }
 
-        void Canvas::Invalidate (const Rectangle &rectangle) {
+        void Canvas::Invalidate (const util::Rectangle &rectangle) {
             if (!rectangle.IsDegenerate ()) {
                 util::RWLockGuard<util::SpinRWLock> guard (lock, false);
                 dirtyRectangle = dirtyRectangle.Union (rectangle);
             }
         }
 
-        RGBImage Canvas::Lock (const Rectangle &rectangle) {
+        RGBImage Canvas::Lock (const util::Rectangle &rectangle) {
             lock.Acquire (true);
             return GetSubImage (rectangle);
         }
 
-        void Canvas::Unlock (const Rectangle &rectangle) {
+        void Canvas::Unlock (const util::Rectangle &rectangle) {
             if (!rectangle.IsDegenerate ()) {
                 dirtyRectangle = dirtyRectangle.Union (rectangle);
             }
@@ -78,7 +78,7 @@ namespace thekogans {
                     util::RWLockGuard<util::SpinRWLock> guard (lock, false);
                     if (!dirtyRectangle.IsDegenerate ()) {
                         DrawBitmap (bitmap, dirtyRectangle, dirtyRectangle.origin);
-                        dirtyRectangle = Rectangle ();
+                        dirtyRectangle = util::Rectangle ();
                     }
                 }
                 util::Sleep (updatePeriod);

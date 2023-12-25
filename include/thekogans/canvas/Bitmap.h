@@ -35,10 +35,11 @@
 #endif // defined (THEKOGANS_CANVAS_USE_XLIB)
 #endif // defined (TOOLCHAIN_OS_Windows)
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Point.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/Exception.h"
 #include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Rectangle.h"
 #include "thekogans/canvas/RGBImage.h"
 #include "thekogans/canvas/Config.h"
 
@@ -105,7 +106,7 @@ namespace thekogans {
 
             void Create (
                 const Window &window,
-                const Rectangle::Extents &extents_ = Rectangle::Extents (),
+                const util::Rectangle::Extents &extents_ = util::Rectangle::Extents (),
                 bool clear = false);
             void Destroy ();
 
@@ -117,8 +118,8 @@ namespace thekogans {
             /// the bitmap where to place the rectangle.
             void DrawWindow (
                 const Window &window,
-                const Rectangle &rectangle = Rectangle (),
-                const Point &origin = Point ());
+                const util::Rectangle &rectangle = util::Rectangle (),
+                const util::Point &origin = util::Point ());
 
             THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Bitmap)
         };

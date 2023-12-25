@@ -17,6 +17,7 @@
 
 #include <cassert>
 #include "thekogans/util/SpinLock.h"
+#include "thekogans/canvas/Framebuffer.h"
 #include "thekogans/canvas/Font.h"
 
 namespace thekogans {
@@ -41,9 +42,11 @@ namespace thekogans {
                 util::ui32 width,
                 util::ui32 height,
                 util::ui32 horizontalResolution,
-                util::ui32 verticalResolution) :
+                util::ui32 verticalResolution,
+                bool flipGliphRows_) :
                 face (library.library, path),
-                glyphCache (256) {
+                glyphCache (256),
+                flipGliphRows (flipGliphRows_) {
             FT_Error error = FT_Set_Char_Size (face.face, width << 6, height << 6,
                 horizontalResolution, verticalResolution);
             if (error != 0) {
@@ -76,9 +79,9 @@ namespace thekogans {
                 alignment == "BR" ? BR : UnknownAlignment;
         }
 
-        Point Font::AlignText (
+        util::Point Font::AlignText (
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 Alignment alignment) {
             switch (alignment) {
                 case UnknownAlignment:
@@ -86,60 +89,60 @@ namespace thekogans {
                 case TL:
                     return rectangle.origin;
                 case TC: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         (rectangle.extents.width - textExtents.width) / 2, 0);
                 }
                 case TR: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         rectangle.extents.width - textExtents.width, 0);
                 }
                 case CL: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (0,
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (0,
                         (rectangle.extents.height - textExtents.height) / 2);
                 }
                 case CC: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         (rectangle.extents.width - textExtents.width) / 2,
                         (rectangle.extents.height - textExtents.height) / 2);
                 }
                 case CR: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         rectangle.extents.width - textExtents.width,
                         (rectangle.extents.height - textExtents.height) / 2);
                 }
                 case BL: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (0,
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (0,
                         rectangle.extents.height - textExtents.height);
                 }
                 case BC: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         (rectangle.extents.width - textExtents.width) / 2,
                         rectangle.extents.height - textExtents.height);
                 }
                 case BR: {
-                    Rectangle::Extents textExtents = GetTextExtents (text);
-                    return rectangle.origin + Point (
+                    util::Rectangle::Extents textExtents = GetTextExtents (text);
+                    return rectangle.origin + util::Point (
                         rectangle.extents.width - textExtents.width,
                         rectangle.extents.height - textExtents.height);
                 }
             }
-            return Point ();
+            return util::Point ();
         }
 
-        Rectangle::Extents Font::GetTextExtents (const std::string &text) {
+        util::Rectangle::Extents Font::GetTextExtents (const std::string &text) {
             std::vector<Glyph *> glyphs;
             std::vector<FT_Vector> positions;
             GetGlyphs (text, glyphs, positions);
-            Rectangle::Extents extents;
+            util::Rectangle::Extents extents;
             for (std::size_t i = 0, count = glyphs.size (); i < count; ++i) {
-                Rectangle::Extents glyphExtents = glyphs[i]->GetExtents ();
+                util::Rectangle::Extents glyphExtents = glyphs[i]->GetExtents ();
                 glyphExtents.width += positions[i].x + glyphs[i]->GetLeftSideBearing ();
                 glyphExtents.height += positions[i].y - glyphs[i]->GetTopSideBearing ();
                 if (extents.width < glyphExtents.width) {
@@ -152,10 +155,11 @@ namespace thekogans {
             return extents;
         }
 
+#if 0
         void Font::DrawText (
                 RGBImage &image,
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &textColor,
                 const Color &backgroundColor) {
             std::vector<Glyph *> glyphs;
@@ -186,11 +190,11 @@ namespace thekogans {
                 THEKOGANS_UTIL_UI32_GET_UI8_AT_INDEX (
                     imageComponentIndices, RGBImage::A_INDEX);
             for (std::size_t i = 0, count = glyphs.size (); i < count; ++i) {
-                Point origin (
+                util::Point origin (
                     rectangle.origin.x + positions[i].x + glyphs[i]->GetLeftSideBearing (),
                     rectangle.origin.y + positions[i].y + topMax - glyphs[i]->GetTopSideBearing ());
-                Rectangle rectangle =
-                    Rectangle (origin, glyphs[i]->GetExtents ()).Intersection (image.GetRectangle ());
+                util::Rectangle rectangle =
+                    util::Rectangle (origin, glyphs[i]->GetExtents ()).Intersection (image.GetRectangle ());
                 if (!rectangle.IsDegenerate ()) {
                     util::ui8 *imageData = image.GetData () +
                         rectangle.origin.y * imageRowStride +
@@ -241,10 +245,9 @@ namespace thekogans {
             }
         }
 
-#if 0
         void Font::DrawText (
                 const std::string &text,
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &textColor,
                 const Color &backgroundColor) {
             std::vector<Glyph *> glyphs;
@@ -271,7 +274,7 @@ namespace thekogans {
                 glClear (GL_COLOR_BUFFER_BIT);
             }
             opengl::Enable blend (GL_BLEND, true);
-            opengl::BlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            opengl::BlendFunc blendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             opengl::UnpackAlignemnt unpackAlignment (1);
             opengl::Color color (
                 opengl::ui8Color (
@@ -282,7 +285,7 @@ namespace thekogans {
                 glRasterPos2i (
                     rectangle.origin.x + positions[i].x + glyphs[i]->GetLeftSideBearing (),
                     rectangle.origin.y + positions[i].y + topMax - glyphs[i]->GetTopSideBearing ());
-                const Rectangle::Extents &extents = glyphs[i]->GetExtents ();
+                const util::Rectangle::Extents &extents = glyphs[i]->GetExtents ();
                 glDrawPixels (extents.width, extents.height, GL_ALPHA,
                     GL_UNSIGNED_BYTE, (const GLubyte *)glyphs[i]->GetData ());
             }
@@ -299,16 +302,16 @@ namespace thekogans {
             int y = 0;
             FT_Bool hasKerning = FT_HAS_KERNING (face.face);
             FT_UInt prevGlyphIndex = 0;
-            for (std::size_t i = 0, count = text.size (); i < count; ++i) {
-                if (text[i] == '\n') {
+            for (const char *text_ = text.c_str (); *text_ != '\0'; ++text_) {
+                if (*text_ == '\n') {
                     x = 0;
                     y += GetHeight ();
                     prevGlyphIndex = 0;
                 }
                 else {
-                    Glyph *glyph = glyphCache[text[i]];
+                    Glyph *glyph = glyphCache[*text_];
                     if (glyph == 0) {
-                        glyph = glyphCache[text[i]] = new Glyph (face.face, text[i]);
+                        glyph = glyphCache[*text_] = new Glyph (face.face, *text_, flipGliphRows);
                     }
                     assert (glyph != 0);
                     glyphs.push_back (glyph);

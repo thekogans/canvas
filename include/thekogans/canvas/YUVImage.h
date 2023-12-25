@@ -21,12 +21,12 @@
 #include <memory>
 #include <string>
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Point.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/SpinLock.h"
 #include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Point.h"
-#include "thekogans/canvas/Rectangle.h"
 
 namespace thekogans {
     namespace canvas {
@@ -127,7 +127,7 @@ namespace thekogans {
             // dangling pointer. To aid with that, use Swap liberally
             // for very inexpensive ownership transfer.
             util::ui8 *data;
-            Rectangle::Extents extents;
+            util::Rectangle::Extents extents;
             Planes planes;
             Strides strides;
             bool owner;
@@ -136,12 +136,12 @@ namespace thekogans {
             YUVImage () :
                 data (0),
                 owner (false) {}
-            YUVImage (const Rectangle::Extents &extents_,
+            YUVImage (const util::Rectangle::Extents &extents_,
                 bool hasAlpha = false,
                 bool clear = false);
             YUVImage (
                 util::ui8 *data_,
-                const Rectangle::Extents &extents_,
+                const util::Rectangle::Extents &extents_,
                 const Planes &planes_,
                 const Strides &strides_,
                 bool owner_ = true) :
@@ -163,11 +163,11 @@ namespace thekogans {
             inline util::ui8 *GetData () const {
                 return data;
             }
-            inline const Rectangle::Extents &GetExtents () const {
+            inline const util::Rectangle::Extents &GetExtents () const {
                 return extents;
             }
-            inline Rectangle GetRectangle () const {
-                return Rectangle (Point (), extents);
+            inline util::Rectangle GetRectangle () const {
+                return util::Rectangle (util::Point (), extents);
             }
             inline util::ui8 *GetYPlane () const {
                 return planes[Y_INDEX];
@@ -203,7 +203,7 @@ namespace thekogans {
             }
 
             void Clear (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &color = Color ());
 
             enum Filter {
@@ -216,7 +216,7 @@ namespace thekogans {
             static Filter stringToFilter (const std::string &filter);
 
             UniquePtr Scale (
-                const Rectangle::Extents &dstExtents,
+                const util::Rectangle::Extents &dstExtents,
                 Filter filter) const;
             void Scale (YUVImage &dst, Filter filter) const;
 
@@ -236,7 +236,7 @@ namespace thekogans {
             // NOTE: angle is in degrees.
             UniquePtr Rotate (
                 util::f32 angle,
-                const Point &centerOfRotation,
+                const util::Point &centerOfRotation,
                 const Color &fillColor = Color (0, 0, 0)) const;
 
             enum Axis {
@@ -249,10 +249,10 @@ namespace thekogans {
 
             UniquePtr Mirror (Axis axis) const;
 
-            UniquePtr Copy (const Rectangle &rectangle) const;
+            UniquePtr Copy (const util::Rectangle &rectangle) const;
             void Copy (
-                const Rectangle &rectangle,
-                const Point &origin,
+                const util::Rectangle &rectangle,
+                const util::Point &origin,
                 YUVImage &dst,
                 bool hasAlpha = false) const;
 

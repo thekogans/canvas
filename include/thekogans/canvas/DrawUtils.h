@@ -19,9 +19,9 @@
 #define __thekogans_canvas_DrawUtils_h
 
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Rectangle.h"
 #include "thekogans/canvas/RGBImage.h"
 
 namespace thekogans {
@@ -29,7 +29,7 @@ namespace thekogans {
 
         _LIB_THEKOGANS_CANVAS_DECL void _LIB_THEKOGANS_CANVAS_API DrawRectangle (
             RGBImage &image,
-            const Rectangle &rectangle,
+            const util::Rectangle &rectangle,
             const Color &color,
             util::ui32 width = 1);
 

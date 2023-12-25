@@ -20,12 +20,12 @@
 
 #include <memory>
 #include "thekogans/util/Types.h"
+#include "thekogans/util/Point.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/SpinLock.h"
 #include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Point.h"
-#include "thekogans/canvas/Rectangle.h"
 
 namespace thekogans {
     namespace canvas {
@@ -49,18 +49,15 @@ namespace thekogans {
                 R1G2B3A0 = 0x01020300,
                 R3G2B1A0 = 0x03020100
             };
-            static bool IsValidComponentIndices (
-                    util::ui32 componentIndices) {
+            static bool IsValidComponentIndices (util::ui32 componentIndices) {
                 return
                     componentIndices == R0G1B2A3 ||
                     componentIndices == R2G1B0A3 ||
                     componentIndices == R1G2B3A0 ||
                     componentIndices == R3G2B1A0;
             }
-            static std::string ComponentIndicesTostring (
-                util::ui32 componentIndices);
-            static util::ui32 stringToComponentIndices (
-                const std::string &componentIndices);
+            static std::string ComponentIndicesTostring (util::ui32 componentIndices);
+            static util::ui32 stringToComponentIndices (const std::string &componentIndices);
 
         protected:
             // VERY, VERY IMPORTANT: RGBImage implements a shallow
@@ -70,7 +67,7 @@ namespace thekogans {
             // dangling pointer. To aid with that, use Swap liberally
             // for very inexpensive ownership transfer.
             util::ui8 *data;
-            Rectangle::Extents extents;
+            util::Rectangle::Extents extents;
             util::ui32 componentIndices;
             util::ui32 pixelStride;
             util::ui32 rowStride;
@@ -84,14 +81,14 @@ namespace thekogans {
                 rowStride (0),
                 owner (false) {}
             RGBImage (
-                const Rectangle::Extents &extents_,
+                const util::Rectangle::Extents &extents_,
                 util::ui32 componentIndices_ = R0G1B2A3,
                 util::ui32 pixelStride_ = 4,
                 util::ui32 rowStride_ = 0,
                 bool clear = false);
             RGBImage (
                     util::ui8 *data_,
-                    const Rectangle::Extents &extents_,
+                    const util::Rectangle::Extents &extents_,
                     util::ui32 componentIndices_,
                     util::ui32 pixelStride_,
                     util::ui32 rowStride_,
@@ -128,11 +125,11 @@ namespace thekogans {
                 // streaming part of the parent image.
                 return extents.height * rowStride;
             }
-            inline const Rectangle::Extents &GetExtents () const {
+            inline const util::Rectangle::Extents &GetExtents () const {
                 return extents;
             }
-            inline Rectangle GetRectangle () const {
-                return Rectangle (Point (), extents);
+            inline util::Rectangle GetRectangle () const {
+                return util::Rectangle (util::Point (), extents);
             }
             inline util::ui32 GetComponentIndices () const {
                 return componentIndices;
@@ -176,7 +173,7 @@ namespace thekogans {
                 util::ui32 componentIndices);
 
             void Clear (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &color = Color ());
 
             enum Filter {
@@ -189,7 +186,7 @@ namespace thekogans {
             static Filter stringToFilter (const std::string &filter);
 
             UniquePtr Scale (
-                const Rectangle::Extents &dstExtents,
+                const util::Rectangle::Extents &dstExtents,
                 Filter filter) const;
             void Scale (
                 RGBImage &dst,
@@ -211,7 +208,7 @@ namespace thekogans {
             // NOTE: angle is in degrees.
             UniquePtr Rotate (
                 util::f32 angle,
-                const Point &centerOfRotation,
+                const util::Point &centerOfRotation,
                 const Color &fillColor = Color (0, 0, 0)) const;
 
             enum Axis {
@@ -224,10 +221,10 @@ namespace thekogans {
 
             UniquePtr Mirror (Axis axis) const;
 
-            UniquePtr Copy (const Rectangle &rectangle) const;
+            UniquePtr Copy (const util::Rectangle &rectangle) const;
             void Copy (
-                const Rectangle &rectangle,
-                const Point &origin,
+                const util::Rectangle &rectangle,
+                const util::Point &origin,
                 RGBImage &dst,
                 bool hasAlpha = false) const;
 

@@ -24,8 +24,7 @@
 #include "thekogans/util/Thread.h"
 #include "thekogans/util/SpinRWLock.h"
 #include "thekogans/util/LoggerMgr.h"
-#include "thekogans/canvas/Point.h"
-#include "thekogans/canvas/Rectangle.h"
+#include "thekogans/util/Rectangle.h"
 #include "thekogans/canvas/RGBImage.h"
 #include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/Bitmap.h"
@@ -39,7 +38,7 @@ namespace thekogans {
                 public Window {
         protected:
             Bitmap bitmap;
-            Rectangle dirtyRectangle;
+            util::Rectangle dirtyRectangle;
             util::TimeSpec updatePeriod;
             util::i32 priority;
             volatile bool done;
@@ -60,11 +59,11 @@ namespace thekogans {
 
             struct _LIB_THEKOGANS_CANVAS_DECL LockGuard {
                 Canvas &canvas;
-                Rectangle rectangle;
+                util::Rectangle rectangle;
                 RGBImage bitmap;
                 LockGuard (
                     Canvas &canvas_,
-                    const Rectangle &rectangle_) :
+                    const util::Rectangle &rectangle_) :
                     canvas (canvas_),
                     rectangle (rectangle_),
                     bitmap (canvas.Lock (rectangle)) {}
@@ -80,17 +79,17 @@ namespace thekogans {
                     THEKOGANS_UTIL_NORMAL_THREAD_PRIORITY);
             void Stop ();
 
-            RGBImage GetSubImage (const Rectangle &rectangle);
+            RGBImage GetSubImage (const util::Rectangle &rectangle);
 
-            void Invalidate (const Rectangle &rectangle);
+            void Invalidate (const util::Rectangle &rectangle);
 
-            RGBImage Lock (const Rectangle &rectangle);
-            void Unlock (const Rectangle &rectangle);
+            RGBImage Lock (const util::Rectangle &rectangle);
+            void Unlock (const util::Rectangle &rectangle);
 
             inline util::ui8 *GetData () const {
                 return bitmap.GetData ();
             }
-            inline Rectangle::Extents GetExtents () const {
+            inline util::Rectangle::Extents GetExtents () const {
                 return bitmap.GetExtents ();
             }
             inline util::ui32 GetComponentIndices () const {

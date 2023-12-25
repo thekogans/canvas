@@ -80,10 +80,10 @@ namespace thekogans {
 
         void Bitmap::Create (
                 const Window &window,
-                const Rectangle::Extents &extents_,
+                const util::Rectangle::Extents &extents_,
                 bool clear) {
             Destroy ();
-            if (extents_ == Rectangle::Extents ()) {
+            if (extents_ == util::Rectangle::Extents ()) {
                 extents = window.GetRectangle ().extents;
             }
             else {
@@ -97,7 +97,7 @@ namespace thekogans {
             rowStride = (rowStride + 3) & ~3;
             struct BitmapInfo : public BITMAPINFO {
                 BitmapInfo (
-                        const Rectangle::Extents &extents,
+                        const util::Rectangle::Extents &extents,
                         util::ui32 pixelStride,
                         util::ui32 rowStride) {
                     ZeroMemory (this, sizeof (BITMAPINFO));
@@ -200,15 +200,15 @@ namespace thekogans {
 
         void Bitmap::DrawWindow (
                 const Window &window,
-                const Rectangle &rectangle,
-                const Point &origin) {
-            Rectangle windowRectangle =
-                Rectangle (Point (), window.GetRectangle ().extents);
-            Rectangle srcRectangle =
+                const util::Rectangle &rectangle,
+                const util::Point &origin) {
+            util::Rectangle windowRectangle =
+                util::Rectangle (util::Point (), window.GetRectangle ().extents);
+            util::Rectangle srcRectangle =
                 rectangle.IsDegenerate () ?
                 windowRectangle : rectangle.Intersection (windowRectangle);
-            Rectangle dstRectangle =
-                Rectangle (origin, srcRectangle.extents).Intersection (GetRectangle ());
+            util::Rectangle dstRectangle =
+                util::Rectangle (origin, srcRectangle.extents).Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate () && !dstRectangle.IsDegenerate ()) {
             #if defined (TOOLCHAIN_OS_Windows)
                 BitBlt (
@@ -285,7 +285,7 @@ namespace thekogans {
                         if (data != 0) {
                             RGBImage (
                                 data,
-                                Rectangle::Extents (
+                                util::Rectangle::Extents (
                                     CGImageGetWidth (imageRef.image),
                                     CGImageGetHeight (imageRef.image)),
                                 window.GetComponentIndices (),

@@ -28,7 +28,7 @@ namespace thekogans {
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK (YUVImage, util::SpinLock)
 
         YUVImage::YUVImage (
-                const Rectangle::Extents &extents_,
+                const util::Rectangle::Extents &extents_,
                 bool hasAlpha,
                 bool clear) :
                 data (
@@ -65,9 +65,9 @@ namespace thekogans {
         }
 
         void YUVImage::Clear (
-                const Rectangle &rectangle,
+                const util::Rectangle &rectangle,
                 const Color &color) {
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
                 // Y
                 {
@@ -133,7 +133,7 @@ namespace thekogans {
         }
 
         YUVImage::UniquePtr YUVImage::Scale (
-                const Rectangle::Extents &dstExtents, Filter filter) const {
+                const util::Rectangle::Extents &dstExtents, Filter filter) const {
             UniquePtr dst (new YUVImage (dstExtents));
             Scale (*dst, filter);
             return dst;
@@ -168,7 +168,7 @@ namespace thekogans {
         }
 
         YUVImage::UniquePtr YUVImage::Rotate (Angle angle) const {
-            canvas::Rectangle::Extents dstExtents;
+            util::Rectangle::Extents dstExtents;
             switch (angle) {
                 case Angle90:
                 case Angle270:
@@ -199,7 +199,7 @@ namespace thekogans {
         }
 
         YUVImage::UniquePtr YUVImage::Rotate (util::f32 angle,
-                const Point &centerOfRotation, const Color &fillColor) const {
+                const util::Point &centerOfRotation, const Color &fillColor) const {
             // FIXME: implement
             assert (0);
             return YUVImage::UniquePtr ();
@@ -227,9 +227,9 @@ namespace thekogans {
             return UniquePtr ();
         }
 
-        YUVImage::UniquePtr YUVImage::Copy (const Rectangle &rectangle) const {
+        YUVImage::UniquePtr YUVImage::Copy (const util::Rectangle &rectangle) const {
             UniquePtr dst;
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
                 dst.reset (
                     new YUVImage (srcRectangle.extents, planes[A_INDEX] != 0));
@@ -293,16 +293,16 @@ namespace thekogans {
         }
 
         void YUVImage::Copy (
-                const Rectangle &rectangle,
-                const Point &origin,
+                const util::Rectangle &rectangle,
+                const util::Point &origin,
                 YUVImage &dst,
                 bool hasAlpha) const {
             //assert (IsValid ());
-            Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
+            util::Rectangle srcRectangle = rectangle.Intersection (GetRectangle ());
             if (!srcRectangle.IsDegenerate ()) {
-                Point offset = srcRectangle.origin - rectangle.origin;
-                Rectangle dstRectangle =
-                    Rectangle (origin + offset, rectangle.extents - offset).Intersection (
+                util::Point offset = srcRectangle.origin - rectangle.origin;
+                util::Rectangle dstRectangle =
+                    util::Rectangle (origin + offset, rectangle.extents - offset).Intersection (
                         dst.GetRectangle ());
                 if (!dstRectangle.IsDegenerate ()) {
                     if (!hasAlpha || planes[A_INDEX] == 0 || dst.planes[Y_INDEX] == 0) {
