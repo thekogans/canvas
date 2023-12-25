@@ -19,6 +19,7 @@
 #define __thekogans_canvas_Framebuffer_h
 
 #include <memory>
+#include <type_traits>
 #include "thekogans/util/Types.h"
 #include "thekogans/util/Array.h"
 #include "thekogans/util/Rectangle.h"
@@ -32,7 +33,7 @@
 namespace thekogans {
     namespace canvas {
 
-        template<typename T = RGBAPixelui8>
+        template<typename T = ui8RGBAPixel>
         struct Framebuffer : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Framebuffer)
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
@@ -81,27 +82,9 @@ namespace thekogans {
                 return PixelAt (x, y).ToColor ();
             }
 
-            template<
-                typename U,
-                typename ComponentConverter>
-            typename Framebuffer<U>::SharedPtr Convert () {
-                typename Framebuffer<U>::SharedPtr framebuffer (new Framebuffer<U> (extents));
-                const T *src = buffer.array;
-                U *dst = framebuffer->buffer.array;
-                for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This one line contains three seperate conversions.
-                    // First the pixel at *src is converted to Color by the call to ToColor.
-                    // Then that color is converted to one with different component types by
-                    // the call to one of 30 different Color::Convert specializations.
-                    // And finally that color is converted to dst pixel by the = operator.
-                    // Through the magic of c++ templates this algorithm can be specialized
-                    // up to 120 times (4 pixel types * 6 component types * 5 conversion
-                    // specializations for every componenet type).
-                    *dst++ = (*src++).ToColor ().template Convert<typename U::ComponentType, ComponentConverter> ();
-                }
-                return framebuffer;
-            }
-
+            /// \brief
+            /// Clear the framebuffer using the given color.
+            /// \param[in] color \see{Color} to set every pixel too.
             void Clear (const Color<typename PixelType::ComponentType> &color) {
                 const PixelType pixel (color);
                 PixelType *dst = buffer.array;
@@ -110,6 +93,10 @@ namespace thekogans {
                 }
             }
 
+            /// \brief
+            /// We use (0, 0) as the top left hand corner of the framebuffer.
+            /// Other systems use bottom left (OpenGL). Use this method to flip
+            /// the rows.
             void FlipRows () {
                 PixelType *topPixel = buffer.array;
                 PixelType *bottomRow = topPixel + (extents.height - 1) * extents.width;
@@ -122,8 +109,64 @@ namespace thekogans {
                 }
             }
 
+            /// \brief
+            /// Framebuffer pixel format and type conversion template.
+            /// Depending on the number of pixel formats and component
+            /// types you use, this algorithm can potentially be specialized
+            /// hundreds of times.
+            /// \tparam[in] U Converted framebuffer pixel type.
+            /// \tparam[in] ComponentConverter Type exposing OutComponentType and Convert.
+            template<
+                typename U,
+                typename ComponentConverter>
+            typename Framebuffer<U>::SharedPtr Convert () {
+                static_assert (
+                    std::is_same<typename U::ComponentType, typename ComponentConverter::OutComponentType>::value,
+                    "Incompatible pixel and converter types.");
+                typename Framebuffer<U>::SharedPtr framebuffer (new Framebuffer<U> (extents));
+                const T *src = buffer.array;
+                U *dst = framebuffer->buffer.array;
+                for (std::size_t length = buffer.length; length-- != 0;) {
+                    // This one line contains three seperate conversions.
+                    // First the pixel at *src is converted to Color by the call to ToColor.
+                    // Then that color is converted to one with different component types by
+                    // the call to Color::Convert supplying an apropriate ComponentConverter.
+                    // And finally that color is converted to dst pixel by the = operator.
+                    *dst++ = (*src++).ToColor ().template Convert<ComponentConverter> ();
+                }
+                return framebuffer;
+            }
+
             THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Framebuffer)
         };
+
+        typedef Framebuffer<ui8RGBAPixel> ui8RGBAFramebuffer;
+        typedef Framebuffer<ui16RGBAPixel> ui16RGBAFramebuffer;
+        typedef Framebuffer<ui32RGBAPixel> ui32RGBAFramebuffer;
+        typedef Framebuffer<ui64RGBAPixel> ui64RGBAFramebuffer;
+        typedef Framebuffer<f32RGBAPixel> f32RGBAFramebuffer;
+        typedef Framebuffer<f64RGBAPixel> f64RGBAFramebuffer;
+
+        typedef Framebuffer<ui8BGRAPixel> ui8BGRAFramebuffer;
+        typedef Framebuffer<ui16BGRAPixel> ui16BGRAFramebuffer;
+        typedef Framebuffer<ui32BGRAPixel> ui32BGRAFramebuffer;
+        typedef Framebuffer<ui64BGRAPixel> ui64BGRAFramebuffer;
+        typedef Framebuffer<f32BGRAPixel> f32BGRAFramebuffer;
+        typedef Framebuffer<f64BGRAPixel> f64BGRAFramebuffer;
+
+        typedef Framebuffer<ui8ARGBPixel> ui8ARGBFramebuffer;
+        typedef Framebuffer<ui16ARGBPixel> ui16ARGBFramebuffer;
+        typedef Framebuffer<ui32ARGBPixel> ui32ARGBFramebuffer;
+        typedef Framebuffer<ui64ARGBPixel> ui64ARGBFramebuffer;
+        typedef Framebuffer<f32ARGBPixel> f32ARGBFramebuffer;
+        typedef Framebuffer<f64ARGBPixel> f64ARGBFramebuffer;
+
+        typedef Framebuffer<ui8ABGRPixel> ui8ABGRFramebuffer;
+        typedef Framebuffer<ui16ABGRPixel> ui16ABGRFramebuffer;
+        typedef Framebuffer<ui32ABGRPixel> ui32ABGRFramebuffer;
+        typedef Framebuffer<ui64ABGRPixel> ui64ABGRFramebuffer;
+        typedef Framebuffer<f32ABGRPixel> f32ABGRFramebuffer;
+        typedef Framebuffer<f64ABGRPixel> f64ABGRFramebuffer;
 
     } // namespace canvas
 } // namespace thekogans

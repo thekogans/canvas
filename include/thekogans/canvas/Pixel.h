@@ -53,12 +53,23 @@ namespace thekogans {
             }
         };
 
-        typedef RGBAPixel<util::ui8> RGBAPixelui8;
-        typedef RGBAPixel<util::ui16> RGBAPixelui16;
-        typedef RGBAPixel<util::ui32> RGBAPixelui32;
-        typedef RGBAPixel<util::ui64> RGBAPixelui64;
-        typedef RGBAPixel<util::f32> RGBAPixelf32;
-        typedef RGBAPixel<util::f64> RGBAPixelf64;
+        typedef RGBAPixel<util::ui8> ui8RGBAPixel;
+        typedef RGBAPixel<util::ui16> ui16RGBAPixel;
+        typedef RGBAPixel<util::ui32> ui32RGBAPixel;
+        typedef RGBAPixel<util::ui64> ui64RGBAPixel;
+        typedef RGBAPixel<util::f32> f32RGBAPixel;
+        typedef RGBAPixel<util::f64> f64RGBAPixel;
+
+        /// \brief
+        /// Validate assumptions about RGBAPixel component packing.
+        static_assert (
+            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            "Invalid assumption about RGBAPixel component packing.");
 
         template<typename T>
         struct BGRAPixel {
@@ -88,12 +99,23 @@ namespace thekogans {
             }
         };
 
-        typedef BGRAPixel<util::ui8> BGRAPixelui8;
-        typedef BGRAPixel<util::ui16> BGRAPixelui16;
-        typedef BGRAPixel<util::ui32> BGRAPixelui32;
-        typedef BGRAPixel<util::ui64> BGRAPixelui64;
-        typedef BGRAPixel<util::f32> BGRAPixelf32;
-        typedef BGRAPixel<util::f64> BGRAPixelf64;
+        typedef BGRAPixel<util::ui8> ui8BGRAPixel;
+        typedef BGRAPixel<util::ui16> ui16BGRAPixel;
+        typedef BGRAPixel<util::ui32> ui32BGRAPixel;
+        typedef BGRAPixel<util::ui64> ui64BGRAPixel;
+        typedef BGRAPixel<util::f32> f32BGRAPixel;
+        typedef BGRAPixel<util::f64> f64BGRAPixel;
+
+        /// \brief
+        /// Validate assumptions about BGRAPixel component packing.
+        static_assert (
+            sizeof (ui8BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32BGRAPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            "Invalid assumption about BGRAPixel component packing.");
 
         template<typename T>
         struct ARGBPixel {
@@ -123,12 +145,23 @@ namespace thekogans {
             }
         };
 
-        typedef ARGBPixel<util::ui8> ARGBPixelui8;
-        typedef ARGBPixel<util::ui16> ARGBPixelui16;
-        typedef ARGBPixel<util::ui32> ARGBPixelui32;
-        typedef ARGBPixel<util::ui64> ARGBPixelui64;
-        typedef ARGBPixel<util::f32> ARGBPixelf32;
-        typedef ARGBPixel<util::f64> ARGBPixelf64;
+        typedef ARGBPixel<util::ui8> ui8ARGBPixel;
+        typedef ARGBPixel<util::ui16> ui16ARGBPixel;
+        typedef ARGBPixel<util::ui32> ui32ARGBPixel;
+        typedef ARGBPixel<util::ui64> ui64ARGBPixel;
+        typedef ARGBPixel<util::f32> f32ARGBPixel;
+        typedef ARGBPixel<util::f64> f64ARGBPixel;
+
+        /// \brief
+        /// Validate assumptions about ARGBPixel component packing.
+        static_assert (
+            sizeof (ui8ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32ARGBPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            "Invalid assumption about ARGBPixel component packing.");
 
         template<typename T>
         struct ABGRPixel {
@@ -158,12 +191,23 @@ namespace thekogans {
             }
         };
 
-        typedef ABGRPixel<util::ui8> ABGRPixelui8;
-        typedef ABGRPixel<util::ui16> ABGRPixelui16;
-        typedef ABGRPixel<util::ui32> ABGRPixelui32;
-        typedef ABGRPixel<util::ui64> ABGRPixelui64;
-        typedef ABGRPixel<util::f32> ABGRPixelf32;
-        typedef ABGRPixel<util::f64> ABGRPixelf64;
+        typedef ABGRPixel<util::ui8> ui8ABGRPixel;
+        typedef ABGRPixel<util::ui16> ui16ABGRPixel;
+        typedef ABGRPixel<util::ui32> ui32ABGRPixel;
+        typedef ABGRPixel<util::ui64> ui64ABGRPixel;
+        typedef ABGRPixel<util::f32> f32ABGRPixel;
+        typedef ABGRPixel<util::f64> f64ABGRPixel;
+
+        /// \brief
+        /// Validate assumptions about ABGRPixel component packing.
+        static_assert (
+            sizeof (ui8ABGRPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16ABGRPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32ABGRPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64ABGRPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32ABGRPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64ABGRPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            "Invalid assumption about ABGRPixel component packing.");
 
     } // namespace canvas
 } // namespace thekogans

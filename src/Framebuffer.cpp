@@ -21,39 +21,38 @@
 namespace thekogans {
     namespace canvas {
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelui8>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelui16>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelui32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelui64>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelf32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<RGBAPixelf64>, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8RGBAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16RGBAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32RGBAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64RGBAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32RGBAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64RGBAFramebuffer, util::SpinLock)
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelui8>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelui16>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelui32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelui64>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelf32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<BGRAPixelf64>, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8BGRAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16BGRAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32BGRAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64BGRAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32BGRAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64BGRAFramebuffer, util::SpinLock)
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelui8>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelui16>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelui32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelui64>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelf32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ARGBPixelf64>, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ARGBFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ARGBFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ARGBFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ARGBFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ARGBFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ARGBFramebuffer, util::SpinLock)
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelui8>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelui16>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelui32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelui64>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelf32>, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (Framebuffer<ABGRPixelf64>, util::SpinLock)
-
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ABGRFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ABGRFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ABGRFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ABGRFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ABGRFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ABGRFramebuffer, util::SpinLock)
 
         void foo () {
-            Framebuffer<RGBAPixelui8>::SharedPtr fb1 (
-                new Framebuffer<RGBAPixelui8> (util::Rectangle::Extents (10, 10)));
-            Framebuffer<RGBAPixelui16>::SharedPtr fb2 = fb1->Convert<RGBAPixelui16, ui8Toui16ShiftComponentConverter> ();
+            ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
+            fb1->Clear (ui8Color ());
+            ui16RGBAFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
         }
 
     } // namespace canvas

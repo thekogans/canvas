@@ -34,7 +34,7 @@
 namespace thekogans {
     namespace canvas {
 
-        template<typename T = RGBAPixelui8>
+        template<typename T = ui8RGBAPixel>
         struct Frame : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Frame)
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Frame, util::SpinLock)
@@ -43,8 +43,7 @@ namespace thekogans {
 
             typename Framebuffer<PixelType>::SharedPtr framebuffer;
             /// \brief
-            /// Width and height of framebuffer in pixels.
-            /// They are unchangable.
+            /// The bounding rectangle of the frame.
             util::Rectangle bounds;
 
             /// \brief
@@ -59,15 +58,43 @@ namespace thekogans {
             /// rectangular region given by bounds. This ctor allows one
             /// to construct multiple independent, lightweight views in
             /// to a single underlying framebuffer. This makes it very
-            /// easy to parellalize algorithms by creating independent
+            /// easy to parallelize algorithms by creating independent
             /// sub-frames and letting multiple threads work simultaneously
-            /// on different sub-regions.
+            /// on different regions of the framebuffer.
             Frame (
                 typename Framebuffer<PixelType>::SharedPtr framebuffer_,
                 const util::Rectangle &bounds_) :
                 framebuffer (framebuffer_),
                 bounds (bounds_) {}
         };
+
+        typedef Frame<ui8RGBAPixel> ui8RGBAFrame;
+        typedef Frame<ui16RGBAPixel> ui16RGBAFrame;
+        typedef Frame<ui32RGBAPixel> ui32RGBAFrame;
+        typedef Frame<ui64RGBAPixel> ui64RGBAFrame;
+        typedef Frame<f32RGBAPixel> f32RGBAFrame;
+        typedef Frame<f64RGBAPixel> f64RGBAFrame;
+
+        typedef Frame<ui8BGRAPixel> ui8BGRAFrame;
+        typedef Frame<ui16BGRAPixel> ui16BGRAFrame;
+        typedef Frame<ui32BGRAPixel> ui32BGRAFrame;
+        typedef Frame<ui64BGRAPixel> ui64BGRAFrame;
+        typedef Frame<f32BGRAPixel> f32BGRAFrame;
+        typedef Frame<f64BGRAPixel> f64BGRAFrame;
+
+        typedef Frame<ui8ARGBPixel> ui8ARGBFrame;
+        typedef Frame<ui16ARGBPixel> ui16ARGBFrame;
+        typedef Frame<ui32ARGBPixel> ui32ARGBFrame;
+        typedef Frame<ui64ARGBPixel> ui64ARGBFrame;
+        typedef Frame<f32ARGBPixel> f32ARGBFrame;
+        typedef Frame<f64ARGBPixel> f64ARGBFrame;
+
+        typedef Frame<ui8ABGRPixel> ui8ABGRFrame;
+        typedef Frame<ui16ABGRPixel> ui16ABGRFrame;
+        typedef Frame<ui32ABGRPixel> ui32ABGRFrame;
+        typedef Frame<ui64ABGRPixel> ui64ABGRFrame;
+        typedef Frame<f32ABGRPixel> f32ABGRFrame;
+        typedef Frame<f64ABGRPixel> f64ABGRFrame;
 
     } // namespace canvas
 } // namespace thekogans
