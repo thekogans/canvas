@@ -50,13 +50,13 @@
                install = "yes">
     <!-- <cpp_header>$(organization)/$(project_directory)/Bitmap.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Canvas.h</cpp_header> -->
-    <cpp_header>$(organization)/$(project_directory)/Color.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Config.h</cpp_header>
     <!-- <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Frame.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Framebuffer.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/Pixel.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/RGBAColor.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/RGBAPixel.h</cpp_header>
     <!-- <cpp_header>$(organization)/$(project_directory)/RGBImage.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/TJUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Version.h</cpp_header>

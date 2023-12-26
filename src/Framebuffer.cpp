@@ -15,8 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
-#include "thekogans/canvas/Pixel.h"
-#include "thekogans/canvas/Framebuffer.h"
+#include "thekogans/canvas/RGBAPixel.h"
 
 namespace thekogans {
     namespace canvas {
@@ -51,7 +50,7 @@ namespace thekogans {
 
         void foo () {
             ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
-            fb1->Clear (ui8Color ());
+            fb1->Clear (ui8Color (0, 0, 0, 0));
             ui16RGBAFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
         }
 

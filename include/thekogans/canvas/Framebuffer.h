@@ -27,13 +27,11 @@
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/SpinLock.h"
 #include "thekogans/canvas/Config.h"
-#include "thekogans/canvas/Color.h"
-#include "thekogans/canvas/Pixel.h"
 
 namespace thekogans {
     namespace canvas {
 
-        template<typename T = ui8RGBAPixel>
+        template<typename T>
         struct Framebuffer : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Framebuffer)
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
@@ -56,7 +54,7 @@ namespace thekogans {
             /// the framebuffer, it will be uninitialized. This is
             /// intentional as initializing it to some value would
             /// just be a wastse of time as most apps would call Clear
-            /// or perform some other initialization.
+            /// or perform some other initialization soon after allocation.
             Framebuffer (
                     const util::Rectangle::Extents &extents_,
                     const PixelType *buffer_ = 0) :
@@ -76,7 +74,7 @@ namespace thekogans {
                 return buffer[y * extents.width + x];
             }
 
-            inline Color<typename PixelType::ComponentType> ColorAt (
+            inline typename PixelType::ColorType ColorAt (
                     util::ui32 x,
                     util::ui32 y) const {
                 return PixelAt (x, y).ToColor ();
@@ -84,9 +82,9 @@ namespace thekogans {
 
             /// \brief
             /// Clear the framebuffer using the given color.
-            /// \param[in] color \see{Color} to set every pixel too.
-            void Clear (const Color<typename PixelType::ComponentType> &color) {
-                const PixelType pixel (color);
+            /// \param[in] color Pixel to set every pixel too.
+            void Clear (const typename PixelType::ColorType &color) {
+                PixelType pixel (color);
                 PixelType *dst = buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
                     *dst++ = pixel;
@@ -114,8 +112,18 @@ namespace thekogans {
             /// Depending on the number of pixel formats and component
             /// types you use, this algorithm can potentially be specialized
             /// hundreds of times.
+            /// Ex:
+            /// \code{.cpp}
+            /// // create an 8 bpp RGBA framebuffer.
+            /// ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
+            /// // clear it to black.
+            /// fb1->Clear (ui8Color (0, 0, 0, 0));
+            /// // convert it to 16 bpp ABGR framebuffer using an 8 to 16 bit scaling converter.
+            /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
+            /// \endcode
             /// \tparam[in] U Converted framebuffer pixel type.
-            /// \tparam[in] ComponentConverter Type exposing OutComponentType and Convert.
+            /// \tparam[in] ComponentConverter Type exposing InComponentType,
+            /// OutComponentType and Convert (see \see{Calor} and \see{Pixel}).
             template<
                 typename U,
                 typename ComponentConverter>
@@ -139,34 +147,6 @@ namespace thekogans {
 
             THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Framebuffer)
         };
-
-        typedef Framebuffer<ui8RGBAPixel> ui8RGBAFramebuffer;
-        typedef Framebuffer<ui16RGBAPixel> ui16RGBAFramebuffer;
-        typedef Framebuffer<ui32RGBAPixel> ui32RGBAFramebuffer;
-        typedef Framebuffer<ui64RGBAPixel> ui64RGBAFramebuffer;
-        typedef Framebuffer<f32RGBAPixel> f32RGBAFramebuffer;
-        typedef Framebuffer<f64RGBAPixel> f64RGBAFramebuffer;
-
-        typedef Framebuffer<ui8BGRAPixel> ui8BGRAFramebuffer;
-        typedef Framebuffer<ui16BGRAPixel> ui16BGRAFramebuffer;
-        typedef Framebuffer<ui32BGRAPixel> ui32BGRAFramebuffer;
-        typedef Framebuffer<ui64BGRAPixel> ui64BGRAFramebuffer;
-        typedef Framebuffer<f32BGRAPixel> f32BGRAFramebuffer;
-        typedef Framebuffer<f64BGRAPixel> f64BGRAFramebuffer;
-
-        typedef Framebuffer<ui8ARGBPixel> ui8ARGBFramebuffer;
-        typedef Framebuffer<ui16ARGBPixel> ui16ARGBFramebuffer;
-        typedef Framebuffer<ui32ARGBPixel> ui32ARGBFramebuffer;
-        typedef Framebuffer<ui64ARGBPixel> ui64ARGBFramebuffer;
-        typedef Framebuffer<f32ARGBPixel> f32ARGBFramebuffer;
-        typedef Framebuffer<f64ARGBPixel> f64ARGBFramebuffer;
-
-        typedef Framebuffer<ui8ABGRPixel> ui8ABGRFramebuffer;
-        typedef Framebuffer<ui16ABGRPixel> ui16ABGRFramebuffer;
-        typedef Framebuffer<ui32ABGRPixel> ui32ABGRFramebuffer;
-        typedef Framebuffer<ui64ABGRPixel> ui64ABGRFramebuffer;
-        typedef Framebuffer<f32ABGRPixel> f32ABGRFramebuffer;
-        typedef Framebuffer<f64ABGRPixel> f64ABGRFramebuffer;
 
     } // namespace canvas
 } // namespace thekogans
