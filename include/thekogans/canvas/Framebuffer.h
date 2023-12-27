@@ -59,7 +59,6 @@ namespace thekogans {
             /// intentional as initializing it to some value would
             /// just be a wastse of time as most apps would call Clear
             /// or perform some other initialization soon after allocation.
-            /// This ctor doubles as framebuffer copy
             Framebuffer (
                     const util::Rectangle::Extents &extents_,
                     const PixelType *buffer_ = 0) :
