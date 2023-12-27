@@ -160,7 +160,7 @@ namespace thekogans {
                     // 1 - Pixel at *src is converted to it's color type by the call to ToColor ().
                     // 2 - That color's components are converted to ConverterColorComponentType color by
                     // a call to template ConvertComponents<PixelComponentToConverterComponentType> ().
-                    // 3 - That color is converted to OutPixelConverterColorType color by a call to
+                    // 3 - That color is converted to ConverterIntermediateColorType color by a call to
                     // Converter<ConverterIntermediateColorType>::Convert ().
                     // 4 - That color is then converted to the final color space color by a call to
                     // Converter<OutPixelConverterColorType>::Convert ().
