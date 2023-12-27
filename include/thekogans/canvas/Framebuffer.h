@@ -168,7 +168,7 @@ namespace thekogans {
                     // call to template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
                     // 6 - That color is then converted to OutPixelComponentType color by a call to
                     // template ConvertComponents<ComponentConverterType> ().
-                    // 7 - And finally that color is converted to dst pixel format by the = operator.
+                    // 7 - And finally that color is converted to dst pixel by the = operator.
                     *dst++ =
                         Converter<OutPixelConverterColorType>::Convert (
                             Converter<ConverterIntermediateColorType>::Convert (
