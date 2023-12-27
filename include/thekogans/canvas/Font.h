@@ -33,7 +33,7 @@
 #include "thekogans/util/Exception.h"
 #include "thekogans/util/LoggerMgr.h"
 #include "thekogans/canvas/Config.h"
-#include "thekogans/canvas/Color.h"
+#include "thekogans/canvas/RGBAColor.h"
 //#include "thekogans/canvas/RGBImage.h"
 
 namespace thekogans {

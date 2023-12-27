@@ -30,6 +30,7 @@ namespace thekogans {
         struct RGBAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
+            typedef RGBAColor<util::f32> ConverterColorType;
 
             ComponentType r;
             ComponentType g;
@@ -86,18 +87,19 @@ namespace thekogans {
         /// \brief
         /// Validate assumptions about RGBAPixel component packing.
         static_assert (
-            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
             "Invalid assumption about RGBAPixel component packing.");
 
         template<typename T>
         struct BGRAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
+            typedef RGBAColor<util::f32> ConverterColorType;
 
             ComponentType b;
             ComponentType g;
@@ -150,18 +152,19 @@ namespace thekogans {
         /// \brief
         /// Validate assumptions about BGRAPixel component packing.
         static_assert (
-            sizeof (ui8BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32BGRAPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64BGRAPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            sizeof (ui8BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32BGRAPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
             "Invalid assumption about BGRAPixel component packing.");
 
         template<typename T>
         struct ARGBPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
+            typedef RGBAColor<util::f32> ConverterColorType;
 
             ComponentType a;
             ComponentType r;
@@ -214,18 +217,19 @@ namespace thekogans {
         /// \brief
         /// Validate assumptions about ARGBPixel component packing.
         static_assert (
-            sizeof (ui8ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32ARGBPixel) ==  THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64ARGBPixel) == THEKOGANS_CANVAS_COLOR_COMPONENT_COUNT * util::F64_SIZE,
+            sizeof (ui8ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32ARGBPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
             "Invalid assumption about ARGBPixel component packing.");
 
         template<typename T>
         struct ABGRPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
+            typedef RGBAColor<util::f32> ConverterColorType;
 
             ComponentType a;
             ComponentType b;

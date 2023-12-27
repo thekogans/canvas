@@ -51,6 +51,12 @@
     <!-- <cpp_header>$(organization)/$(project_directory)/Bitmap.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Canvas.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Config.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/ComponentConverter.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/Converter.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/RGBAConverter.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/XYZAColor.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/XYZAConverter.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/XYZAPixel.h</cpp_header>
     <!-- <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Frame.h</cpp_header>
@@ -74,6 +80,8 @@
     <cpp_source>Font.cpp</cpp_source>
     <cpp_source>Frame.cpp</cpp_source>
     <cpp_source>Framebuffer.cpp</cpp_source>
+	<cpp_source>RGBAConverter.cpp</cpp_source>
+	<cpp_source>XYZAConverter.cpp</cpp_source>
     <!-- <cpp_source>RGBImage.cpp</cpp_source>
     <cpp_source>TJUtils.cpp</cpp_source> -->
     <cpp_source>Version.cpp</cpp_source>

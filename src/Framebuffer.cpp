@@ -16,6 +16,11 @@
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
 #include "thekogans/canvas/RGBAPixel.h"
+#include "thekogans/canvas/RGBAColor.h"
+#include "thekogans/canvas/RGBAConverter.h"
+#include "thekogans/canvas/XYZAPixel.h"
+#include "thekogans/canvas/XYZAColor.h"
+#include "thekogans/canvas/XYZAConverter.h"
 
 namespace thekogans {
     namespace canvas {
@@ -48,10 +53,39 @@ namespace thekogans {
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ABGRFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ABGRFramebuffer, util::SpinLock)
 
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8XYZAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16XYZAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32XYZAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64XYZAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32XYZAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64XYZAFramebuffer, util::SpinLock)
+
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ZYXAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ZYXAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ZYXAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ZYXAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ZYXAFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ZYXAFramebuffer, util::SpinLock)
+
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8AXYZFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16AXYZFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32AXYZFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64AXYZFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AXYZFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64AXYZFramebuffer, util::SpinLock)
+
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8AZYXFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16AZYXFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32AZYXFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64AZYXFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AZYXFramebuffer, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64AZYXFramebuffer, util::SpinLock)
+
         void foo () {
             ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
-            fb1->Clear (ui8Color (0, 0, 0, 0));
-            ui16RGBAFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
+            f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel, DefaultComponentConverter<util::ui8, util::f32>> ();
+            f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel, DefaultComponentConverter<util::f32, util::f32>> ();
+            ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel, DefaultComponentConverter<util::f32, util::ui8>> ();
         }
 
     } // namespace canvas
