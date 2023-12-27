@@ -87,7 +87,7 @@ namespace thekogans {
 
             /// \brief
             /// Clear the framebuffer using the given color.
-            /// \param[in] color Pixel to set every pixel too.
+            /// \param[in] color Color to set every pixel too.
             void Clear (const ColorType &color) {
                 PixelType pixel (color);
                 PixelType *dst = buffer.array;
@@ -156,11 +156,10 @@ namespace thekogans {
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This one line contains 7 seperate conversions.
+                    // This statement contains 7 seperate conversions.
                     // 1 - Pixel at *src is converted to it's color type by the call to ToColor ().
                     // 2 - That color's components are converted to ConverterColorComponentType color by
-                    // a call to template ConvertComponents<PixelComponentToConverterComponentType> ()
-                    // (the only component type understood by the Converter).
+                    // a call to template ConvertComponents<PixelComponentToConverterComponentType> ().
                     // 3 - That color is converted to OutPixelConverterColorType color by a call to
                     // Converter<ConverterIntermediateColorType>::Convert ().
                     // 4 - That color is then converted to the final color space color by a call to
