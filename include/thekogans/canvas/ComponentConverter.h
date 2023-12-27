@@ -34,24 +34,6 @@ namespace thekogans {
             }
         };
 
-        template<typename T>
-        struct Defaultf32ComponentConverter {
-            typedef T InComponentType;
-            typedef util::f32 OutComponentType;
-            static OutComponentType Convert (InComponentType value) {
-                return (OutComponentType)value / 255.0f;
-            }
-        };
-
-        template<typename T>
-        struct Defaultf64ComponentConverter {
-            typedef T InComponentType;
-            typedef util::f64 OutComponentType;
-            static OutComponentType Convert (InComponentType value) {
-                return (OutComponentType)value / 255.0;
-            }
-        };
-
         // util::ui8 conversion specializations.
 
         struct ui8Toui16ShiftComponentConverter {
