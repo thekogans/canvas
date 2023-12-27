@@ -162,7 +162,7 @@ namespace thekogans {
                     // a call to template ConvertComponents<PixelComponentToConverterComponentType> ().
                     // 3 - That color is converted to ConverterIntermediateColorType color by a call to
                     // Converter<ConverterIntermediateColorType>::Convert ().
-                    // 4 - That color is then converted to the final color space color by a call to
+                    // 4 - That color is then converted to OutPixelConverterColorType color by a call to
                     // Converter<OutPixelConverterColorType>::Convert ().
                     // 5 - That color is then converted to a ComponentConverterInComponentType color by a
                     // call to template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
