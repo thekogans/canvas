@@ -156,19 +156,30 @@ namespace thekogans {
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This statement contains 7 seperate conversions.
-                    // 1 - Pixel at *src is converted to it's color type by the call to ToColor ().
-                    // 2 - That color's components are converted to ConverterColorComponentType color by
-                    // a call to template ConvertComponents<PixelComponentToConverterComponentType> ().
-                    // 3 - That color is converted to ConverterIntermediateColorType color by a call to
-                    // Converter<ConverterIntermediateColorType>::Convert ().
-                    // 4 - That color is then converted to OutPixelConverterColorType color by a call to
-                    // Converter<OutPixelConverterColorType>::Convert ().
-                    // 5 - That color is then converted to a ComponentConverterInComponentType color by a
-                    // call to template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
-                    // 6 - That color is then converted to OutPixelComponentType color by a call to
-                    // template ConvertComponents<ComponentConverterType> ().
-                    // 7 - And finally that color is converted to dst pixel by the = operator.
+                    // This statement contains 7 seperate conversion steps. The reason
+                    // for so many steps is we need to do some intermediary conversions
+                    // to keep the combinatorial explosion of color space conversion
+                    // down to a minimum. This way we only need to know how to convert
+                    // all to f32RGBAColor and f32RGBAColor to all others.
+                    //
+                    // 1 - Swizzle
+                    // 2 - Cast
+                    // 3 - Cast
+                    // 4 - Convert
+                    // 5 - Cast
+                    // 6 - Convert
+                    // 7 - Swizzle
+                    //
+                    // Ex:
+                    //
+                    // We purposly pick two 'completelly' different (all types different)
+                    // pixels to illustrate what each step in the conversion process does.
+                    //
+                    // ui16ACMYPixel -> ui32AXYZPixel using a ui16Toui32ScaleComponentConverter
+                    // component type converter.
+                    //
+                    // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor -> f32XYZAColor ->
+                    // ui16XYZAColor -> ui32XYZAColor -> ui16ACMYPixel
                     *dst++ =
                         Converter<OutPixelConverterColorType>::Convert (
                             Converter<ConverterIntermediateColorType>::Convert (

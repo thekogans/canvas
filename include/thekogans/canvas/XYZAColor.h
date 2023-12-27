@@ -19,7 +19,6 @@
 #define __thekogans_canvas_XYZAColor_h
 
 #include "thekogans/util/Types.h"
-#include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/ComponentConverter.h"
 
 namespace thekogans {
@@ -28,7 +27,6 @@ namespace thekogans {
         template<typename T>
         struct XYZAColor {
             typedef T ComponentType;
-            typedef XYZAColor<T> Type;
 
             ComponentType x;
             ComponentType y;

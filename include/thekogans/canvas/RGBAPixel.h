@@ -70,6 +70,27 @@ namespace thekogans {
         typedef RGBAPixel<util::f32> f32RGBAPixel;
         typedef RGBAPixel<util::f64> f64RGBAPixel;
 
+        const std::size_t THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT = 4;
+
+        /// \brief
+        /// Validate assumptions about RGBAPixel component packing.
+        /// This check is only important for rgba framebuffers as these
+        /// are used in opengl and windowing systems. Many of these have
+        /// specific alignment (4 byte boundary) requeirements. Since
+        /// we want to be able to directly write our framebuffers to these
+        /// systems, we need to make sure we satisfy their requirements.
+        /// Framebuffers built with pixel types which use other color
+        /// spaces are particularly important to applications doing image
+        /// manipulation and as such will not have alignment requirements.
+        static_assert (
+            sizeof (ui8RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32RGBAColor) ==  THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F64_SIZE,
+            "Invalid assumption about RGBAPixel component packing.");
+
         typedef Framebuffer<ui8RGBAPixel> ui8RGBAFramebuffer;
         typedef Framebuffer<ui16RGBAPixel> ui16RGBAFramebuffer;
         typedef Framebuffer<ui32RGBAPixel> ui32RGBAFramebuffer;
@@ -83,17 +104,6 @@ namespace thekogans {
         typedef Frame<ui64RGBAPixel> ui64RGBAFrame;
         typedef Frame<f32RGBAPixel> f32RGBAFrame;
         typedef Frame<f64RGBAPixel> f64RGBAFrame;
-
-        /// \brief
-        /// Validate assumptions about RGBAPixel component packing.
-        static_assert (
-            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about RGBAPixel component packing.");
 
         template<typename T>
         struct BGRAPixel {
@@ -149,17 +159,6 @@ namespace thekogans {
         typedef Frame<f32BGRAPixel> f32BGRAFrame;
         typedef Frame<f64BGRAPixel> f64BGRAFrame;
 
-        /// \brief
-        /// Validate assumptions about BGRAPixel component packing.
-        static_assert (
-            sizeof (ui8BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32BGRAPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64BGRAPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about BGRAPixel component packing.");
-
         template<typename T>
         struct ARGBPixel {
             typedef T ComponentType;
@@ -214,17 +213,6 @@ namespace thekogans {
         typedef Frame<f32ARGBPixel> f32ARGBFrame;
         typedef Frame<f64ARGBPixel> f64ARGBFrame;
 
-        /// \brief
-        /// Validate assumptions about ARGBPixel component packing.
-        static_assert (
-            sizeof (ui8ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32ARGBPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64ARGBPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about ARGBPixel component packing.");
-
         template<typename T>
         struct ABGRPixel {
             typedef T ComponentType;
@@ -278,17 +266,6 @@ namespace thekogans {
         typedef Frame<ui64ABGRPixel> ui64ABGRFrame;
         typedef Frame<f32ABGRPixel> f32ABGRFrame;
         typedef Frame<f64ABGRPixel> f64ABGRFrame;
-
-        /// \brief
-        /// Validate assumptions about ABGRPixel component packing.
-        static_assert (
-            sizeof (ui8ABGRPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16ABGRPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32ABGRPixel) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64ABGRPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32ABGRPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64ABGRPixel) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about ABGRPixel component packing.");
 
     } // namespace canvas
 } // namespace thekogans

@@ -19,7 +19,6 @@
 #define __thekogans_canvas_RGBAColor_h
 
 #include "thekogans/util/Types.h"
-#include "thekogans/canvas/Config.h"
 #include "thekogans/canvas/ComponentConverter.h"
 
 namespace thekogans {
@@ -28,7 +27,6 @@ namespace thekogans {
         template<typename T>
         struct RGBAColor {
             typedef T ComponentType;
-            typedef RGBAColor<T> Type;
 
             ComponentType r;
             ComponentType g;
@@ -46,6 +44,9 @@ namespace thekogans {
                 b (b_),
                 a (a_) {}
 
+            /// This function and the typedef above is what plugs
+            /// this class and every other wannabe color class in
+            /// to the \see{Framebuffer::Convert} algorithm.
             template<typename ComponentConverter>
             RGBAColor<typename ComponentConverter::OutComponentType> ConvertComponents () const {
                 return RGBAColor<typename ComponentConverter::OutComponentType> (
@@ -62,27 +63,6 @@ namespace thekogans {
         typedef RGBAColor<util::ui64> ui64RGBAColor;
         typedef RGBAColor<util::f32> f32RGBAColor;
         typedef RGBAColor<util::f64> f64RGBAColor;
-
-        const std::size_t THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT = 4;
-
-        /// \brief
-        /// Validate assumptions about RGBAColor component packing.
-        /// This check is only important for rgba framebuffers as these
-        /// are used in opengl and windowing systems. Many of these have
-        /// specific alignment (4 byte boundary) requeirements. Since
-        /// we want to be able to directly write our framebuffers to these
-        /// systems, we need to make sure we satisfy their requirements.
-        /// Framebuffers built with pixel types which use other color
-        /// spaces are particularly important to applications doing image
-        /// manipulation and as such will not have alignment requirements.
-        static_assert (
-            sizeof (ui8RGBAColor) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16RGBAColor) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32RGBAColor) ==  THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64RGBAColor) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32RGBAColor) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64RGBAColor) == THEKOGANS_CANVAS_RGBACOLOR_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about RGBAColor component packing.");
 
     } // namespace canvas
 } // namespace thekogans
