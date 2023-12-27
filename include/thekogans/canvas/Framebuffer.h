@@ -41,6 +41,7 @@ namespace thekogans {
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
 
             typedef T PixelType;
+            typedef typename PixelType::ColorType ColorType;
 
             /// \brief
             /// Width and height of framebuffer in pixels.
@@ -78,7 +79,7 @@ namespace thekogans {
                 return buffer[y * extents.width + x];
             }
 
-            inline typename PixelType::ColorType ColorAt (
+            inline ColorType ColorAt (
                     util::ui32 x,
                     util::ui32 y) const {
                 return PixelAt (x, y).ToColor ();
@@ -87,7 +88,7 @@ namespace thekogans {
             /// \brief
             /// Clear the framebuffer using the given color.
             /// \param[in] color Pixel to set every pixel too.
-            void Clear (const typename PixelType::ColorType &color) {
+            void Clear (const ColorType &color) {
                 PixelType pixel (color);
                 PixelType *dst = buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
