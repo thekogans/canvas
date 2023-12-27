@@ -19,6 +19,7 @@
 #define __thekogans_canvas_Converter_h
 
 #include "thekogans/util/Types.h"
+#include "thekogans/canvas/RGBAColor.h"
 
 namespace thekogans {
     namespace canvas {
@@ -26,6 +27,7 @@ namespace thekogans {
         template<typename T>
         struct Converter {
             typedef util::f32 ComponentType;
+            typedef RGBAColor<ComponentType> IntermediateColorType;
             typedef T OutColorType;
 
             template<typename InColorType>

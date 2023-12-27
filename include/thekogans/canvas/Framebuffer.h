@@ -126,21 +126,21 @@ namespace thekogans {
             /// // convert it to 16 bpp ABGR framebuffer using an 8 to 16 bit scaling converter.
             /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
             /// \endcode
-            /// \tparam[in] U Converted framebuffer pixel type.
+            /// \tparam[in] OutPixelType Out framebuffer pixel type.
             /// \tparam[in] ComponentConverter Type exposing InComponentType,
-            /// OutComponentType and Convert (see \see{Calor} and \see{Pixel}).
+            /// OutComponentType and Convert ().
             template<
-                typename U,
+                typename OutPixelType,
                 typename ComponentConverterType>
-            typename Framebuffer<U>::SharedPtr Convert () {
+            typename Framebuffer<OutPixelType>::SharedPtr Convert () {
                 typedef typename PixelType::ComponentType PixelComponentType;
-                typedef U OutPixelType;
+                typedef typename PixelType::ConverterColorType PixelConverterColorType;
                 typedef typename OutPixelType::ComponentType OutPixelComponentType;
+                typedef typename OutPixelType::ConverterColorType OutPixelConverterColorType;
                 typedef typename ComponentConverterType::InComponentType ComponentConverterInComponentType;
                 typedef typename ComponentConverterType::OutComponentType ComponentConverterOutComponentType;
-                typedef typename OutPixelType::ConverterColorType OutPixelConverterColorType;
-                typedef typename PixelType::ConverterColorType PixelConverterColorType;
                 typedef typename Converter<PixelConverterColorType>::ComponentType ConverterColorComponentType;
+                typedef typename Converter<PixelConverterColorType>::IntermediateColorType ConverterIntermediateColorType;
                 typedef DefaultComponentConverter<
                     PixelComponentType,
                     ConverterColorComponentType> PixelComponentToConverterComponentType;
@@ -152,26 +152,28 @@ namespace thekogans {
                     "Incompatible pixel and converter types.");
                 typename Framebuffer<OutPixelType>::SharedPtr framebuffer (
                     new Framebuffer<OutPixelType> (extents));
-                const T *src = buffer.array;
+                const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
                     // This one line contains 7 seperate conversions.
                     // 1 - Pixel at *src is converted to it's color type by the call to ToColor ().
-                    // 2 - That color's components are converted to f32 by a call to template
-                    // ConvertComponents<PixelComponentTypeTof32> () (the only component type
-                    // understood by the Converter).
-                    // 3 - The resulting f32 type color is passed to Converter<f32RGBAColor>::Convert ().
-                    // to convert it the OutPixelConverterColorType.
-                    // 4 - The resulting f32RGBAColor is converted to the final color space by
-                    // Converter<OutPixelConverterColorType>::Convert.
-                    // 5 - That color is then converted to ComponentConverterInComponentType by
-                    // template ConvertComponents<f32ToComponentConverterInComponentType> ().
-                    // 6 -
+                    // 2 - That color's components are converted to ConverterColorComponentType color by
+                    // a call to template ConvertComponents<PixelComponentToConverterComponentType> ()
+                    // (the only component type understood by the Converter).
+                    // 3 - That color is converted to OutPixelConverterColorType color by a call to
+                    // Converter<ConverterIntermediateColorType>::Convert ().
+                    // 4 - That color is then converted to the final color space color by a call to
+                    // Converter<OutPixelConverterColorType>::Convert ().
+                    // 5 - That color is then converted to a ComponentConverterInComponentType color by a
+                    // call to template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
+                    // 6 - That color is then converted to OutPixelComponentType color by a call to
+                    // template ConvertComponents<ComponentConverterType> ().
                     // 7 - And finally that color is converted to dst pixel format by the = operator.
                     *dst++ =
                         Converter<OutPixelConverterColorType>::Convert (
-                            Converter<f32RGBAColor>::Convert (
-                                (*src++).ToColor ().template ConvertComponents<PixelComponentToConverterComponentType> ())).
+                            Converter<ConverterIntermediateColorType>::Convert (
+                                (*src++).ToColor ().
+                                template ConvertComponents<PixelComponentToConverterComponentType> ())).
                             template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
                         template ConvertComponents<ComponentConverterType> ();
                 }

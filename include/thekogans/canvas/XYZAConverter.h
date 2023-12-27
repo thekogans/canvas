@@ -29,6 +29,7 @@ namespace thekogans {
         template<>
         struct Converter<f32XYZAColor> {
             typedef util::f32 ComponentType;
+            typedef RGBAColor<ComponentType> IntermediateColorType;
             typedef f32XYZAColor OutColorType;
 
             template<typename InColorType>
