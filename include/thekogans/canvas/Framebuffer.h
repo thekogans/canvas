@@ -127,8 +127,9 @@ namespace thekogans {
             /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
             /// \endcode
             /// \tparam[in] OutPixelType Out framebuffer pixel type.
-            /// \tparam[in] ComponentConverter Type exposing InComponentType,
+            /// \tparam[in] ComponentConverterType Type exposing InComponentType,
             /// OutComponentType and Convert ().
+            /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
                 typename OutPixelType,
                 typename ComponentConverterType>
@@ -174,7 +175,7 @@ namespace thekogans {
                             Converter<ConverterIntermediateColorType>::Convert (
                                 (*src++).ToColor ().
                                 template ConvertComponents<PixelComponentToConverterComponentType> ())).
-                            template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
+                        template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
                         template ConvertComponents<ComponentConverterType> ();
                 }
                 return framebuffer;
