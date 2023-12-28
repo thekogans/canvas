@@ -44,6 +44,8 @@ namespace thekogans {
                 z (z_),
                 a (a_) {}
 
+            static const XYZAColor Black;
+
             template<typename ComponentConverter>
             XYZAColor<typename ComponentConverter::OutComponentType> ConvertComponents () const {
                 return XYZAColor<typename ComponentConverter::OutComponentType> (
@@ -53,6 +55,9 @@ namespace thekogans {
                     ComponentConverter::Convert (a));
             }
         };
+
+        template<typename T>
+        const XYZAColor<T> XYZAColor<T>::Black (0, 0, 0, 0);
 
         typedef XYZAColor<util::ui8> ui8XYZAColor;
         typedef XYZAColor<util::ui16> ui16XYZAColor;

@@ -111,6 +111,18 @@ namespace thekogans {
                 }
             }
 
+            void FlipColumns () {
+                PixelType *leftColumn = buffer.array;
+                for (std::size_t rows = extents.height; rows-- != 0;) {
+                    PixelType *leftPixel = leftColumn;
+                    PixelType *rightPixel = leftPixel + extents.width - 1;
+                    for (std::size_t pixels = extents.width / 2; pixels-- != 0;) {
+                        std::swap (*leftPixel++, *rightPixel--);
+                    }
+                    leftColumn += extents.width;
+                }
+            }
+
             /// \brief
             /// Framebuffer pixel format and type conversion template.
             /// Depending on the number of pixel formats and component
@@ -121,7 +133,7 @@ namespace thekogans {
             /// // create an 8 bpp RGBA framebuffer.
             /// ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
             /// // clear it to black.
-            /// fb1->Clear (ui8RGBAColor (0, 0, 0, 0));
+            /// fb1->Clear (ui8RGBAColor::Black);
             /// // convert it to 16 bpp ABGR framebuffer using an 8 to 16 bit scaling converter.
             /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
             /// \endcode
@@ -141,29 +153,28 @@ namespace thekogans {
                 typedef typename ComponentConverterType::OutComponentType ComponentConverterOutComponentType;
                 typedef typename Converter<PixelConverterColorType>::ComponentType ConverterColorComponentType;
                 typedef typename Converter<PixelConverterColorType>::IntermediateColorType ConverterIntermediateColorType;
-                typedef DefaultComponentConverter<
+                typedef ComponentConverter<
                     PixelComponentType,
                     ConverterColorComponentType> PixelComponentToConverterComponentType;
-                typedef DefaultComponentConverter<
+                typedef ComponentConverter<
                     ConverterColorComponentType,
                     ComponentConverterInComponentType> ConverterComponentTypeToComponentConverterInComponentType;
                 static_assert (
                     std::is_same<OutPixelComponentType, ComponentConverterOutComponentType>::value,
                     "Incompatible pixel and converter types.");
-                typename Framebuffer<OutPixelType>::SharedPtr framebuffer (
-                    new Framebuffer<OutPixelType> (extents));
+                typename Framebuffer<OutPixelType>::SharedPtr framebuffer (new Framebuffer<OutPixelType> (extents));
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This statement contains 7 seperate conversion steps. The reason
+                    // This statement contains 7 separate conversion steps. The reason
                     // for so many steps is we need to do some intermediary conversions
-                    // to keep the combinatorial explosion of color space conversion
+                    // to keep the combinatorial explosion of color space conversions
                     // down to a minimum. This way we only need to know how to convert
                     // all to f32RGBAColor and f32RGBAColor to all others.
                     //
                     // 1 - Swizzle
                     // 2 - Cast
-                    // 3 - Cast
+                    // 3 - Convert
                     // 4 - Convert
                     // 5 - Cast
                     // 6 - Convert
@@ -171,14 +182,14 @@ namespace thekogans {
                     //
                     // Ex:
                     //
-                    // We purposly pick two 'completelly' different (all types different)
+                    // We purposely pick two 'completely' different (all types different)
                     // pixels to illustrate what each step in the conversion process does.
                     //
                     // ui16ACMYPixel -> ui32AXYZPixel using a ui16Toui32ScaleComponentConverter
                     // component type converter.
                     //
                     // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor -> f32XYZAColor ->
-                    // ui16XYZAColor -> ui32XYZAColor -> ui16ACMYPixel
+                    // ui16XYZAColor -> ui32XYZAColor -> ui32AXYZPixel
                     *dst++ =
                         Converter<OutPixelConverterColorType>::Convert (
                             Converter<ConverterIntermediateColorType>::Convert (

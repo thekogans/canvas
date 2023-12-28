@@ -55,14 +55,14 @@ namespace thekogans {
 
         void foo () {
             ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
-            f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel, DefaultComponentConverter<util::ui8, util::f32>> ();
-            f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel, DefaultComponentConverter<util::f32, util::f32>> ();
-            ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel, DefaultComponentConverter<util::f32, util::ui8>> ();
+            f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel, ComponentConverter<util::ui8, util::f32>> ();
+            f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel, ComponentConverter<util::f32, util::f32>> ();
+            ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel, ComponentConverter<util::f32, util::ui8>> ();
         }
 
         ui8RGBAFramebuffer::SharedPtr FromPNGBuffer (
                 const util::ui8 *buffer,
-                util::ui32 size) {
+                std::size_t size) {
             std::vector<util::ui8> data;
             util::ui32 width = 0;
             util::ui32 height = 0;
@@ -72,7 +72,7 @@ namespace thekogans {
                     new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
                 ui8RGBAPixel *dst = framebuffer->buffer.array;
                 const util::ui8 *src = &data[0];
-                for (std::size_t length = width * height; length-- != 0;) {
+                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                     util::ui8 r = *src++;
                     util::ui8 g = *src++;
                     util::ui8 b = *src++;
@@ -98,7 +98,7 @@ namespace thekogans {
                     new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
                 ui8RGBAPixel *dst = framebuffer->buffer.array;
                 const util::ui8 *src = &data[0];
-                for (std::size_t length = width * height; length-- != 0;) {
+                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                     util::ui8 r = *src++;
                     util::ui8 g = *src++;
                     util::ui8 b = *src++;
@@ -116,7 +116,7 @@ namespace thekogans {
 
         ui8RGBAFramebuffer::SharedPtr FromJPGBuffer (
                 const util::ui8 *buffer,
-                util::ui32 size) {
+                std::size_t size) {
             TJDecompressHandle handle;
             int width;
             int height;
@@ -130,7 +130,7 @@ namespace thekogans {
                 if (tjDecompress2 (handle.handle, (util::ui8 *)buffer,
                         size, data, width, width * 4, height, TJPF_RGBX, 0) == 0) {
                     const util::ui8 *src = data.array;
-                    for (std::size_t length = width * height; length-- != 0;) {
+                    for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                         util::ui8 r = *src++;
                         util::ui8 g = *src++;
                         util::ui8 b = *src++;
@@ -152,11 +152,11 @@ namespace thekogans {
 
         ui8RGBAFramebuffer::SharedPtr FromJPGFile (const std::string &path) {
             util::ReadOnlyFile file (util::HostEndian, path);
-            util::ui32 size = (util::ui32)file.GetSize ();
+            util::ui64 size = file.GetSize ();
             if (size > 0) {
                 std::vector<util::ui8> buffer (size);
-                file.Read (&buffer[0], size);
-                return FromJPGBuffer (&buffer[0], size);
+                file.Read (buffer.data (), size);
+                return FromJPGBuffer (buffer.data (), size);
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
@@ -233,12 +233,8 @@ namespace thekogans {
 
         ui8RGBAFramebuffer::SharedPtr FromBMPBuffer (
                 const util::ui8 *buffer,
-                util::ui32 size) {
-            util::Buffer buffer_ (
-                util::LittleEndian,
-                const_cast<util::ui8 *> (buffer),
-                size,
-                false);
+                std::size_t size) {
+            util::TenantReadBuffer buffer_ (util::LittleEndian, buffer, size);
             FileHeader fileHeader;
             InfoHeader infoHeader;
             buffer_ >> fileHeader >> infoHeader;
@@ -258,17 +254,17 @@ namespace thekogans {
                         util::Rectangle::Extents (infoHeader.biHeight, infoHeader.biWidth)));
                 ui8RGBAPixel *dst = framebuffer->buffer.array;
                 buffer_.readOffset = fileHeader.bfOffBits;
-                for (std::size_t length = infoHeader.biHeight * infoHeader.biWidth; length-- != 0;) {
+                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                     util::ui8 r;
                     util::ui8 g;
                     util::ui8 b;
                     util::ui8 a;
                     buffer_ >> r >> g >> b;
-                    if (infoHeader.biBitCount == 24) {
-                        a = 255;
+                    if (infoHeader.biBitCount == 32) {
+                        buffer_ >> a;
                     }
                     else {
-                        buffer_ >> a;
+                        a = 255;
                     }
                     *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
                 }
@@ -282,11 +278,11 @@ namespace thekogans {
 
         ui8RGBAFramebuffer::SharedPtr FromBMPFile (const std::string &path) {
             util::ReadOnlyFile file (util::HostEndian, path);
-            util::ui32 size = (util::ui32)file.GetSize ();
+            util::ui64 size = file.GetSize ();
             if (size > 0) {
                 std::vector<util::ui8> buffer (size);
-                file.Read (&buffer[0], size);
-                return FromBMPBuffer (&buffer[0], size);
+                file.Read (buffer.data (), size);
+                return FromBMPBuffer (buffer.data (), size);
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (

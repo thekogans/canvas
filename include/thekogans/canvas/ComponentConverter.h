@@ -26,7 +26,7 @@ namespace thekogans {
         template<
             typename T,
             typename U>
-        struct DefaultComponentConverter {
+        struct ComponentConverter {
             typedef T InComponentType;
             typedef U OutComponentType;
             static OutComponentType Convert (InComponentType value) {

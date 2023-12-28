@@ -69,8 +69,8 @@ namespace thekogans {
         typedef RGBAPixel<util::f64> f64RGBAPixel;
 
         /// \brief
-        /// Validate assumptions about RGBAPixel component packing.
-        /// This check is only important for rgba framebuffers as these
+        /// Validate assumptions about ui8RGBAPixel component packing.
+        /// This check is only important for ui8 rgba framebuffers as these
         /// are used in opengl and windowing systems. Many of these have
         /// specific alignment (4 byte boundary) requeirements. Since
         /// we want to be able to directly write our framebuffers to these
@@ -80,13 +80,8 @@ namespace thekogans {
         /// manipulation and as such will not have alignment requirements.
         const std::size_t THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT = 4;
         static_assert (
-            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F64_SIZE,
-            "Invalid assumption about RGBAPixel component packing.");
+            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI8_SIZE,
+            "Invalid assumption about ui8RGBAPixel component packing.");
 
         template<typename T>
         struct BGRAPixel {

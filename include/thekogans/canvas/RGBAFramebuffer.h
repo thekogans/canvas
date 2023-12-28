@@ -54,15 +54,15 @@ namespace thekogans {
 
         ui8RGBAFramebuffer::SharedPtr FromPNGBuffer (
             const util::ui8 *buffer,
-            util::ui32 size);
+            std::size_t size);
         ui8RGBAFramebuffer::SharedPtr FromPNGFile (const std::string &path);
         ui8RGBAFramebuffer::SharedPtr FromJPGBuffer (
             const util::ui8 *buffer,
-            util::ui32 size);
+            std::size_t size);
         ui8RGBAFramebuffer::SharedPtr FromJPGFile (const std::string &path);
         ui8RGBAFramebuffer::SharedPtr FromBMPBuffer (
             const util::ui8 *buffer,
-            util::ui32 size);
+            std::size_t size);
         ui8RGBAFramebuffer::SharedPtr FromBMPFile (const std::string &path);
 
     } // namespace canvas

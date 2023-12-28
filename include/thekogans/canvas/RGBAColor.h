@@ -44,9 +44,11 @@ namespace thekogans {
                 b (b_),
                 a (a_) {}
 
-            /// This function and the typedef above is what plugs
+            static const RGBAColor Black;
+
+            /// This template and the typedef above is what plugs
             /// this class and every other wannabe color class in
-            /// to the \see{Framebuffer::Convert} algorithm.
+            /// to the \see{Framebuffer::Convert} machinery.
             template<typename ComponentConverter>
             RGBAColor<typename ComponentConverter::OutComponentType> ConvertComponents () const {
                 return RGBAColor<typename ComponentConverter::OutComponentType> (
@@ -56,6 +58,9 @@ namespace thekogans {
                     ComponentConverter::Convert (a));
             }
         };
+
+        template<typename T>
+        const RGBAColor<T> RGBAColor<T>::Black (0, 0, 0, 0);
 
         typedef RGBAColor<util::ui8> ui8RGBAColor;
         typedef RGBAColor<util::ui16> ui16RGBAColor;
