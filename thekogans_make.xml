@@ -53,16 +53,20 @@
     <cpp_header>$(organization)/$(project_directory)/Config.h</cpp_header>
 	<cpp_header>$(organization)/$(project_directory)/ComponentConverter.h</cpp_header>
 	<cpp_header>$(organization)/$(project_directory)/Converter.h</cpp_header>
-	<cpp_header>$(organization)/$(project_directory)/RGBAConverter.h</cpp_header>
-	<cpp_header>$(organization)/$(project_directory)/XYZAColor.h</cpp_header>
-	<cpp_header>$(organization)/$(project_directory)/XYZAConverter.h</cpp_header>
-	<cpp_header>$(organization)/$(project_directory)/XYZAPixel.h</cpp_header>
     <!-- <cpp_header>$(organization)/$(project_directory)/DrawUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Frame.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Framebuffer.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/RGBAColor.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/RGBAConverter.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/RGBAFrame.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/RGBAFramebuffer.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/RGBAPixel.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/XYZAColor.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/XYZAConverter.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/XYZAFrame.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/XYZAFramebuffer.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/XYZAPixel.h</cpp_header>
     <!-- <cpp_header>$(organization)/$(project_directory)/RGBImage.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/TJUtils.h</cpp_header> -->
     <cpp_header>$(organization)/$(project_directory)/Version.h</cpp_header>
@@ -70,18 +74,20 @@
     <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
       <cpp_header>$(organization)/$(project_directory)/Xlib.h</cpp_header>
     </if>
-    <cpp_header>$(organization)/$(project_directory)/YUVImage.h</cpp_header>
-    <cpp_header>$(organization)/$(project_directory)/lodepng.h</cpp_header> -->
+    <cpp_header>$(organization)/$(project_directory)/YUVImage.h</cpp_header> -->
+    <cpp_header>$(organization)/$(project_directory)/lodepng.h</cpp_header>
   </cpp_headers>
   <cpp_sources prefix = "src">
     <!-- <cpp_source>Bitmap.cpp</cpp_source>
     <cpp_source>Canvas.cpp</cpp_source>
     <cpp_source>DrawUtils.cpp</cpp_source> -->
-    <cpp_source>Font.cpp</cpp_source>
-    <cpp_source>Frame.cpp</cpp_source>
-    <cpp_source>Framebuffer.cpp</cpp_source>
 	<cpp_source>RGBAConverter.cpp</cpp_source>
+    <cpp_source>Font.cpp</cpp_source>
+    <cpp_source>RGBAFrame.cpp</cpp_source>
+    <cpp_source>RGBAFramebuffer.cpp</cpp_source>
 	<cpp_source>XYZAConverter.cpp</cpp_source>
+    <cpp_source>XYZAFrame.cpp</cpp_source>
+    <cpp_source>XYZAFramebuffer.cpp</cpp_source>
     <!-- <cpp_source>RGBImage.cpp</cpp_source>
     <cpp_source>TJUtils.cpp</cpp_source> -->
     <cpp_source>Version.cpp</cpp_source>
@@ -89,8 +95,8 @@
     <if condition = "$(TOOLCHAIN_OS) == 'Linux' && $(have_feature -f:THEKOGANS_CANVAS_USE_XLIB)">
       <cpp_source>Xlib.cpp</cpp_source>
     </if>
-    <cpp_source>YUVImage.cpp</cpp_source>
-    <cpp_source>lodepng.cpp</cpp_source> -->
+    <cpp_source>YUVImage.cpp</cpp_source> -->
+    <cpp_source>lodepng.cpp</cpp_source>
   </cpp_sources>
   <if condition = "$(TOOLCHAIN_OS) == 'OSX'">
     <objective_cpp_headers prefix = "include"

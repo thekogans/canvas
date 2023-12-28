@@ -22,7 +22,7 @@
 #include "thekogans/util/Types.h"
 #include "thekogans/util/Exception.h"
 #include "thekogans/canvas/Config.h"
-#include "thekogans/canvas/RGBImage.h"
+//#include "thekogans/canvas/RGBImage.h"
 
 namespace thekogans {
     namespace canvas {
@@ -59,13 +59,13 @@ namespace thekogans {
             util::ui32 componentIndices,
             util::ui32 pixelStride);
 
-        inline int ChromaToTJChroma (RGBImage::Chroma chroma) {
-            return
-                chroma == RGBImage::CHROMA_NONE ? TJSAMP_444 :
-                chroma == RGBImage::CHROMA_2x1 ? TJSAMP_422 :
-                chroma == RGBImage::CHROMA_1x2 ? TJSAMP_440 :
-                chroma == RGBImage::CHROMA_2x2 ? TJSAMP_420 : 0;
-        }
+        // inline int ChromaToTJChroma (RGBImage::Chroma chroma) {
+        //     return
+        //         chroma == RGBImage::CHROMA_NONE ? TJSAMP_444 :
+        //         chroma == RGBImage::CHROMA_2x1 ? TJSAMP_422 :
+        //         chroma == RGBImage::CHROMA_1x2 ? TJSAMP_440 :
+        //         chroma == RGBImage::CHROMA_2x2 ? TJSAMP_420 : 0;
+        // }
 
     } // namespace canvas
 } // namespace thekogans

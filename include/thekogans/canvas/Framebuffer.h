@@ -30,7 +30,6 @@
 #include "thekogans/canvas/ComponentConverter.h"
 #include "thekogans/canvas/Converter.h"
 #include "thekogans/canvas/RGBAConverter.h"
-#include "thekogans/canvas/RGBAColor.h"
 
 namespace thekogans {
     namespace canvas {

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
-#include "thekogans/canvas/RGBAPixel.h"
+#include "thekogans/canvas/RGBAFrame.h"
 
 namespace thekogans {
     namespace canvas {

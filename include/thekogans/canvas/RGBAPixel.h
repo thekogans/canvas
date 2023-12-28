@@ -20,8 +20,6 @@
 
 #include "thekogans/util/Types.h"
 #include "thekogans/canvas/RGBAColor.h"
-#include "thekogans/canvas/Framebuffer.h"
-#include "thekogans/canvas/Frame.h"
 
 namespace thekogans {
     namespace canvas {
@@ -70,8 +68,6 @@ namespace thekogans {
         typedef RGBAPixel<util::f32> f32RGBAPixel;
         typedef RGBAPixel<util::f64> f64RGBAPixel;
 
-        const std::size_t THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT = 4;
-
         /// \brief
         /// Validate assumptions about RGBAPixel component packing.
         /// This check is only important for rgba framebuffers as these
@@ -82,28 +78,15 @@ namespace thekogans {
         /// Framebuffers built with pixel types which use other color
         /// spaces are particularly important to applications doing image
         /// manipulation and as such will not have alignment requirements.
+        const std::size_t THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT = 4;
         static_assert (
-            sizeof (ui8RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI8_SIZE &&
-            sizeof (ui16RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI16_SIZE &&
-            sizeof (ui32RGBAColor) ==  THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI32_SIZE &&
-            sizeof (ui64RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI64_SIZE &&
-            sizeof (f32RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F32_SIZE &&
-            sizeof (f64RGBAColor) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F64_SIZE,
+            sizeof (ui8RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI8_SIZE &&
+            sizeof (ui16RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI16_SIZE &&
+            sizeof (ui32RGBAPixel) ==  THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI32_SIZE &&
+            sizeof (ui64RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::UI64_SIZE &&
+            sizeof (f32RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F32_SIZE &&
+            sizeof (f64RGBAPixel) == THEKOGANS_CANVAS_RGBAPIXEL_COMPONENT_COUNT * util::F64_SIZE,
             "Invalid assumption about RGBAPixel component packing.");
-
-        typedef Framebuffer<ui8RGBAPixel> ui8RGBAFramebuffer;
-        typedef Framebuffer<ui16RGBAPixel> ui16RGBAFramebuffer;
-        typedef Framebuffer<ui32RGBAPixel> ui32RGBAFramebuffer;
-        typedef Framebuffer<ui64RGBAPixel> ui64RGBAFramebuffer;
-        typedef Framebuffer<f32RGBAPixel> f32RGBAFramebuffer;
-        typedef Framebuffer<f64RGBAPixel> f64RGBAFramebuffer;
-
-        typedef Frame<ui8RGBAPixel> ui8RGBAFrame;
-        typedef Frame<ui16RGBAPixel> ui16RGBAFrame;
-        typedef Frame<ui32RGBAPixel> ui32RGBAFrame;
-        typedef Frame<ui64RGBAPixel> ui64RGBAFrame;
-        typedef Frame<f32RGBAPixel> f32RGBAFrame;
-        typedef Frame<f64RGBAPixel> f64RGBAFrame;
 
         template<typename T>
         struct BGRAPixel {
@@ -145,20 +128,6 @@ namespace thekogans {
         typedef BGRAPixel<util::f32> f32BGRAPixel;
         typedef BGRAPixel<util::f64> f64BGRAPixel;
 
-        typedef Framebuffer<ui8BGRAPixel> ui8BGRAFramebuffer;
-        typedef Framebuffer<ui16BGRAPixel> ui16BGRAFramebuffer;
-        typedef Framebuffer<ui32BGRAPixel> ui32BGRAFramebuffer;
-        typedef Framebuffer<ui64BGRAPixel> ui64BGRAFramebuffer;
-        typedef Framebuffer<f32BGRAPixel> f32BGRAFramebuffer;
-        typedef Framebuffer<f64BGRAPixel> f64BGRAFramebuffer;
-
-        typedef Frame<ui8BGRAPixel> ui8BGRAFrame;
-        typedef Frame<ui16BGRAPixel> ui16BGRAFrame;
-        typedef Frame<ui32BGRAPixel> ui32BGRAFrame;
-        typedef Frame<ui64BGRAPixel> ui64BGRAFrame;
-        typedef Frame<f32BGRAPixel> f32BGRAFrame;
-        typedef Frame<f64BGRAPixel> f64BGRAFrame;
-
         template<typename T>
         struct ARGBPixel {
             typedef T ComponentType;
@@ -199,20 +168,6 @@ namespace thekogans {
         typedef ARGBPixel<util::f32> f32ARGBPixel;
         typedef ARGBPixel<util::f64> f64ARGBPixel;
 
-        typedef Framebuffer<ui8ARGBPixel> ui8ARGBFramebuffer;
-        typedef Framebuffer<ui16ARGBPixel> ui16ARGBFramebuffer;
-        typedef Framebuffer<ui32ARGBPixel> ui32ARGBFramebuffer;
-        typedef Framebuffer<ui64ARGBPixel> ui64ARGBFramebuffer;
-        typedef Framebuffer<f32ARGBPixel> f32ARGBFramebuffer;
-        typedef Framebuffer<f64ARGBPixel> f64ARGBFramebuffer;
-
-        typedef Frame<ui8ARGBPixel> ui8ARGBFrame;
-        typedef Frame<ui16ARGBPixel> ui16ARGBFrame;
-        typedef Frame<ui32ARGBPixel> ui32ARGBFrame;
-        typedef Frame<ui64ARGBPixel> ui64ARGBFrame;
-        typedef Frame<f32ARGBPixel> f32ARGBFrame;
-        typedef Frame<f64ARGBPixel> f64ARGBFrame;
-
         template<typename T>
         struct ABGRPixel {
             typedef T ComponentType;
@@ -252,20 +207,6 @@ namespace thekogans {
         typedef ABGRPixel<util::ui64> ui64ABGRPixel;
         typedef ABGRPixel<util::f32> f32ABGRPixel;
         typedef ABGRPixel<util::f64> f64ABGRPixel;
-
-        typedef Framebuffer<ui8ABGRPixel> ui8ABGRFramebuffer;
-        typedef Framebuffer<ui16ABGRPixel> ui16ABGRFramebuffer;
-        typedef Framebuffer<ui32ABGRPixel> ui32ABGRFramebuffer;
-        typedef Framebuffer<ui64ABGRPixel> ui64ABGRFramebuffer;
-        typedef Framebuffer<f32ABGRPixel> f32ABGRFramebuffer;
-        typedef Framebuffer<f64ABGRPixel> f64ABGRFramebuffer;
-
-        typedef Frame<ui8ABGRPixel> ui8ABGRFrame;
-        typedef Frame<ui16ABGRPixel> ui16ABGRFrame;
-        typedef Frame<ui32ABGRPixel> ui32ABGRFrame;
-        typedef Frame<ui64ABGRPixel> ui64ABGRFrame;
-        typedef Frame<f32ABGRPixel> f32ABGRFrame;
-        typedef Frame<f64ABGRPixel> f64ABGRFrame;
 
     } // namespace canvas
 } // namespace thekogans
