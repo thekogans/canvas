@@ -158,7 +158,7 @@ namespace thekogans {
                     ConverterColorComponentType> PixelComponentToConverterComponentType;
                 typedef ComponentConverter<
                     ConverterColorComponentType,
-                    ComponentConverterInComponentType> ConverterComponentTypeToComponentConverterInComponentType;
+                    ComponentConverterInComponentType> ConverterComponentToComponentConverterInComponentType;
                 static_assert (
                     std::is_same<OutPixelComponentType, ComponentConverterOutComponentType>::value,
                     "Incompatible pixel and converter types.");
@@ -166,36 +166,53 @@ namespace thekogans {
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This statement contains 7 separate conversion steps. The reason
-                    // for so many steps is we need to do some intermediary conversions
-                    // to keep the combinatorial explosion of color space conversions
-                    // down to a minimum. This way we only need to know how to convert
-                    // all to f32RGBAColor and f32RGBAColor to all others.
-                    //
-                    // 1 - Swizzle
-                    // 2 - Cast
-                    // 3 - Convert
-                    // 4 - Convert
-                    // 5 - Cast
-                    // 6 - Convert
-                    // 7 - Swizzle
+                    // This statement contains 7 separate conversions. The reason for so
+                    // many is we need to do some intermediate conversions to keep the
+                    // combinatorial explosion of color space conversions down to a
+                    // minimum. This way we only need to know how to convert all to
+                    // f32RGBAColor and f32RGBAColor to all others.
                     //
                     // Ex:
                     //
-                    // We purposely pick two 'completely' different (all types different)
+                    // I purposely pick two 'completely' different (all types different)
                     // pixels to illustrate what each step in the conversion process does.
                     //
                     // ui16ACMYPixel -> ui32AXYZPixel using a ui16Toui32ScaleComponentConverter
                     // component type converter.
                     //
-                    // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor -> f32XYZAColor ->
-                    // ui16XYZAColor -> ui32XYZAColor -> ui32AXYZPixel
+                    // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor ->
+                    // f32XYZAColor -> ui16XYZAColor -> ui32XYZAColor -> ui32AXYZPixel
+                    //
+                    // This design flexibility exists because doing color space conversion
+                    // is not trivial and no automatic approach can possibly exist given that
+                    // different color spaces have different componenet types and ranges. To
+                    // that end, while the above example is interesting in theory, in practice,
+                    // given the diffeences between the two color types, is probably not
+                    // realistic as simply casting from one component type to another will not
+                    // produce correct results for some combinations. Fear not, as that's where
+                    // the power of this design comes in, albeit at a cost. You might have to
+                    // perform up to three seperate conversions. The first is to convert, not cast,
+                    // the color componenets. You do that by selecting similar pixel types with
+                    // different component types and supplying an appropriate component converter.
+                    // The second would be to convert betwee the different color spaceas and the
+                    // third to convert the final is to convert, not cast, the final color component
+                    // types. Because this design uses all static typing, known to the compiler,
+                    // most of the cost is mitigated by a good compiler optimizing away parts of
+                    // this statemnt that are noop for their particular color/component type
+                    // combinations.
+                    //
+                    // Ex:
+                    //
+                    // Take the same conversion example as above. The potential problem steps are
+                    // ui16CMYAColor -> f32CMYAColor and f32XYZAColor -> ui16XYZAColor. Note that
+                    // these are the two places where we automatically select an appropriate 'cast'
+                    // component converter.
                     *dst++ =
                         Converter<OutPixelConverterColorType>::Convert (
                             Converter<ConverterIntermediateColorType>::Convert (
                                 (*src++).ToColor ().
                                 template ConvertComponents<PixelComponentToConverterComponentType> ())).
-                        template ConvertComponents<ConverterComponentTypeToComponentConverterInComponentType> ().
+                        template ConvertComponents<ConverterComponentToComponentConverterInComponentType> ().
                         template ConvertComponents<ComponentConverterType> ();
                 }
                 return framebuffer;
