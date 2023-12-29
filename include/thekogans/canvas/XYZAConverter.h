@@ -19,7 +19,6 @@
 #define __thekogans_canvas_XYZAConverter_h
 
 #include "thekogans/util/Types.h"
-#include "thekogans/canvas/RGBAColor.h"
 #include "thekogans/canvas/XYZAColor.h"
 #include "thekogans/canvas/Converter.h"
 
@@ -28,8 +27,6 @@ namespace thekogans {
 
         template<>
         struct Converter<f32XYZAColor> {
-            typedef util::f32 ComponentType;
-            typedef RGBAColor<ComponentType> IntermediateColorType;
             typedef f32XYZAColor OutColorType;
 
             template<typename InColorType>

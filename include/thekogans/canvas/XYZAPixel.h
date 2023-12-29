@@ -28,7 +28,6 @@ namespace thekogans {
         struct XYZAPixel {
             typedef T ComponentType;
             typedef XYZAColor<ComponentType> ColorType;
-            typedef XYZAColor<util::f32> ConverterColorType;
 
             ComponentType x;
             ComponentType y;
@@ -72,7 +71,6 @@ namespace thekogans {
         struct ZYXAPixel {
             typedef T ComponentType;
             typedef XYZAColor<ComponentType> ColorType;
-            typedef XYZAColor<util::f32> ConverterColorType;
 
             ComponentType z;
             ComponentType y;
@@ -112,7 +110,6 @@ namespace thekogans {
         struct AXYZPixel {
             typedef T ComponentType;
             typedef XYZAColor<ComponentType> ColorType;
-            typedef XYZAColor<util::f32> ConverterColorType;
 
             ComponentType a;
             ComponentType x;
@@ -152,7 +149,6 @@ namespace thekogans {
         struct AZYXPixel {
             typedef T ComponentType;
             typedef XYZAColor<ComponentType> ColorType;
-            typedef XYZAColor<util::f32> ConverterColorType;
 
             ComponentType a;
             ComponentType z;

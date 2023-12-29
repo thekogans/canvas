@@ -19,6 +19,7 @@
 #include "thekogans/util/File.h"
 #include "thekogans/canvas/RGBAFramebuffer.h"
 #include "thekogans/canvas/XYZAFramebuffer.h"
+#include "thekogans/canvas/ComponentConverter.h"
 #include "thekogans/canvas/lodepng.h"
 #include "thekogans/canvas/TJUtils.h"
 
@@ -55,9 +56,10 @@ namespace thekogans {
 
         void foo () {
             ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
-            f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel, ComponentConverter<util::ui8, util::f32>> ();
-            f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel, ComponentConverter<util::f32, util::f32>> ();
-            ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel, ComponentConverter<util::f32, util::ui8>> ();
+            f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel> ();
+
+            // f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel, ComponentConverter<util::f32, util::f32>> ();
+            // ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel, ComponentConverter<util::f32, util::ui8>> ();
         }
 
         ui8RGBAFramebuffer::SharedPtr FromPNGBuffer (

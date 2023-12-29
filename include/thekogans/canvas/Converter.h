@@ -27,8 +27,7 @@ namespace thekogans {
         template<typename T>
         struct Converter {
             typedef T OutColorType;
-            typedef util::f32 ComponentType;
-            typedef RGBAColor<ComponentType> IntermediateColorType;
+            typedef RGBAColor<util::f32> IntermediateColorType;
 
             template<typename InColorType>
             static OutColorType Convert (const InColorType &inColor);
