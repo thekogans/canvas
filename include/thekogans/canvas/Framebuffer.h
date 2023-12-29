@@ -152,10 +152,6 @@ namespace thekogans {
                         typename PixelType::ComponentType,
                         typename Converter<PixelType>::IntermediateColorType::ComponentType>>
             typename Framebuffer<OutPixelType>::SharedPtr Convert () {
-                typedef typename OutPixelType::ColorType OutColorType;
-                typedef typename Converter<OutColorType>::OutColorType OutPixelConverterOutColorType;
-                typedef typename PixelType::ColorType PixelColorType;
-                typedef typename Converter<PixelColorType>::IntermediateColorType PixelConverterIntermediateColorType;
                 static_assert (
                     std::is_same<
                         typename PixelType::ComponentType,
@@ -166,6 +162,9 @@ namespace thekogans {
                         typename OutPixelConverterOutColorComponentTypeToOutPixelComponentComponentConverterType::OutComponentType,
                         typename OutPixelType::ComponentType>::value,
                     "Incompatible out pixel component and out pixel component converter types.");
+                typedef typename OutPixelType::ConverterOutColorType OutPixelConverterOutColorType;
+                typedef typename PixelType::ColorType PixelColorType;
+                typedef typename Converter<PixelColorType>::IntermediateColorType PixelConverterIntermediateColorType;
                 typename Framebuffer<OutPixelType>::SharedPtr framebuffer (new Framebuffer<OutPixelType> (extents));
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
