@@ -143,11 +143,11 @@ namespace thekogans {
             /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
                 typename OutPixelType,
-                typename OutPixelConverterOutColorComponentTypeToOutPixelComponentComponentConverterType =
+                typename OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType =
                     ComponentConverter<
                         typename Converter<OutPixelType>::OutColorType::ComponentType,
                         typename OutPixelType::ComponentType>,
-                typename PixelComponentTypeToPixelConverterIntermediateColorComponentComponentConverterType =
+                typename PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType =
                     ComponentConverter<
                         typename PixelType::ComponentType,
                         typename Converter<PixelType>::IntermediateColorType::ComponentType>>
@@ -155,11 +155,11 @@ namespace thekogans {
                 static_assert (
                     std::is_same<
                         typename PixelType::ComponentType,
-                        typename PixelComponentTypeToPixelConverterIntermediateColorComponentComponentConverterType::InComponentType>::value,
+                        typename PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType::InComponentType>::value,
                     "Incompatible pixel component and pixel component converter types.");
                 static_assert (
                     std::is_same<
-                        typename OutPixelConverterOutColorComponentTypeToOutPixelComponentComponentConverterType::OutComponentType,
+                        typename OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType::OutComponentType,
                         typename OutPixelType::ComponentType>::value,
                     "Incompatible out pixel component and out pixel component converter types.");
                 typedef typename OutPixelType::ConverterOutColorType OutPixelConverterOutColorType;
@@ -197,8 +197,8 @@ namespace thekogans {
                         Converter<OutPixelConverterOutColorType>::Convert (
                             Converter<PixelConverterIntermediateColorType>::Convert (
                                 (*src++).ToColor ().
-                                template ConvertComponents<PixelComponentTypeToPixelConverterIntermediateColorComponentComponentConverterType> ())).
-                        template ConvertComponents<OutPixelConverterOutColorComponentTypeToOutPixelComponentComponentConverterType> ();
+                                template ConvertComponents<PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType> ())).
+                        template ConvertComponents<OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType> ();
                 }
                 return framebuffer;
             }
