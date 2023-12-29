@@ -181,8 +181,7 @@ namespace thekogans {
                     // I purposely pick two 'completely' different (all types different)
                     // pixels to illustrate what each step in the conversion process does.
                     //
-                    // ui16ACMYPixel -> ui32AXYZPixel using a ui16Toui32ScaleComponentConverter
-                    // component type converter.
+                    // ui16ACMYPixel -> ui32AXYZPixel
                     //
                     // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor ->
                     // f32XYZAColor -> ui32XYZAColor -> ui32AXYZPixel
