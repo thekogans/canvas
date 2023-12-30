@@ -122,7 +122,7 @@ namespace thekogans {
             }
 
             /// \brief
-            /// Framebuffer pixel color and componenet type conversion template.
+            /// Framebuffer pixel color space and component type conversion template.
             /// Depending on the number of pixel color formats and component
             /// types you use, this algorithm can potentially be specialized
             /// many times.
@@ -140,7 +140,8 @@ namespace thekogans {
             /// \endcode
             ///
             /// \tparam[in] OutPixelType Out framebuffer pixel type.
-            /// \tparam[in] IntermediateColorConverterType Pixel color type to converter intermediate color type.
+            /// \tparam[in] IntermediateColorConverterType Pixel color type to converter
+            /// intermediate color type.
             /// \tparam[in] OutColorConverterType Converter out color type to out pixel color type.
             /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
@@ -155,7 +156,8 @@ namespace thekogans {
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
                     typedef typename OutPixelType::ConverterColorType ConverterOutColorType;
-                    typedef typename Converter<ColorType>::IntermediateColorType ConverterIntermediateColorType;
+                    typedef typename Converter<ColorType>::IntermediateColorType
+                        ConverterIntermediateColorType;
                     // This statement contains 6 separate conversions.
                     //
                     // 1 - Swizzle src pixel to color
@@ -167,7 +169,7 @@ namespace thekogans {
                     //
                     // The reason for so many is we need to do some intermediate conversions
                     // to keep the combinatorial explosion of color space conversions down to
-                    // a minimum. This way we only need to know how to convert all tof32RGBAColor
+                    // a minimum. This way we only need to know how to convert all to f32RGBAColor
                     // and f32RGBAColor to all others.
                     //
                     // This design flexibility exists because doing color space conversion

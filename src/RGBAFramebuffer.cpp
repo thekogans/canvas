@@ -54,7 +54,8 @@ namespace thekogans {
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ABGRFramebuffer, util::SpinLock)
 
         void foo () {
-            ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
+            ui8RGBAFramebuffer::SharedPtr fb1 (
+                new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
             f32XYZAFramebuffer::SharedPtr fb2 = fb1->Convert<f32XYZAPixel> ();
             f32RGBAFramebuffer::SharedPtr fb3 = fb2->Convert<f32RGBAPixel> ();
             ui8RGBAFramebuffer::SharedPtr fb4 = fb3->Convert<ui8RGBAPixel> ();
@@ -137,7 +138,7 @@ namespace thekogans {
                         util::ui8 a = *src++;
                         *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
                     }
-                return framebuffer;
+                    return framebuffer;
                 }
                 else {
                     THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
