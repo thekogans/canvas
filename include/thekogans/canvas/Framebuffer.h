@@ -32,9 +32,24 @@
 namespace thekogans {
     namespace canvas {
 
+        /// \struct Framebuffer Framebuffer.h thekogans/canvas/Framebuffer.h
+        ///
+        /// \brief
+        /// A framebuffer is a rectangular array of pixels. The width and height
+        /// of the rectangle are given by extents. The pixels are completely generic
+        /// and can be of practically any type (as long as they expose a few simple
+        /// types and provide a copy ctor and an assignment operator for their native
+        /// color type). See \see{RGBAPixel} for an example. The framebuffer uses
+        /// template metaprogamming to parameterize it's algorithms. This design allows
+        /// pixel and color type interoperability at the cost of potentially many
+        /// instances (specializations). By using a good optimizing compiler run time
+        /// cost is kept to an absolute minimum.
+
         template<typename T>
         struct Framebuffer : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Framebuffer)
+            /// \brief
+            /// Framebuffer has a private heap to help with performance and memory fragmentation.
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
 
             typedef T PixelType;
@@ -165,7 +180,7 @@ namespace thekogans {
                     // 3 - converter intermediate color converter
                     // 4 - out color converter
                     // 5 - same out color space component type converter
-                    // 6 - Swizzle final color to dst pixel
+                    // 6 - Swizzle out color to dst pixel
                     //
                     // The reason for so many is we need to do some intermediate conversions
                     // to keep the combinatorial explosion of color space conversions down to
