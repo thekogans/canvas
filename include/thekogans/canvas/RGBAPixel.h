@@ -28,7 +28,7 @@ namespace thekogans {
         struct RGBAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef RGBAColor<util::f32> ConverterOutColorType;
+            typedef f32RGBAColor ConverterColorType;
 
             ComponentType r;
             ComponentType g;
@@ -87,7 +87,7 @@ namespace thekogans {
         struct BGRAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef RGBAColor<util::f32> ConverterOutColorType;
+            typedef f32RGBAColor ConverterColorType;
 
             ComponentType b;
             ComponentType g;
@@ -127,7 +127,7 @@ namespace thekogans {
         struct ARGBPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef RGBAColor<util::f32> ConverterOutColorType;
+            typedef f32RGBAColor ConverterColorType;
 
             ComponentType a;
             ComponentType r;
@@ -167,7 +167,7 @@ namespace thekogans {
         struct ABGRPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef RGBAColor<util::f32> ConverterOutColorType;
+            typedef f32RGBAColor ConverterColorType;
 
             ComponentType a;
             ComponentType b;

@@ -18,7 +18,6 @@
 #if !defined (__thekogans_canvas_XYZAConverter_h)
 #define __thekogans_canvas_XYZAConverter_h
 
-#include "thekogans/util/Types.h"
 #include "thekogans/canvas/XYZAColor.h"
 #include "thekogans/canvas/Converter.h"
 
@@ -28,7 +27,7 @@ namespace thekogans {
         template<>
         struct Converter<f32XYZAColor> {
             typedef f32XYZAColor OutColorType;
-            typedef RGBAColor<util::f32> IntermediateColorType;
+            typedef f32RGBAColor IntermediateColorType;
 
             template<typename InColorType>
             static OutColorType Convert (const InColorType &inColor);

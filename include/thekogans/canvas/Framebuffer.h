@@ -27,9 +27,7 @@
 #include "thekogans/util/Heap.h"
 #include "thekogans/util/SpinLock.h"
 #include "thekogans/canvas/Config.h"
-#include "thekogans/canvas/ComponentConverter.h"
 #include "thekogans/canvas/Converter.h"
-#include "thekogans/canvas/RGBAConverter.h"
 
 namespace thekogans {
     namespace canvas {
@@ -128,62 +126,46 @@ namespace thekogans {
             /// Depending on the number of pixel formats and component
             /// types you use, this algorithm can potentially be specialized
             /// hundreds of times.
+            ///
             /// Ex:
+            ///
             /// \code{.cpp}
             /// // create an 8 bpp RGBA framebuffer.
             /// ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
             /// // clear it to black.
             /// fb1->Clear (ui8RGBAColor::Black);
             /// // convert it to 16 bpp ABGR framebuffer using an 8 to 16 bit scaling converter.
-            /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel, ui8Toui16ScaleComponentConverter> ();
+            /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel> ();
             /// \endcode
+            ///
             /// \tparam[in] OutPixelType Out framebuffer pixel type.
-            /// \tparam[in] ComponentConverterType Type exposing InComponentType,
-            /// OutComponentType and Convert ().
+            /// \tparam[in] IntermediateColorConverterType Pixel color type to converter intermediate color type.
+            /// \tparam[in] OutColorConverterType Converter out color type to out pixel color type.
             /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
                 typename OutPixelType,
-                typename OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType =
-                    ComponentConverter<
-                        typename Converter<OutPixelType>::OutColorType::ComponentType,
-                        typename OutPixelType::ComponentType>,
-                typename PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType =
-                    ComponentConverter<
-                        typename PixelType::ComponentType,
-                        typename Converter<PixelType>::IntermediateColorType::ComponentType>>
+                typename IntermediateColorConverterType =
+                    Converter<typename Converter<ColorType>::IntermediateColorType>,
+                typename OutColorConverterType = Converter<typename OutPixelType::ColorType>>
             typename Framebuffer<OutPixelType>::SharedPtr Convert () {
-                static_assert (
-                    std::is_same<
-                        typename PixelType::ComponentType,
-                        typename PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType::InComponentType>::value,
-                    "Incompatible pixel component and pixel component converter types.");
-                static_assert (
-                    std::is_same<
-                        typename OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType::OutComponentType,
-                        typename OutPixelType::ComponentType>::value,
-                    "Incompatible out pixel component and out pixel component converter types.");
-                typedef typename OutPixelType::ConverterOutColorType OutPixelConverterOutColorType;
-                typedef typename PixelType::ColorType PixelColorType;
-                typedef typename Converter<PixelColorType>::IntermediateColorType PixelConverterIntermediateColorType;
-                typename Framebuffer<OutPixelType>::SharedPtr framebuffer (new Framebuffer<OutPixelType> (extents));
+                typename Framebuffer<OutPixelType>::SharedPtr framebuffer (
+                    new Framebuffer<OutPixelType> (extents));
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    // This statement contains 6 separate conversions. The reason for so
-                    // many is we need to do some intermediate conversions to keep the
-                    // combinatorial explosion of color space conversions down to a
-                    // minimum. This way we only need to know how to convert all to
-                    // f32RGBAColor and f32RGBAColor to all others.
+                    // This statement contains 6 separate conversions.
                     //
-                    // Ex:
+                    // 1 - Swizzle src pixel to color
+                    // 2 - same color space component type converter
+                    // 3 - converter intermediate color converter
+                    // 4 - out color converter
+                    // 5 - same out color space component type converter
+                    // 6 - Swizzle final color dst pixel
                     //
-                    // I purposely pick two 'completely' different (all types different)
-                    // pixels to illustrate what each step in the conversion process does.
-                    //
-                    // ui16ACMYPixel -> ui32AXYZPixel
-                    //
-                    // ui16ACMYPixel -> ui16CMYAColor -> f32CMYAColor -> f32RGBAColor ->
-                    // f32XYZAColor -> ui32XYZAColor -> ui32AXYZPixel
+                    // The reason for so many is we need to do some intermediate conversions
+                    // to keep the combinatorial explosion of color space conversions down to
+                    // a minimum. This way we only need to know how to convert all tof32RGBAColor
+                    // and f32RGBAColor to all others.
                     //
                     // This design flexibility exists because doing color space conversion
                     // is not trivial and no automatic approach can possibly exist given that
@@ -193,12 +175,13 @@ namespace thekogans {
                     // cost is mitigated by a good compiler optimizing away parts of this
                     // statemnt that are noop for their particular color/component type
                     // combinations.
+                    typedef typename OutPixelType::ConverterColorType ConverterOutColorType;
+                    typedef typename Converter<ColorType>::IntermediateColorType ConverterIntermediateColorType;
                     *dst++ =
-                        Converter<OutPixelConverterOutColorType>::Convert (
-                            Converter<PixelConverterIntermediateColorType>::Convert (
-                                (*src++).ToColor ().
-                                template ConvertComponents<PixelComponentToPixelConverterIntermediateColorComponentComponentConverterType> ())).
-                        template ConvertComponents<OutPixelConverterOutColorComponentToOutPixelComponentComponentConverterType> ();
+                        OutColorConverterType::Convert (
+                            Converter<ConverterOutColorType>::Convert (
+                                Converter<ConverterIntermediateColorType>::Convert (
+                                    IntermediateColorConverterType::Convert ((*src++).ToColor ()))));
                 }
                 return framebuffer;
             }

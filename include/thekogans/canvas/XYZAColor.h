@@ -19,7 +19,6 @@
 #define __thekogans_canvas_XYZAColor_h
 
 #include "thekogans/util/Types.h"
-#include "thekogans/canvas/ComponentConverter.h"
 
 namespace thekogans {
     namespace canvas {
@@ -45,15 +44,6 @@ namespace thekogans {
                 a (a_) {}
 
             static const XYZAColor Black;
-
-            template<typename ComponentConverter>
-            XYZAColor<typename ComponentConverter::OutComponentType> ConvertComponents () const {
-                return XYZAColor<typename ComponentConverter::OutComponentType> (
-                    ComponentConverter::Convert (x),
-                    ComponentConverter::Convert (y),
-                    ComponentConverter::Convert (z),
-                    ComponentConverter::Convert (a));
-            }
         };
 
         template<typename T>

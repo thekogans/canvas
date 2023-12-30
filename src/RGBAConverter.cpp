@@ -25,6 +25,20 @@ namespace thekogans {
     namespace canvas {
 
         template<>
+        ui8RGBAColor Converter<ui8RGBAColor>::Convert (const f32RGBAColor &inColor) {
+            return ui8RGBAColor (
+                (typename ui8RGBAColor::ComponentType)(inColor.r * 255.0f),
+                (typename ui8RGBAColor::ComponentType)(inColor.g * 255.0f),
+                (typename ui8RGBAColor::ComponentType)(inColor.b * 255.0f),
+                (typename ui8RGBAColor::ComponentType)(inColor.a * 255.0f));
+        }
+
+        template<>
+        f32RGBAColor Converter<f32RGBAColor>::Convert (const ui8RGBAColor &inColor) {
+            return f32RGBAColor (inColor.r / 255.f, inColor.g, inColor.b, inColor.a);
+        }
+
+        template<>
         f32RGBAColor Converter<f32RGBAColor>::Convert (const f32RGBAColor &inColor) {
             return inColor;
         }
@@ -37,9 +51,9 @@ namespace thekogans {
             util::f32 r = x * 3.2404542f + y * -1.5371385f + z * -0.4985314f;
             util::f32 g = x * -0.9692660f + y * 1.8760108f + z * 0.0415560f;
             util::f32 b = x * 0.0556434f + y * -0.2040259f + z * 1.0572252f;
-            r = ((r > 0.0031308f) ? (1.055f * pow (r, 1.0f / 2.4f) - 0.055) : (12.92f * r)) * 255.0f;
-            g = ((g > 0.0031308f) ? (1.055f * pow (g, 1.0f / 2.4f) - 0.055) : (12.92f * g)) * 255.0f;
-            b = ((b > 0.0031308f) ? (1.055f * pow (b, 1.0f / 2.4f) - 0.055) : (12.92f * b)) * 255.0f;
+            r = (r > 0.0031308f) ? (1.055f * pow (r, 1.0f / 2.4f) - 0.055) : (12.92f * r);
+            g = (g > 0.0031308f) ? (1.055f * pow (g, 1.0f / 2.4f) - 0.055) : (12.92f * g);
+            b = (b > 0.0031308f) ? (1.055f * pow (b, 1.0f / 2.4f) - 0.055) : (12.92f * b);
             return f32RGBAColor (r, g, b, inColor.a);
         }
 

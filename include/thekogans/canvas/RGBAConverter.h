@@ -18,7 +18,6 @@
 #if !defined (__thekogans_canvas_RGBAConverter_h)
 #define __thekogans_canvas_RGBAConverter_h
 
-#include "thekogans/util/Types.h"
 #include "thekogans/canvas/RGBAColor.h"
 #include "thekogans/canvas/Converter.h"
 
@@ -26,9 +25,18 @@ namespace thekogans {
     namespace canvas {
 
         template<>
+        struct Converter<ui8RGBAColor> {
+            typedef ui8RGBAColor OutColorType;
+            typedef f32RGBAColor IntermediateColorType;
+
+            template<typename InColorType>
+            static OutColorType Convert (const InColorType &inColor);
+        };
+
+        template<>
         struct Converter<f32RGBAColor> {
             typedef f32RGBAColor OutColorType;
-            typedef RGBAColor<util::f32> IntermediateColorType;
+            typedef f32RGBAColor IntermediateColorType;
 
             template<typename InColorType>
             static OutColorType Convert (const InColorType &inColor);

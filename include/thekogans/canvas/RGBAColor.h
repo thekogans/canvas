@@ -19,7 +19,6 @@
 #define __thekogans_canvas_RGBAColor_h
 
 #include "thekogans/util/Types.h"
-#include "thekogans/canvas/ComponentConverter.h"
 
 namespace thekogans {
     namespace canvas {
@@ -45,18 +44,6 @@ namespace thekogans {
                 a (a_) {}
 
             static const RGBAColor Black;
-
-            /// This template and the typedef above is what plugs
-            /// this class and every other wannabe color class in
-            /// to the \see{Framebuffer::Convert} machinery.
-            template<typename ComponentConverter>
-            RGBAColor<typename ComponentConverter::OutComponentType> ConvertComponents () const {
-                return RGBAColor<typename ComponentConverter::OutComponentType> (
-                    ComponentConverter::Convert (r),
-                    ComponentConverter::Convert (g),
-                    ComponentConverter::Convert (b),
-                    ComponentConverter::Convert (a));
-            }
         };
 
         template<typename T>

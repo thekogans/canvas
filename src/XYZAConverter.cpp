@@ -25,10 +25,15 @@ namespace thekogans {
     namespace canvas {
 
         template<>
+        f32XYZAColor Converter<f32XYZAColor>::Convert (const f32XYZAColor &inColor) {
+            return inColor;
+        }
+
+        template<>
         f32XYZAColor Converter<f32XYZAColor>::Convert (const f32RGBAColor &inColor) {
-            util::f32 r = inColor.r / 255.0f;
-            util::f32 g = inColor.g / 255.0f;
-            util::f32 b = inColor.b / 255.0f;
+            util::f32 r = inColor.r;
+            util::f32 g = inColor.g;
+            util::f32 b = inColor.b;
             r = ((r > 0.04045f) ? pow ((r + 0.055f) / 1.055f, 2.4f) : (r / 12.92f)) * 100.0f;
             g = ((g > 0.04045f) ? pow ((g + 0.055f) / 1.055f, 2.4f) : (g / 12.92f)) * 100.0f;
             b = ((b > 0.04045f) ? pow ((b + 0.055f) / 1.055f, 2.4f) : (b / 12.92f)) * 100.0f;
