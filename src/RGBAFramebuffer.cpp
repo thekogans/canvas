@@ -71,7 +71,7 @@ namespace thekogans {
                 ui8RGBAFramebuffer::SharedPtr framebuffer (
                     new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
                 ui8RGBAPixel *dst = framebuffer->buffer.array;
-                const util::ui8 *src = &data[0];
+                const util::ui8 *src = data.data ();
                 for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                     util::ui8 r = *src++;
                     util::ui8 g = *src++;
@@ -97,7 +97,7 @@ namespace thekogans {
                 ui8RGBAFramebuffer::SharedPtr framebuffer (
                     new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
                 ui8RGBAPixel *dst = framebuffer->buffer.array;
-                const util::ui8 *src = &data[0];
+                const util::ui8 *src = data.data ();
                 for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
                     util::ui8 r = *src++;
                     util::ui8 g = *src++;

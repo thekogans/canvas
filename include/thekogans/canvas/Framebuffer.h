@@ -122,19 +122,20 @@ namespace thekogans {
             }
 
             /// \brief
-            /// Framebuffer pixel format and type conversion template.
-            /// Depending on the number of pixel formats and component
+            /// Framebuffer pixel color and componenet type conversion template.
+            /// Depending on the number of pixel color formats and component
             /// types you use, this algorithm can potentially be specialized
-            /// hundreds of times.
+            /// many times.
             ///
             /// Ex:
             ///
             /// \code{.cpp}
             /// // create an 8 bpp RGBA framebuffer.
-            /// ui8RGBAFramebuffer::SharedPtr fb1 (new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
+            /// ui8RGBAFramebuffer::SharedPtr fb1 (
+            ///     new ui8RGBAFramebuffer (util::Rectangle::Extents (10, 10)));
             /// // clear it to black.
             /// fb1->Clear (ui8RGBAColor::Black);
-            /// // convert it to 16 bpp ABGR framebuffer using an 8 to 16 bit scaling converter.
+            /// // convert it to 16 bpp ABGR framebuffer.
             /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel> ();
             /// \endcode
             ///
@@ -153,6 +154,8 @@ namespace thekogans {
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
+                    typedef typename OutPixelType::ConverterColorType ConverterOutColorType;
+                    typedef typename Converter<ColorType>::IntermediateColorType ConverterIntermediateColorType;
                     // This statement contains 6 separate conversions.
                     //
                     // 1 - Swizzle src pixel to color
@@ -160,7 +163,7 @@ namespace thekogans {
                     // 3 - converter intermediate color converter
                     // 4 - out color converter
                     // 5 - same out color space component type converter
-                    // 6 - Swizzle final color dst pixel
+                    // 6 - Swizzle final color to dst pixel
                     //
                     // The reason for so many is we need to do some intermediate conversions
                     // to keep the combinatorial explosion of color space conversions down to
@@ -175,8 +178,6 @@ namespace thekogans {
                     // cost is mitigated by a good compiler optimizing away parts of this
                     // statemnt that are noop for their particular color/component type
                     // combinations.
-                    typedef typename OutPixelType::ConverterColorType ConverterOutColorType;
-                    typedef typename Converter<ColorType>::IntermediateColorType ConverterIntermediateColorType;
                     *dst++ =
                         OutColorConverterType::Convert (
                             Converter<ConverterOutColorType>::Convert (
