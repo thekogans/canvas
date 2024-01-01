@@ -47,17 +47,22 @@ namespace thekogans {
 
         template<typename T>
         struct Framebuffer : public util::RefCounted {
+            /// \brief
+            /// Declare \see{RefCounted} pointers.
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Framebuffer)
             /// \brief
             /// Framebuffer has a private heap to help with performance and memory fragmentation.
             THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
 
+            /// \brief
+            /// Framebuffer pixel type.
             typedef T PixelType;
+            /// \brief
+            /// Pixel color type.
             typedef typename PixelType::ColorType ColorType;
 
             /// \brief
-            /// Width and height of framebuffer in pixels.
-            /// They are unchangable.
+            /// Width and height of framebuffer in pixels. They are unchangable.
             const util::Rectangle::Extents extents;
             /// \brief
             /// Framebuffer data.
@@ -72,6 +77,8 @@ namespace thekogans {
             /// intentional as initializing it to some value would
             /// just be a wastse of time as most apps would call Clear
             /// or perform some other initialization soon after allocation.
+            /// \param[in] extents_ Framebuffer width and height.
+            /// \param[in] buffer_ Optional Array of pixels to initialize the framebuffer.
             Framebuffer (
                     const util::Rectangle::Extents &extents_,
                     const PixelType *buffer_ = 0) :
@@ -161,7 +168,7 @@ namespace thekogans {
             /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
                 typename OutPixelType,
-                typename IntermediateColorConverterType =
+                typename ConverterIntermediateColorConverterType =
                     Converter<typename Converter<ColorType>::IntermediateColorType>,
                 typename OutColorConverterType = Converter<typename OutPixelType::ColorType>>
             typename Framebuffer<OutPixelType>::SharedPtr Convert () {
@@ -199,7 +206,7 @@ namespace thekogans {
                         OutColorConverterType::Convert (
                             Converter<ConverterOutColorType>::Convert (
                                 Converter<ConverterIntermediateColorType>::Convert (
-                                    IntermediateColorConverterType::Convert ((*src++).ToColor ()))));
+                                    ConverterIntermediateColorConverterType::Convert ((*src++).ToColor ()))));
                 }
                 return framebuffer;
             }
