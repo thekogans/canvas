@@ -31,6 +31,15 @@
 namespace thekogans {
     namespace canvas {
 
+        /// \struct Frame Frame.h thekogans/canvas/Frame.h
+        ///
+        /// \brief
+        /// Frame is a rectangular view in to a \see{Framebuffer}. By creating multiple,
+        /// independent (non overlapping rectangles) views in to the same framebuffer you
+        /// can take advantage of graphics' embarasigly easy paralellization strategy.
+        /// That's the reason almost all image processing algorithms are defined in Frame
+        /// and not in \see[Framebuffer}.
+
         template<typename T>
         struct Frame : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Frame)

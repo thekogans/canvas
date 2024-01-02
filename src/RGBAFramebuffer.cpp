@@ -28,30 +28,22 @@ namespace thekogans {
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8RGBAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16RGBAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32RGBAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64RGBAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32RGBAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64RGBAFramebuffer, util::SpinLock)
 
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8BGRAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16BGRAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32BGRAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64BGRAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32BGRAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64BGRAFramebuffer, util::SpinLock)
 
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ARGBFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ARGBFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ARGBFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ARGBFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ARGBFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ARGBFramebuffer, util::SpinLock)
 
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ABGRFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ABGRFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ABGRFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ABGRFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ABGRFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ABGRFramebuffer, util::SpinLock)
 
         void foo () {
             ui8RGBAFramebuffer::SharedPtr fb1 (
@@ -213,8 +205,11 @@ namespace thekogans {
             inline util::Buffer &operator >> (
                     util::Buffer &buffer,
                     FileHeader &fileHeader) {
-                buffer >> fileHeader.bfType >> fileHeader.bfSize >>
-                    fileHeader.bfReserved1 >> fileHeader.bfReserved2 >>
+                buffer >>
+                    fileHeader.bfType >>
+                    fileHeader.bfSize >>
+                    fileHeader.bfReserved1 >>
+                    fileHeader.bfReserved2 >>
                     fileHeader.bfOffBits;
                 return buffer;
             }
@@ -222,11 +217,17 @@ namespace thekogans {
             inline util::Buffer &operator >> (
                     util::Buffer &buffer,
                     InfoHeader &infoHeader) {
-                buffer >> infoHeader.biSize >> infoHeader.biWidth >>
-                    infoHeader.biHeight >> infoHeader.biPlanes >>
-                    infoHeader.biBitCount >> infoHeader.biCompression >>
-                    infoHeader.biSizeImage >> infoHeader.biXPelsPerMeter >>
-                    infoHeader.biYPelsPerMeter >> infoHeader.biClrUsed >>
+                buffer >>
+                    infoHeader.biSize >>
+                    infoHeader.biWidth >>
+                    infoHeader.biHeight >>
+                    infoHeader.biPlanes >>
+                    infoHeader.biBitCount >>
+                    infoHeader.biCompression >>
+                    infoHeader.biSizeImage >>
+                    infoHeader.biXPelsPerMeter >>
+                    infoHeader.biYPelsPerMeter >>
+                    infoHeader.biClrUsed >>
                     infoHeader.biClrImportant;
                 return buffer;
             }

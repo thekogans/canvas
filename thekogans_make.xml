@@ -57,6 +57,11 @@
     <cpp_header>$(organization)/$(project_directory)/Font.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Frame.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/Framebuffer.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/HSLAColor.h</cpp_header>
+	<cpp_header>$(organization)/$(project_directory)/HSLAConverter.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/HSLAFrame.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/HSLAFramebuffer.h</cpp_header>
+    <cpp_header>$(organization)/$(project_directory)/HSLAPixel.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/RGBAColor.h</cpp_header>
 	<cpp_header>$(organization)/$(project_directory)/RGBAConverter.h</cpp_header>
     <cpp_header>$(organization)/$(project_directory)/RGBAFrame.h</cpp_header>
@@ -81,8 +86,11 @@
     <!-- <cpp_source>Bitmap.cpp</cpp_source>
     <cpp_source>Canvas.cpp</cpp_source>
     <cpp_source>DrawUtils.cpp</cpp_source> -->
-	<cpp_source>RGBAConverter.cpp</cpp_source>
     <cpp_source>Font.cpp</cpp_source>
+	<cpp_source>HSLAConverter.cpp</cpp_source>
+    <cpp_source>HSLAFrame.cpp</cpp_source>
+    <cpp_source>HSLAFramebuffer.cpp</cpp_source>
+	<cpp_source>RGBAConverter.cpp</cpp_source>
     <cpp_source>RGBAFrame.cpp</cpp_source>
     <cpp_source>RGBAFramebuffer.cpp</cpp_source>
 	<cpp_source>XYZAConverter.cpp</cpp_source>

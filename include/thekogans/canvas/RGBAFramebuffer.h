@@ -27,30 +27,22 @@ namespace thekogans {
         typedef Framebuffer<ui8RGBAPixel> ui8RGBAFramebuffer;
         typedef Framebuffer<ui16RGBAPixel> ui16RGBAFramebuffer;
         typedef Framebuffer<ui32RGBAPixel> ui32RGBAFramebuffer;
-        typedef Framebuffer<ui64RGBAPixel> ui64RGBAFramebuffer;
         typedef Framebuffer<f32RGBAPixel> f32RGBAFramebuffer;
-        typedef Framebuffer<f64RGBAPixel> f64RGBAFramebuffer;
 
         typedef Framebuffer<ui8BGRAPixel> ui8BGRAFramebuffer;
         typedef Framebuffer<ui16BGRAPixel> ui16BGRAFramebuffer;
         typedef Framebuffer<ui32BGRAPixel> ui32BGRAFramebuffer;
-        typedef Framebuffer<ui64BGRAPixel> ui64BGRAFramebuffer;
         typedef Framebuffer<f32BGRAPixel> f32BGRAFramebuffer;
-        typedef Framebuffer<f64BGRAPixel> f64BGRAFramebuffer;
 
         typedef Framebuffer<ui8ARGBPixel> ui8ARGBFramebuffer;
         typedef Framebuffer<ui16ARGBPixel> ui16ARGBFramebuffer;
         typedef Framebuffer<ui32ARGBPixel> ui32ARGBFramebuffer;
-        typedef Framebuffer<ui64ARGBPixel> ui64ARGBFramebuffer;
         typedef Framebuffer<f32ARGBPixel> f32ARGBFramebuffer;
-        typedef Framebuffer<f64ARGBPixel> f64ARGBFramebuffer;
 
         typedef Framebuffer<ui8ABGRPixel> ui8ABGRFramebuffer;
         typedef Framebuffer<ui16ABGRPixel> ui16ABGRFramebuffer;
         typedef Framebuffer<ui32ABGRPixel> ui32ABGRFramebuffer;
-        typedef Framebuffer<ui64ABGRPixel> ui64ABGRFramebuffer;
         typedef Framebuffer<f32ABGRPixel> f32ABGRFramebuffer;
-        typedef Framebuffer<f64ABGRPixel> f64ABGRFramebuffer;
 
         ui8RGBAFramebuffer::SharedPtr FromPNGBuffer (
             const util::ui8 *buffer,

@@ -18,30 +18,38 @@
 #include <cmath>
 #include "thekogans/util/Types.h"
 #include "thekogans/canvas/RGBAColor.h"
-#include "thekogans/canvas/XYZAColor.h"
-#include "thekogans/canvas/XYZAConverter.h"
+#include "thekogans/canvas/HSLAColor.h"
+#include "thekogans/canvas/HSLAConverter.h"
 
 namespace thekogans {
     namespace canvas {
 
         template<>
-        f32XYZAColor Converter<f32XYZAColor>::Convert (const f32XYZAColor &inColor) {
+        f32HSLAColor Converter<f32HSLAColor>::Convert (const f32HSLAColor &inColor) {
             return inColor;
         }
 
         template<>
-        f32XYZAColor Converter<f32XYZAColor>::Convert (const f32RGBAColor &inColor) {
+        f32HSLAColor Converter<f32HSLAColor>::Convert (const f32RGBAColor &inColor) {
             util::f32 r = inColor.r;
             util::f32 g = inColor.g;
             util::f32 b = inColor.b;
-            r = (r > 0.04045f ? pow ((r + 0.055f) / 1.055f, 2.4f) : r / 12.92f) * 100.0f;
-            g = (g > 0.04045f ? pow ((g + 0.055f) / 1.055f, 2.4f) : g / 12.92f) * 100.0f;
-            b = (b > 0.04045f ? pow ((b + 0.055f) / 1.055f, 2.4f) : b / 12.92f) * 100.0f;
-            return f32XYZAColor (
-                r * 0.4124564f + g * 0.3575761f + b * 0.1804375f,
-                r * 0.2126729f + g * 0.7151522f + b * 0.0721750f,
-                r * 0.0193339f + g * 0.1191920f + b * 0.9503041f,
-                inColor.a);
+            util::f32 min = std::min (r, std::min (g, b));
+            util::f32 max = std::max (r, std::max (g, b));
+            util::f32 delta = max - min;
+            util::f32 l = (max + min) / 2.0f;
+            if (delta == 0.0f) {
+                return f32HSLAColor (0.0f, 0.0f, l, inColor.a);
+            }
+            else {
+                util::f32 s = l < 0.5f ? delta / (max + min) : delta / (1.0f - std::abs (2.0f * l - 1.0f));
+                util::f32 h = r == max ? (g - b) / delta : g == max ? (b - r) / delta + 2.0f : (r - g) / delta + 4.0f;
+                return f32HSLAColor (
+                    fmod (60.0f * h + 360.0f, 360.0f),
+                    s * 100.f,
+                    l * 100.f,
+                    inColor.a);
+            }
         }
 
     } // namespace canvas

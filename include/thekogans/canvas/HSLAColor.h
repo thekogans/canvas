@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
-#if !defined (__thekogans_canvas_XYZAColor_h)
-#define __thekogans_canvas_XYZAColor_h
+#if !defined (__thekogans_canvas_HSLAColor_h)
+#define __thekogans_canvas_HSLAColor_h
 
 #include "thekogans/util/Types.h"
 
@@ -24,34 +24,34 @@ namespace thekogans {
     namespace canvas {
 
         template<typename T>
-        struct XYZAColor {
+        struct HSLAColor {
             typedef T ComponentType;
 
-            ComponentType x;
-            ComponentType y;
-            ComponentType z;
+            ComponentType h;
+            ComponentType s;
+            ComponentType l;
             ComponentType a;
 
-            XYZAColor () {}
-            XYZAColor (
-                ComponentType x_,
-                ComponentType y_,
-                ComponentType z_,
+            HSLAColor () {}
+            HSLAColor (
+                ComponentType h_,
+                ComponentType s_,
+                ComponentType l_,
                 ComponentType a_) :
-                x (x_),
-                y (y_),
-                z (z_),
+                h (h_),
+                s (s_),
+                l (l_),
                 a (a_) {}
 
-            static const XYZAColor Black;
+            static const HSLAColor Black;
         };
 
         template<typename T>
-        const XYZAColor<T> XYZAColor<T>::Black (0, 0, 0, 0);
+        const HSLAColor<T> HSLAColor<T>::Black (0, 0, 0, 0);
 
-        typedef XYZAColor<util::f32> f32XYZAColor;
+        typedef HSLAColor<util::f32> f32HSLAColor;
 
     } // namespace canvas
 } // namespace thekogans
 
-#endif // !defined (__thekogans_canvas_XYZAColor_h)
+#endif // !defined (__thekogans_canvas_HSLAColor_h)

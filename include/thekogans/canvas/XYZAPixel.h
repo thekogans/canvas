@@ -61,12 +61,7 @@ namespace thekogans {
             }
         };
 
-        typedef XYZAPixel<util::ui8> ui8XYZAPixel;
-        typedef XYZAPixel<util::ui16> ui16XYZAPixel;
-        typedef XYZAPixel<util::ui32> ui32XYZAPixel;
-        typedef XYZAPixel<util::ui64> ui64XYZAPixel;
         typedef XYZAPixel<util::f32> f32XYZAPixel;
-        typedef XYZAPixel<util::f64> f64XYZAPixel;
 
         template<typename T>
         struct ZYXAPixel {
@@ -101,12 +96,7 @@ namespace thekogans {
             }
         };
 
-        typedef ZYXAPixel<util::ui8> ui8ZYXAPixel;
-        typedef ZYXAPixel<util::ui16> ui16ZYXAPixel;
-        typedef ZYXAPixel<util::ui32> ui32ZYXAPixel;
-        typedef ZYXAPixel<util::ui64> ui64ZYXAPixel;
         typedef ZYXAPixel<util::f32> f32ZYXAPixel;
-        typedef ZYXAPixel<util::f64> f64ZYXAPixel;
 
         template<typename T>
         struct AXYZPixel {
@@ -141,12 +131,7 @@ namespace thekogans {
             }
         };
 
-        typedef AXYZPixel<util::ui8> ui8AXYZPixel;
-        typedef AXYZPixel<util::ui16> ui16AXYZPixel;
-        typedef AXYZPixel<util::ui32> ui32AXYZPixel;
-        typedef AXYZPixel<util::ui64> ui64AXYZPixel;
         typedef AXYZPixel<util::f32> f32AXYZPixel;
-        typedef AXYZPixel<util::f64> f64AXYZPixel;
 
         template<typename T>
         struct AZYXPixel {
@@ -181,12 +166,7 @@ namespace thekogans {
             }
         };
 
-        typedef AZYXPixel<util::ui8> ui8AZYXPixel;
-        typedef AZYXPixel<util::ui16> ui16AZYXPixel;
-        typedef AZYXPixel<util::ui32> ui32AZYXPixel;
-        typedef AZYXPixel<util::ui64> ui64AZYXPixel;
         typedef AZYXPixel<util::f32> f32AZYXPixel;
-        typedef AZYXPixel<util::f64> f64AZYXPixel;
 
     } // namespace canvas
 } // namespace thekogans

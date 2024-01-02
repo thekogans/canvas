@@ -15,15 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
-#include "thekogans/canvas/XYZAFrame.h"
+#if !defined (__thekogans_canvas_Pixel_h)
+#define __thekogans_canvas_Pixel_h
+
+#include "thekogans/util/Types.h"
+#include "thekogans/canvas/Color.h"
 
 namespace thekogans {
     namespace canvas {
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32XYZAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ZYXAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AXYZFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AZYXFrame, util::SpinLock)
+        template<typename T>
+        struct Pixel {
+            typedef T ComponentType;
+            typedef Color<ComponentType> ColorType;
+            typedef Color<util::f32> ConverterColorType;
+
+            Pixel () {}
+            Pixel (const ColorType &color);
+
+            ColorType ToColor () const;
+
+            Pixel &operator = (const ColorType &color);
+        };
 
     } // namespace canvas
 } // namespace thekogans
+
+#endif // !defined (__thekogans_canvas_Pixel_h)

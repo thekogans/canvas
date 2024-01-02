@@ -64,9 +64,7 @@ namespace thekogans {
         typedef RGBAPixel<util::ui8> ui8RGBAPixel;
         typedef RGBAPixel<util::ui16> ui16RGBAPixel;
         typedef RGBAPixel<util::ui32> ui32RGBAPixel;
-        typedef RGBAPixel<util::ui64> ui64RGBAPixel;
         typedef RGBAPixel<util::f32> f32RGBAPixel;
-        typedef RGBAPixel<util::f64> f64RGBAPixel;
 
         /// \brief
         /// Validate assumptions about ui8RGBAPixel component packing.
@@ -119,9 +117,7 @@ namespace thekogans {
         typedef BGRAPixel<util::ui8> ui8BGRAPixel;
         typedef BGRAPixel<util::ui16> ui16BGRAPixel;
         typedef BGRAPixel<util::ui32> ui32BGRAPixel;
-        typedef BGRAPixel<util::ui64> ui64BGRAPixel;
         typedef BGRAPixel<util::f32> f32BGRAPixel;
-        typedef BGRAPixel<util::f64> f64BGRAPixel;
 
         template<typename T>
         struct ARGBPixel {
@@ -159,9 +155,7 @@ namespace thekogans {
         typedef ARGBPixel<util::ui8> ui8ARGBPixel;
         typedef ARGBPixel<util::ui16> ui16ARGBPixel;
         typedef ARGBPixel<util::ui32> ui32ARGBPixel;
-        typedef ARGBPixel<util::ui64> ui64ARGBPixel;
         typedef ARGBPixel<util::f32> f32ARGBPixel;
-        typedef ARGBPixel<util::f64> f64ARGBPixel;
 
         template<typename T>
         struct ABGRPixel {
@@ -199,9 +193,7 @@ namespace thekogans {
         typedef ABGRPixel<util::ui8> ui8ABGRPixel;
         typedef ABGRPixel<util::ui16> ui16ABGRPixel;
         typedef ABGRPixel<util::ui32> ui32ABGRPixel;
-        typedef ABGRPixel<util::ui64> ui64ABGRPixel;
         typedef ABGRPixel<util::f32> f32ABGRPixel;
-        typedef ABGRPixel<util::f64> f64ABGRPixel;
 
     } // namespace canvas
 } // namespace thekogans

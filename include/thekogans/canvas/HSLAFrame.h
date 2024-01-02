@@ -15,15 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
-#include "thekogans/canvas/XYZAFrame.h"
+#if !defined (__thekogans_canvas_HSLAFrame_h)
+#define __thekogans_canvas_HSLAFrame_h
+
+#include "thekogans/canvas/Frame.h"
+#include "thekogans/canvas/HSLAPixel.h"
 
 namespace thekogans {
     namespace canvas {
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32XYZAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ZYXAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AXYZFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AZYXFrame, util::SpinLock)
+        typedef Frame<f32HSLAPixel> f32HSLAFrame;
+        typedef Frame<f32LSHAPixel> f32LSHAFrame;
+        typedef Frame<f32AHSLPixel> f32AHSLFrame;
+        typedef Frame<f32ALSHPixel> f32ALSHFrame;
 
     } // namespace canvas
 } // namespace thekogans
+
+#endif // !defined (__thekogans_canvas_HSLAFrame_h)

@@ -161,10 +161,10 @@ namespace thekogans {
             /// ui16ABGRFramebuffer::SharedPtr fb2 = fb1->Convert<ui16RGBAPixel> ();
             /// \endcode
             ///
-            /// \tparam[in] OutPixelType Out framebuffer pixel type.
-            /// \tparam[in] IntermediateColorConverterType Pixel color type to converter
+            /// \tparam OutPixelType Out framebuffer pixel type.
+            /// \tparam ConverterIntermediateColorConverterType Pixel color type to converter
             /// intermediate color type.
-            /// \tparam[in] OutColorConverterType Converter out color type to out pixel color type.
+            /// \tparam OutColorConverterType Converter out color type to out pixel color type.
             /// \return Framebuffer<OutPixelType>::SharedPtr.
             template<
                 typename OutPixelType,
@@ -202,15 +202,33 @@ namespace thekogans {
                     // cost is mitigated by a good compiler optimizing away parts of this
                     // statemnt that are noop for their particular color/component type
                     // combinations.
-                    *dst++ =
+                    *dst++ = // 6 - Swizzle out color to dst pixel
+                        // 5 - same out color space component type converter
                         OutColorConverterType::Convert (
+                            // 4 - out color converter
                             Converter<ConverterOutColorType>::Convert (
+                                // 3 - converter intermediate color converter
                                 Converter<ConverterIntermediateColorType>::Convert (
-                                    ConverterIntermediateColorConverterType::Convert ((*src++).ToColor ()))));
+                                    // 2 - same color space component type converter
+                                    ConverterIntermediateColorConverterType::Convert (
+                                        // 1 - Swizzle src pixel to color
+                                        (*src++).ToColor ()))));
                 }
                 return framebuffer;
             }
 
+            /// \brief
+            /// There's no need to go through all the trouble of duplicating code
+            /// for copy ctor and operator. If you need a deep copy of a framebuffer
+            /// just do this;
+            ///
+            /// \code{.cpp}
+            /// ui8RGBAFramebuffer::SharedPtr fb2 (
+            ///     new ui8RGBAFramebuffer (fb1->extents, fb1->buffer.array));
+            /// \endcode
+            ///
+            /// This design forces most (all?) framebuffers to be allocated on the heap
+            /// and shared among many \see{Frame}s.
             THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Framebuffer)
         };
 

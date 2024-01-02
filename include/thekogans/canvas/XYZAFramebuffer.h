@@ -24,33 +24,10 @@
 namespace thekogans {
     namespace canvas {
 
-        typedef Framebuffer<ui8XYZAPixel> ui8XYZAFramebuffer;
-        typedef Framebuffer<ui16XYZAPixel> ui16XYZAFramebuffer;
-        typedef Framebuffer<ui32XYZAPixel> ui32XYZAFramebuffer;
-        typedef Framebuffer<ui64XYZAPixel> ui64XYZAFramebuffer;
         typedef Framebuffer<f32XYZAPixel> f32XYZAFramebuffer;
-        typedef Framebuffer<f64XYZAPixel> f64XYZAFramebuffer;
-
-        typedef Framebuffer<ui8ZYXAPixel> ui8ZYXAFramebuffer;
-        typedef Framebuffer<ui16ZYXAPixel> ui16ZYXAFramebuffer;
-        typedef Framebuffer<ui32ZYXAPixel> ui32ZYXAFramebuffer;
-        typedef Framebuffer<ui64ZYXAPixel> ui64ZYXAFramebuffer;
         typedef Framebuffer<f32ZYXAPixel> f32ZYXAFramebuffer;
-        typedef Framebuffer<f64ZYXAPixel> f64ZYXAFramebuffer;
-
-        typedef Framebuffer<ui8AXYZPixel> ui8AXYZFramebuffer;
-        typedef Framebuffer<ui16AXYZPixel> ui16AXYZFramebuffer;
-        typedef Framebuffer<ui32AXYZPixel> ui32AXYZFramebuffer;
-        typedef Framebuffer<ui64AXYZPixel> ui64AXYZFramebuffer;
         typedef Framebuffer<f32AXYZPixel> f32AXYZFramebuffer;
-        typedef Framebuffer<f64AXYZPixel> f64AXYZFramebuffer;
-
-        typedef Framebuffer<ui8AZYXPixel> ui8AZYXFramebuffer;
-        typedef Framebuffer<ui16AZYXPixel> ui16AZYXFramebuffer;
-        typedef Framebuffer<ui32AZYXPixel> ui32AZYXFramebuffer;
-        typedef Framebuffer<ui64AZYXPixel> ui64AZYXFramebuffer;
         typedef Framebuffer<f32AZYXPixel> f32AZYXFramebuffer;
-        typedef Framebuffer<f64AZYXPixel> f64AZYXFramebuffer;
 
     } // namespace canvas
 } // namespace thekogans

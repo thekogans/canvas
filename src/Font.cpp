@@ -17,7 +17,7 @@
 
 #include <cassert>
 #include "thekogans/util/SpinLock.h"
-#include "thekogans/canvas/Framebuffer.h"
+#include "thekogans/canvas/RGBAFramebuffer.h"
 #include "thekogans/canvas/Font.h"
 
 namespace thekogans {

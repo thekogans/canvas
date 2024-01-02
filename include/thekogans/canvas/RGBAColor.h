@@ -52,9 +52,7 @@ namespace thekogans {
         typedef RGBAColor<util::ui8> ui8RGBAColor;
         typedef RGBAColor<util::ui16> ui16RGBAColor;
         typedef RGBAColor<util::ui32> ui32RGBAColor;
-        typedef RGBAColor<util::ui64> ui64RGBAColor;
         typedef RGBAColor<util::f32> f32RGBAColor;
-        typedef RGBAColor<util::f64> f64RGBAColor;
 
     } // namespace canvas
 } // namespace thekogans

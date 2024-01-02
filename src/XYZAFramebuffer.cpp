@@ -20,33 +20,10 @@
 namespace thekogans {
     namespace canvas {
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8XYZAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16XYZAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32XYZAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64XYZAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32XYZAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64XYZAFramebuffer, util::SpinLock)
-
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8ZYXAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16ZYXAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32ZYXAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64ZYXAFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ZYXAFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64ZYXAFramebuffer, util::SpinLock)
-
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8AXYZFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16AXYZFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32AXYZFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64AXYZFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AXYZFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64AXYZFramebuffer, util::SpinLock)
-
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui8AZYXFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui16AZYXFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui32AZYXFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (ui64AZYXFramebuffer, util::SpinLock)
         THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AZYXFramebuffer, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f64AZYXFramebuffer, util::SpinLock)
 
     } // namespace canvas
 } // namespace thekogans

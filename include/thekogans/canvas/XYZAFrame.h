@@ -24,33 +24,10 @@
 namespace thekogans {
     namespace canvas {
 
-        typedef Frame<ui8XYZAPixel> ui8XYZAFrame;
-        typedef Frame<ui16XYZAPixel> ui16XYZAFrame;
-        typedef Frame<ui32XYZAPixel> ui32XYZAFrame;
-        typedef Frame<ui64XYZAPixel> ui64XYZAFrame;
         typedef Frame<f32XYZAPixel> f32XYZAFrame;
-        typedef Frame<f64XYZAPixel> f64XYZAFrame;
-
-        typedef Frame<ui8ZYXAPixel> ui8ZYXAFrame;
-        typedef Frame<ui16ZYXAPixel> ui16ZYXAFrame;
-        typedef Frame<ui32ZYXAPixel> ui32ZYXAFrame;
-        typedef Frame<ui64ZYXAPixel> ui64ZYXAFrame;
         typedef Frame<f32ZYXAPixel> f32ZYXAFrame;
-        typedef Frame<f64ZYXAPixel> f64ZYXAFrame;
-
-        typedef Frame<ui8AXYZPixel> ui8AXYZFrame;
-        typedef Frame<ui16AXYZPixel> ui16AXYZFrame;
-        typedef Frame<ui32AXYZPixel> ui32AXYZFrame;
-        typedef Frame<ui64AXYZPixel> ui64AXYZFrame;
         typedef Frame<f32AXYZPixel> f32AXYZFrame;
-        typedef Frame<f64AXYZPixel> f64AXYZFrame;
-
-        typedef Frame<ui8AZYXPixel> ui8AZYXFrame;
-        typedef Frame<ui16AZYXPixel> ui16AZYXFrame;
-        typedef Frame<ui32AZYXPixel> ui32AZYXFrame;
-        typedef Frame<ui64AZYXPixel> ui64AZYXFrame;
         typedef Frame<f32AZYXPixel> f32AZYXFrame;
-        typedef Frame<f64AZYXPixel> f64AZYXFrame;
 
     } // namespace canvas
 } // namespace thekogans
