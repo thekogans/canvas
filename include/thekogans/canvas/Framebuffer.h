@@ -177,7 +177,7 @@ namespace thekogans {
                 const PixelType *src = buffer.array;
                 OutPixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
-                    typedef typename OutPixelType::ConverterColorType ConverterOutColorType;
+                    typedef typename OutPixelType::ColorType::ConverterColorType ConverterOutColorType;
                     typedef typename Converter<ColorType>::IntermediateColorType
                         ConverterIntermediateColorType;
                     // This statement contains 6 separate conversions.
@@ -219,7 +219,7 @@ namespace thekogans {
 
             /// \brief
             /// There's no need to go through all the trouble of duplicating code
-            /// for copy ctor and operator. If you need a deep copy of a framebuffer
+            /// for copy ctor and = operator. If you need a deep copy of a framebuffer
             /// just do this;
             ///
             /// \code{.cpp}

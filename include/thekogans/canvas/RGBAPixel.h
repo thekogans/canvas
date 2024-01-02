@@ -28,7 +28,6 @@ namespace thekogans {
         struct RGBAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef f32RGBAColor ConverterColorType;
 
             ComponentType r;
             ComponentType g;
@@ -37,10 +36,6 @@ namespace thekogans {
 
             /// \brief
             /// ctor.
-            /// NOTE: We don't initialize anything here. We want to be as close as we can to POTs.
-            /// Smart compilers will understand that and will elide the ctor when we allocate large
-            /// arrays of pixels (see \see{Framebuffer}). It's undestood that initialization will be
-            /// performed soon aftor allocation and doing it twice would just be a waste of time.
             RGBAPixel () {}
             RGBAPixel (const ColorType &color) :
                 r (color.r),
@@ -85,7 +80,6 @@ namespace thekogans {
         struct BGRAPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef f32RGBAColor ConverterColorType;
 
             ComponentType b;
             ComponentType g;
@@ -123,7 +117,6 @@ namespace thekogans {
         struct ARGBPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef f32RGBAColor ConverterColorType;
 
             ComponentType a;
             ComponentType r;
@@ -161,7 +154,6 @@ namespace thekogans {
         struct ABGRPixel {
             typedef T ComponentType;
             typedef RGBAColor<ComponentType> ColorType;
-            typedef f32RGBAColor ConverterColorType;
 
             ComponentType a;
             ComponentType b;

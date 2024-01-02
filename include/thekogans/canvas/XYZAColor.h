@@ -26,6 +26,7 @@ namespace thekogans {
         template<typename T>
         struct XYZAColor {
             typedef T ComponentType;
+            typedef XYZAColor<util::f32> ConverterColorType;
 
             ComponentType x;
             ComponentType y;

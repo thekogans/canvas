@@ -26,6 +26,7 @@ namespace thekogans {
         template<typename T>
         struct RGBAColor {
             typedef T ComponentType;
+            typedef RGBAColor<util::f32> ConverterColorType;
 
             ComponentType r;
             ComponentType g;

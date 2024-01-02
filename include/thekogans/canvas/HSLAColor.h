@@ -26,6 +26,7 @@ namespace thekogans {
         template<typename T>
         struct HSLAColor {
             typedef T ComponentType;
+            typedef HSLAColor<util::f32> ConverterColorType;
 
             ComponentType h;
             ComponentType s;

@@ -28,7 +28,6 @@ namespace thekogans {
         struct HSLAPixel {
             typedef T ComponentType;
             typedef HSLAColor<ComponentType> ColorType;
-            typedef f32HSLAColor ConverterColorType;
 
             ComponentType h;
             ComponentType s;
@@ -67,7 +66,6 @@ namespace thekogans {
         struct LSHAPixel {
             typedef T ComponentType;
             typedef HSLAColor<ComponentType> ColorType;
-            typedef f32HSLAColor ConverterColorType;
 
             ComponentType l;
             ComponentType s;
@@ -102,7 +100,6 @@ namespace thekogans {
         struct AHSLPixel {
             typedef T ComponentType;
             typedef HSLAColor<ComponentType> ColorType;
-            typedef f32HSLAColor ConverterColorType;
 
             ComponentType a;
             ComponentType h;
@@ -137,7 +134,6 @@ namespace thekogans {
         struct ALSHPixel {
             typedef T ComponentType;
             typedef HSLAColor<ComponentType> ColorType;
-            typedef f32HSLAColor ConverterColorType;
 
             ComponentType a;
             ComponentType l;

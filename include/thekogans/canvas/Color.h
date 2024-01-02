@@ -26,6 +26,9 @@ namespace thekogans {
         template<typename T>
         struct Color {
             typedef T ComponentType;
+            /// \brief
+            ///
+            typedef Color<util::f32> ConverterColorType;
 
             static const Color Black;
         };
