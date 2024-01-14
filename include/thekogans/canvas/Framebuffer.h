@@ -71,26 +71,14 @@ namespace thekogans {
             /// \brief
             /// ctor.
             /// Create a framebuffer with given extents.
-            /// Optionally copy the contents of the given buffer.
-            /// NOTE: If you choose not to provide data to initialize
-            /// the framebuffer, it will be uninitialized. This is
-            /// intentional as initializing it to some value would
-            /// just be a wastse of time as most apps would call Clear
-            /// or perform some other initialization soon after allocation.
+            /// Optionally wrap the contents of the given buffer.
             /// \param[in] extents_ Framebuffer width and height.
-            /// \param[in] buffer_ Optional Array of pixels to initialize the framebuffer.
+            /// \param[in] buffer_ Optional Array of pixels to wrap with the framebuffer.
             Framebuffer (
-                    const util::Rectangle::Extents &extents_,
-                    const PixelType *buffer_ = 0) :
-                    extents (extents_),
-                    buffer (extents.height * extents.width) {
-                if (buffer_ != 0) {
-                    PixelType *dst = buffer.array;
-                    for (std::size_t length = buffer.length; length-- != 0;) {
-                        *dst++ = *buffer_++;
-                    }
-                }
-            }
+                const util::Rectangle::Extents &extents_,
+                PixelType *buffer_ = 0) :
+                extents (extents_),
+                buffer (extents.height * extents.width, buffer_) {}
 
             inline PixelType &PixelAt (
                     util::ui32 x,
@@ -102,6 +90,16 @@ namespace thekogans {
                     util::ui32 x,
                     util::ui32 y) const {
                 return PixelAt (x, y).ToColor ();
+            }
+
+            SharedPtr Copy () const {
+                SharedPtr framebuffer (new Framebuffer (extents));
+                PixelType *src = buffer.array;
+                PixelType *dst = framebuffer->buffer.array;
+                for (std::size_t length = buffer.length; length-- != 0;) {
+                    *dst++ = *src++;
+                }
+                return framebuffer;
             }
 
             /// \brief
@@ -171,7 +169,7 @@ namespace thekogans {
                 typename ConverterIntermediateColorConverterType =
                     Converter<typename Converter<ColorType>::IntermediateColorType>,
                 typename OutColorConverterType = Converter<typename OutPixelType::ColorType>>
-            typename Framebuffer<OutPixelType>::SharedPtr Convert () {
+            typename Framebuffer<OutPixelType>::SharedPtr Convert () const {
                 typename Framebuffer<OutPixelType>::SharedPtr framebuffer (
                     new Framebuffer<OutPixelType> (extents));
                 const PixelType *src = buffer.array;

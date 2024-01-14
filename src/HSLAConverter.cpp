@@ -16,6 +16,7 @@
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cmath>
+#include <algorithm>
 #include "thekogans/util/Types.h"
 #include "thekogans/canvas/RGBAColor.h"
 #include "thekogans/canvas/HSLAColor.h"

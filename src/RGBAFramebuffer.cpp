@@ -114,22 +114,24 @@ namespace thekogans {
             int width;
             int height;
             int jpegSubsamp;
-            if (tjDecompressHeader2 (handle.handle, (util::ui8 *)buffer,
-                    size, &width, &height, &jpegSubsamp) == 0) {
+            if (tjDecompressHeader2 (
+                    handle.handle,
+                    (util::ui8 *)buffer,
+                    size,
+                    &width,
+                    &height,
+                    &jpegSubsamp) == 0) {
                 ui8RGBAFramebuffer::SharedPtr framebuffer (
                     new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
-                ui8RGBAPixel *dst = framebuffer->buffer.array;
-                util::Array<util::ui8> data (width * height * 4);
-                if (tjDecompress2 (handle.handle, (util::ui8 *)buffer,
-                        size, data, width, width * 4, height, TJPF_RGBX, 0) == 0) {
-                    const util::ui8 *src = data.array;
-                    for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
-                        util::ui8 r = *src++;
-                        util::ui8 g = *src++;
-                        util::ui8 b = *src++;
-                        util::ui8 a = *src++;
-                        *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
-                    }
+                if (tjDecompress2 (
+                        handle.handle,
+                        (util::ui8 *)buffer,
+                        size,
+                        (util::ui8 *)framebuffer->buffer.array,
+                        width, width * util::UI8_SIZE,
+                        height,
+                        TJPF_RGBX,
+                        0) == 0) {
                     return framebuffer;
                 }
                 else {
