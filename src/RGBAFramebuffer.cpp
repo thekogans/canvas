@@ -56,23 +56,17 @@ namespace thekogans {
         ui8RGBAFramebuffer::SharedPtr FromPNGBuffer (
                 const util::ui8 *buffer,
                 std::size_t size) {
-            std::vector<util::ui8> data;
+            ui8RGBAPixel *array = 0;
             util::ui32 width = 0;
             util::ui32 height = 0;
-            util::ui32 error = lodepng::decode (data, width, height, buffer, size);
+            util::ui32 error = lodepng_decode32 (
+                (util::ui8 **)&array, &width, &height, buffer, size);
             if (error == 0) {
-                ui8RGBAFramebuffer::SharedPtr framebuffer (
-                    new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
-                ui8RGBAPixel *dst = framebuffer->buffer.array;
-                const util::ui8 *src = data.data ();
-                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
-                    util::ui8 r = *src++;
-                    util::ui8 g = *src++;
-                    util::ui8 b = *src++;
-                    util::ui8 a = *src++;
-                    *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
-                }
-                return framebuffer;
+                return ui8RGBAFramebuffer::SharedPtr (
+                    new ui8RGBAFramebuffer (
+                        util::Rectangle::Extents (width, height),
+                        array,
+                        [] (ui8RGBAPixel *array) {free (array);}));
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
@@ -82,23 +76,17 @@ namespace thekogans {
         }
 
         ui8RGBAFramebuffer::SharedPtr FromPNGFile (const std::string &path) {
-            std::vector<util::ui8> data;
+            ui8RGBAPixel *array = 0;
             util::ui32 width = 0;
             util::ui32 height = 0;
-            util::ui32 error = lodepng::decode (data, width, height, path.c_str ());
+            util::ui32 error = lodepng_decode32_file (
+                (util::ui8 **)&array, &width, &height, path.c_str ());
             if (error == 0) {
-                ui8RGBAFramebuffer::SharedPtr framebuffer (
-                    new ui8RGBAFramebuffer (util::Rectangle::Extents (width, height)));
-                ui8RGBAPixel *dst = framebuffer->buffer.array;
-                const util::ui8 *src = data.data ();
-                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
-                    util::ui8 r = *src++;
-                    util::ui8 g = *src++;
-                    util::ui8 b = *src++;
-                    util::ui8 a = *src++;
-                    *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
-                }
-                return framebuffer;
+                return ui8RGBAFramebuffer::SharedPtr (
+                    new ui8RGBAFramebuffer (
+                        util::Rectangle::Extents (width, height),
+                        array,
+                        [] (ui8RGBAPixel *array) {free (array);}));
             }
             else {
                 THEKOGANS_UTIL_THROW_STRING_EXCEPTION (
@@ -256,21 +244,16 @@ namespace thekogans {
                 ui8RGBAFramebuffer::SharedPtr framebuffer (
                     new ui8RGBAFramebuffer (
                         util::Rectangle::Extents (infoHeader.biHeight, infoHeader.biWidth)));
-                ui8RGBAPixel *dst = framebuffer->buffer.array;
                 buffer_.readOffset = fileHeader.bfOffBits;
-                for (std::size_t length = framebuffer->buffer.length; length-- != 0;) {
-                    util::ui8 r;
-                    util::ui8 g;
-                    util::ui8 b;
-                    util::ui8 a;
-                    buffer_ >> r >> g >> b;
+                for (ui8RGBAPixel *dst = framebuffer->buffer.array,
+                         *end = dst + framebuffer->buffer.length; dst != end; ++dst) {
+                    buffer_ >> dst->r >> dst->g >> dst->b;
                     if (infoHeader.biBitCount == 32) {
-                        buffer_ >> a;
+                        buffer_ >> dst->a;
                     }
                     else {
-                        a = 255;
+                        dst->a = 255;
                     }
-                    *dst++ = ui8RGBAPixel (ui8RGBAColor (r, g, b, a));
                 }
                 return framebuffer;
             }

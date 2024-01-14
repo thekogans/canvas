@@ -74,11 +74,14 @@ namespace thekogans {
             /// Optionally wrap the contents of the given buffer.
             /// \param[in] extents_ Framebuffer width and height.
             /// \param[in] buffer_ Optional Array of pixels to wrap with the framebuffer.
+            /// \param[in] deleter Deleter used to deallocater the buffer_ pointer.
             Framebuffer (
                 const util::Rectangle::Extents &extents_,
-                PixelType *buffer_ = 0) :
+                PixelType *buffer_ = 0,
+                const typename util::Array<PixelType>::Deleter &deleter =
+                    typename util::Array<PixelType>::DefaultDeleter ()) :
                 extents (extents_),
-                buffer (extents.height * extents.width, buffer_) {}
+                buffer (extents.height * extents.width, buffer_, deleter) {}
 
             inline PixelType &PixelAt (
                     util::ui32 x,
