@@ -56,8 +56,10 @@ namespace thekogans {
             /// ctor. \see{Framebuffer::Framebuffer}
             Frame (
                 const util::Rectangle::Extents &extents,
-                const PixelType *buffer = 0) :
-                framebuffer (new Framebuffer<PixelType> (extents, buffer)),
+                PixelType *buffer = 0,
+                const typename util::Array<PixelType>::Deleter &deleter =
+                    [] (PixelType * /*array*/) {}) :
+                framebuffer (new Framebuffer<PixelType> (extents, buffer, deleter)),
                 bounds (util::Point (), extents) {}
             /// \brief
             /// ctor. Wrap a given framebuffer and provide access to a

@@ -79,22 +79,35 @@ namespace thekogans {
                 const util::Rectangle::Extents &extents_,
                 PixelType *buffer_ = 0,
                 const typename util::Array<PixelType>::Deleter &deleter =
-                    typename util::Array<PixelType>::DefaultDeleter ()) :
+                    [] (PixelType * /*array*/) {}) :
                 extents (extents_),
                 buffer (extents.height * extents.width, buffer_, deleter) {}
 
+            /// \brief
+            /// Return a pixel reference at the given coordinates.
+            /// \param[in] x x coordinate of the pixel.
+            /// \param[in] y y coordinate of the pixel.
+            /// \return Pixel reference at the given coordinates.
             inline PixelType &PixelAt (
                     util::ui32 x,
                     util::ui32 y) const {
                 return buffer[y * extents.width + x];
             }
 
+            /// \brief
+            /// Return the pixel color at the given coordinates.
+            /// \param[in] x x coordinate of the pixel.
+            /// \param[in] y y coordinate of the pixel.
+            /// \return Pixel color at the given coordinates.
             inline ColorType ColorAt (
                     util::ui32 x,
                     util::ui32 y) const {
                 return PixelAt (x, y).ToColor ();
             }
 
+            /// \brief
+            /// Return a deep copy of the framebuffer.
+            /// \return A deep copy of the framebuffer.
             SharedPtr Copy () const {
                 SharedPtr framebuffer (new Framebuffer (extents));
                 PixelType *src = buffer.array;
@@ -117,6 +130,7 @@ namespace thekogans {
             }
 
             /// \brief
+            /// Mirror the framebuffer across the x-axis.
             /// We use (0, 0) as the top left hand corner of the framebuffer.
             /// Other systems use bottom left (OpenGL). Use this method to flip
             /// the rows.
@@ -132,6 +146,8 @@ namespace thekogans {
                 }
             }
 
+            /// \brief
+            /// Mirror the framebuffer across the y-axis.
             void FlipColumns () {
                 PixelType *leftColumn = buffer.array;
                 for (std::size_t rows = extents.height; rows-- != 0;) {
