@@ -109,7 +109,7 @@ namespace thekogans {
             /// Return a deep copy of the framebuffer.
             /// \return A deep copy of the framebuffer.
             SharedPtr Copy () const {
-                SharedPtr framebuffer (new Framebuffer (extents));
+                SharedPtr framebuffer (new Framebuffer<PixelType> (extents));
                 PixelType *src = buffer.array;
                 PixelType *dst = framebuffer->buffer.array;
                 for (std::size_t length = buffer.length; length-- != 0;) {
