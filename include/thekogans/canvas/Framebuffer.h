@@ -52,7 +52,7 @@ namespace thekogans {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Framebuffer)
             /// \brief
             /// Framebuffer has a private heap to help with performance and memory fragmentation.
-            THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Framebuffer, util::SpinLock)
+            THEKOGANS_UTIL_DECLARE_STD_ALLOCATOR_FUNCTIONS
 
             /// \brief
             /// Framebuffer pixel type.

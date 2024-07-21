@@ -43,7 +43,7 @@ namespace thekogans {
         template<typename T>
         struct Frame : public util::RefCounted {
             THEKOGANS_UTIL_DECLARE_REF_COUNTED_POINTERS (Frame)
-            THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Frame, util::SpinLock)
+            THEKOGANS_UTIL_DECLARE_STD_ALLOCATOR_FUNCTIONS
 
             typedef T PixelType;
 

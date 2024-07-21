@@ -88,7 +88,7 @@ namespace thekogans {
                 }
             } face;
             struct Glyph {
-                THEKOGANS_UTIL_DECLARE_HEAP_WITH_LOCK (Glyph, util::SpinLock)
+                THEKOGANS_UTIL_DECLARE_STD_ALLOCATOR_FUNCTIONS
 
                 FT_UInt index;
                 struct GlyphPtr {

@@ -35,7 +35,7 @@ namespace thekogans {
         util::SpinLock Font::freetypeLock;
 
         typedef Font::Glyph FontGlyph;
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK (FontGlyph, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_FUNCTIONS (FontGlyph)
 
         Font::Font (
                 const std::string &path,

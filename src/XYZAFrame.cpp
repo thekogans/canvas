@@ -20,10 +20,10 @@
 namespace thekogans {
     namespace canvas {
 
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32XYZAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32ZYXAFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AXYZFrame, util::SpinLock)
-        THEKOGANS_UTIL_IMPLEMENT_HEAP_WITH_LOCK_T (f32AZYXFrame, util::SpinLock)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_FUNCTIONS_T (f32XYZAFrame)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_FUNCTIONS_T (f32ZYXAFrame)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_FUNCTIONS_T (f32AXYZFrame)
+        THEKOGANS_UTIL_IMPLEMENT_HEAP_FUNCTIONS_T (f32AZYXFrame)
 
     } // namespace canvas
 } // namespace thekogans
