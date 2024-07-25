@@ -47,7 +47,7 @@ namespace thekogans {
             void PumpMessages ();
             void StopPumpingMessages ();
 
-            THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Xlib)
+            THEKOGANS_UTIL_DISALLOW_COPY_AND_ASSIGN (Xlib)
         };
 
     } // namespace canvas

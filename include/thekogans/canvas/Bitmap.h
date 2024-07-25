@@ -121,7 +121,7 @@ namespace thekogans {
                 const util::Rectangle &rectangle = util::Rectangle (),
                 const util::Point &origin = util::Point ());
 
-            THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Bitmap)
+            THEKOGANS_UTIL_DISALLOW_COPY_AND_ASSIGN (Bitmap)
         };
 
     } // namespace canvas

@@ -41,9 +41,4 @@
     #define _LIB_THEKOGANS_CANVAS_DECL
 #endif // defined (TOOLCHAIN_OS_Windows)
 
-#define THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN(type)\
-private:\
-    type (const type &);\
-    type &operator = (const type &);
-
 #endif // !defined (__thekogans_canvas_Config_h)

@@ -175,7 +175,7 @@ namespace thekogans {
                     return glyph->top;
                 }
 
-                THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Glyph)
+                THEKOGANS_UTIL_DISALLOW_COPY_AND_ASSIGN (Glyph)
             };
             util::OwnerVector<Glyph> glyphCache;
             bool flipGliphRows;
@@ -237,7 +237,7 @@ namespace thekogans {
                 std::vector<Glyph *> &glyphs,
                 std::vector<FT_Vector> &positions);
 
-            THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Font)
+            THEKOGANS_UTIL_DISALLOW_COPY_AND_ASSIGN (Font)
         };
 
     } // namespace canvas

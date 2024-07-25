@@ -246,7 +246,7 @@ namespace thekogans {
             ///
             /// This design forces most (all?) framebuffers to be allocated on the heap
             /// and shared among many \see{Frame}s.
-            THEKOGANS_CANVAS_DISALLOW_COPY_AND_ASSIGN (Framebuffer)
+            THEKOGANS_UTIL_DISALLOW_COPY_AND_ASSIGN (Framebuffer)
         };
 
     } // namespace canvas
