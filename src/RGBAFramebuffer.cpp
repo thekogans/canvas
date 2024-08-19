@@ -226,7 +226,7 @@ namespace thekogans {
         ui8RGBAFramebuffer::SharedPtr FromBMPBuffer (
                 const util::ui8 *buffer,
                 std::size_t size) {
-            util::TenantBuffer buffer_ (util::LittleEndian, (util::ui8 *)buffer, size);
+            util::TenantReadBuffer buffer_ (util::LittleEndian, buffer, size);
             FileHeader fileHeader;
             InfoHeader infoHeader;
             buffer_ >> fileHeader >> infoHeader;
