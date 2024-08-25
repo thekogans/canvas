@@ -18,6 +18,8 @@
 #if !defined (__thekogans_canvas_Xlib_h)
 #define __thekogans_canvas_Xlib_h
 
+#include "thekogans/util/Environment.h"
+
 #if defined (TOOLCHAIN_OS_Linux)
 #if defined (THEKOGANS_CANVAS_USE_XLIB)
 

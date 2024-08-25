@@ -16,6 +16,7 @@
 // along with libthekogans_canvas. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
+#include "thekogans/util/Environment.h"
 #if defined (TOOLCHAIN_OS_OSX)
     #include <CoreFoundation/CoreFoundation.h>
     #include <CoreGraphics/CoreGraphics.h>
